@@ -32,8 +32,7 @@ Error generating stack: `+e.message+`
               height: auto !important; 
               box-shadow: none !important; 
               border-radius: 0 !important; 
-              border-color: #0055ff !important; 
-              border-width: 1px !important;
+              border: none !important; /* เอาเส้นกรอบนอกออกในโหมดพิมพ์ PDF */
               margin-left: auto !important;
               margin-right: auto !important;
               margin-bottom: 10mm !important;
