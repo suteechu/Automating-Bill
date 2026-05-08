@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+import Summary from './Summary';
+import CategoryDetail from './CategoryDetail';
+import Sidebar from './Sidebar';
+import Dashboard from './Dashboard';
+import MasterBom from './MasterBom';
+import { initialCategories, emptyProjectInfo } from './constants';
+import { THBText, sanitizeCategories, calculateAutoFillQty } from './utils';
+
+export default function App() {
+=======
 
 // ฟังก์ชันแปลงตัวเลขเป็นตัวอักษรภาษาไทย
 const THBText = (n) => {
@@ -169,14 +180,23 @@ const initialProjectInfo = {
 
 export default function App() {
   // ดึง State จาก Local Storage เพื่อทำ Auto-Save
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   const [categories, setCategories] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('kid_bom_categories');
+<<<<<<< HEAD
+        if (saved) {
+           return sanitizeCategories(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error("Error parsing categories from localStorage", e);
+=======
         return saved ? JSON.parse(saved) : initialCategories;
       } catch (e) {
         console.error("Error parsing categories from localStorage", e);
         return initialCategories;
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       }
     }
     return initialCategories;
@@ -192,7 +212,10 @@ export default function App() {
         return saved ? JSON.parse(saved) : 0;
       } catch (e) {
         console.error("Error parsing discount from localStorage", e);
+<<<<<<< HEAD
+=======
         return 0;
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       }
     }
     return 0;
@@ -202,6 +225,16 @@ export default function App() {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('kid_bom_project_info');
+<<<<<<< HEAD
+        if (saved) {
+           return { ...emptyProjectInfo, ...JSON.parse(saved) };
+        }
+      } catch (e) {
+        console.error("Error parsing project info from localStorage", e);
+      }
+    }
+    return { ...emptyProjectInfo };
+=======
         return saved ? JSON.parse(saved) : { ...initialProjectInfo };
       } catch (e) {
         console.error("Error parsing project info from localStorage", e);
@@ -209,6 +242,7 @@ export default function App() {
       }
     }
     return { ...initialProjectInfo };
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   });
 
   const [masterBom, setMasterBom] = useState(() => {
@@ -218,13 +252,23 @@ export default function App() {
         return saved ? JSON.parse(saved) : [];
       } catch (e) {
         console.error("Error parsing master BOM from localStorage", e);
+<<<<<<< HEAD
+=======
         return [];
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       }
     }
     return [];
   });
 
+<<<<<<< HEAD
+  const [testFormula, setTestFormula] = useState({ name: '', unit: '', catId: '' });
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [sheetName, setSheetName] = useState('Sheet1'); 
+
+=======
   // Effect สำหรับ Auto-save
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('kid_bom_categories', JSON.stringify(categories));
@@ -238,7 +282,10 @@ export default function App() {
     setProjectInfo(prev => ({ ...prev, [field]: value }));
   };
 
+<<<<<<< HEAD
+=======
   // --- ระบบ Download / Upload Project (JSON) ---
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   const exportProjectToJSON = () => {
     const projectData = {
       version: '1.0',
@@ -252,7 +299,14 @@ export default function App() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 2));
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
+<<<<<<< HEAD
+    
+    const fileName = `BOQ ${projectInfo.owner || projectInfo.name || 'Project'} (${projectInfo.area || 0} ตร.ม.).json`;
+    downloadAnchorNode.setAttribute("download", fileName);
+    
+=======
     downloadAnchorNode.setAttribute("download", `BOQ_${projectInfo.name || 'Project'}.json`);
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -265,8 +319,13 @@ export default function App() {
     reader.onload = (evt) => {
       try {
         const data = JSON.parse(evt.target.result);
+<<<<<<< HEAD
+        if (data.projectInfo) setProjectInfo({ ...emptyProjectInfo, ...data.projectInfo });
+        if (data.categories) setCategories(sanitizeCategories(data.categories));
+=======
         if (data.projectInfo) setProjectInfo(data.projectInfo);
         if (data.categories) setCategories(data.categories);
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
         if (data.discountRounding !== undefined) setDiscountRounding(data.discountRounding);
         if (data.masterBom) setMasterBom(data.masterBom);
         alert('โหลดโปรเจกต์สำเร็จ!');
@@ -281,7 +340,11 @@ export default function App() {
   const resetProject = () => {
     if (window.confirm('คุณต้องการรีเซ็ตโปรเจกต์และเริ่มใหม่ทั้งหมดหรือไม่? (ข้อมูลเดิมจะหายไป)')) {
       setCategories(initialCategories);
+<<<<<<< HEAD
+      setProjectInfo({ ...emptyProjectInfo });
+=======
       setProjectInfo({ ...initialProjectInfo });
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       setDiscountRounding(0);
     }
   };
@@ -292,13 +355,22 @@ export default function App() {
     }
   };
 
+<<<<<<< HEAD
+=======
   // --- ระบบ Export Master BOM เป็น CSV ---
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   const exportMasterBomToCSV = () => {
     if (masterBom.length === 0) {
       alert('ไม่มีข้อมูลสำหรับนำออก');
       return;
     }
     
+<<<<<<< HEAD
+    let csvContent = "หมวดงาน,รายการวัสดุ,หน่วย,ค่าวัสดุ/หน่วย,ค่าแรง/หน่วย\n";
+    
+    masterBom.forEach(item => {
+      const catId = item.catId || '';
+=======
     // สร้าง Header ของ CSV ให้ตรงกับ Format ที่อ่านเข้า
     let csvContent = "หมวดงาน,รายการวัสดุ,หน่วย,ค่าวัสดุ/หน่วย,ค่าแรง/หน่วย\n";
     
@@ -306,6 +378,7 @@ export default function App() {
     masterBom.forEach(item => {
       const catId = item.catId || '';
       // ใส่ Double Quotes ครอบชื่อรายการ เผื่อมีลูกน้ำ (,) ด้านในข้อความ
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       const name = `"${(item.name || '').replace(/"/g, '""')}"`;
       const unit = `"${(item.unit || '').replace(/"/g, '""')}"`;
       const matPrice = item.matPrice || 0;
@@ -314,7 +387,10 @@ export default function App() {
       csvContent += `${catId},${name},${unit},${matPrice},${laborPrice}\n`;
     });
 
+<<<<<<< HEAD
+=======
     // ใช้ BOM (\ufeff) เพื่อบังคับให้ Excel อ่านเป็น UTF-8 (แก้ภาษาไทยต่างดาว)
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
     const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -325,6 +401,74 @@ export default function App() {
     document.body.removeChild(link);
   };
 
+<<<<<<< HEAD
+  const syncGoogleSheet = async (silent = false) => {
+    if (isSyncing) return;
+    setIsSyncing(true);
+    try {
+      const sheetId = '1qpAFF43n4ywYdVBpeR7eeO4wk7VY60amPxJptO-piyo';
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${sheetName ? `&sheet=${encodeURIComponent(sheetName)}` : ''}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลได้');
+      
+      const text = await response.text(); 
+      const rows = text.split(/\r?\n/);
+      
+      if (rows.length < 2 || text.includes('<!DOCTYPE html>')) {
+         if (!silent) alert(`ไม่พบข้อมูลในชีตชื่อ "${sheetName}" หรือชีตนั้นว่างเปล่า\nกรุณาตรวจสอบชื่อชีตให้ตรงกับใน Google Sheets`);
+         setIsSyncing(false);
+         return;
+      }
+
+      const newBom = [];
+      for (let idx = 1; idx < rows.length; idx++) {
+        const row = rows[idx];
+        if (!row.trim()) continue;
+        
+        let cols = [];
+        let inQuote = false;
+        let currentVal = '';
+        for(let i=0; i<row.length; i++) {
+            let char = row[i];
+            if(char === '"') inQuote = !inQuote;
+            else if(char === ',' && !inQuote) { cols.push(currentVal); currentVal = ''; }
+            else currentVal += char;
+        }
+        cols.push(currentVal);
+        cols = cols.map(c => c.trim().replace(/^"|"$/g, ''));
+        
+        let catId = cols[0] || '';      
+        let name = cols[1] || '';       
+        let unit = cols[3] || '';             
+        let matPrice = parseFloat(cols[4].replace(/[^\d.-]/g, '')) || 0;   
+        let laborPrice = parseFloat(cols[5].replace(/[^\d.-]/g, '')) || 0; 
+
+        if (name) { 
+          newBom.push({
+            id: `bom_${Date.now()}_${idx}`,
+            catId: catId,
+            name: name,
+            unit: unit,
+            matPrice: matPrice,
+            laborPrice: laborPrice
+          });
+        }
+      }
+      
+      setMasterBom(newBom);
+      if (!silent) alert(`ซิงค์ข้อมูลจาก "${sheetName}" สำเร็จ! (${newBom.length} รายการ)`);
+      
+    } catch (err) {
+       if (!silent) alert('เกิดข้อผิดพลาดในการดึงข้อมูลจาก Google Sheets กรุณาตรวจสอบลิงก์การแชร์ไฟล์ หรือชื่อชีตอาจไม่ถูกต้อง');
+       console.error("Sync error:", err);
+    } finally {
+       setIsSyncing(false);
+    }
+  };
+
+=======
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -427,15 +571,98 @@ export default function App() {
         ...cat,
         items: cat.items.map(item => {
           if (item.id !== itemId) return item;
+<<<<<<< HEAD
+          const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+          return { 
+            ...item, 
+            bomId: bom.id,
+            name: bom.name || '', 
+            unit: bom.unit || '', 
+            matPrice: bom.matPrice || 0, 
+            laborPrice: bom.laborPrice || 0,
+            qty: autoQty !== null ? autoQty : item.qty 
+          };
+=======
           return { ...item, name: bom.name, unit: bom.unit, matPrice: bom.matPrice, laborPrice: bom.laborPrice };
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
         })
       };
     }));
   };
 
+<<<<<<< HEAD
+  const updateItemFromBom = (catId, itemId) => {
+    setCategories(categories.map(cat => {
+      if (cat.id !== catId) return cat;
+      return {
+        ...cat,
+        items: cat.items.map(item => {
+          if (item.id !== itemId) return item;
+
+          let bom = null;
+          if (item.bomId) bom = masterBom.find(b => b.id === item.bomId);
+          if (!bom) bom = masterBom.find(b => b.name === item.name);
+
+          if (!bom) {
+            alert(`ไม่พบรายการ "${item.name}" ในฐานข้อมูล BOM\nกรุณาเลือกใหม่ผ่านปุ่มสายฟ้า (⚡)`);
+            return item;
+          }
+
+          const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+
+          return {
+            ...item,
+            bomId: bom.id,
+            name: bom.name || '',
+            unit: bom.unit || '',
+            matPrice: bom.matPrice || 0,
+            laborPrice: bom.laborPrice || 0,
+            qty: autoQty !== null ? autoQty : item.qty
+          };
+        })
+      };
+    }));
+  };
+
+  const updateAllFromBom = () => {
+    if (!window.confirm('ต้องการดึงราคาและคำนวณสูตร "ทุกรายการ" ใน BOQ ใหม่ตามฐาน BOM ล่าสุดหรือไม่?')) return;
+    
+    setCategories(categories.map(cat => ({
+      ...cat,
+      items: cat.items.map(item => {
+        let bom = null;
+        if (item.bomId) bom = masterBom.find(b => b.id === item.bomId);
+        if (!bom) bom = masterBom.find(b => b.name === item.name);
+        
+        if (!bom) return item; 
+        
+        const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+        
+        return {
+          ...item,
+          bomId: bom.id,
+          name: bom.name || '',
+          unit: bom.unit || '',
+          matPrice: bom.matPrice || 0,
+          laborPrice: bom.laborPrice || 0,
+          qty: autoQty !== null ? autoQty : item.qty
+        };
+      })
+    })));
+    
+    alert('อัปเดตข้อมูลทุกรายการตามฐาน BOM สำเร็จ!');
+  };
+
+  const formatNum = (num) => num?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? '0.00';
+
+  const handlePrint = () => {
+    const fileName = `BOQ ${projectInfo.owner || projectInfo.name || 'Project'} (${projectInfo.area || 0} ตร.ม.)`;
+    document.title = fileName;
+=======
   const formatNum = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const handlePrint = () => {
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
     window.print();
   };
 
@@ -446,17 +673,58 @@ export default function App() {
         ...cat,
         items: cat.items.map(item => {
           if (item.id !== itemId) return item;
+<<<<<<< HEAD
+          let val = value;
+          if (field === 'qty') {
+             val = value === '' ? '' : Math.ceil(parseFloat(value) || 0);
+          } else if (field === 'matPrice' || field === 'laborPrice') {
+             val = value === '' ? '' : parseFloat(value) || 0;
+          }
+=======
           const val = ['name', 'unit'].includes(field) ? value : (value === '' ? '' : parseFloat(value) || 0);
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
           return { ...item, [field]: val };
         })
       };
     }));
   };
 
+<<<<<<< HEAD
+  const handleMoveItem = (catId, index, direction) => {
+    setCategories(categories.map(cat => {
+      if (cat.id !== catId) return cat;
+      const newItems = [...cat.items];
+      if (index + direction < 0 || index + direction >= newItems.length) return cat;
+      
+      const temp = newItems[index];
+      newItems[index] = newItems[index + direction];
+      newItems[index + direction] = temp;
+      
+      return { ...cat, items: newItems };
+    }));
+  };
+
+  const handleInsertItem = (catId, index) => {
+    setCategories(categories.map(cat => {
+      if (cat.id !== catId) return cat;
+      const newItemId = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const newItem = { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 };
+      const newItems = [...cat.items];
+      newItems.splice(index + 1, 0, newItem);
+      return { ...cat, items: newItems };
+    }));
+  };
+
+  const handleAddItem = (catId) => {
+    setCategories(categories.map(cat => {
+      if (cat.id !== catId) return cat;
+      const newItemId = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+=======
   const handleAddItem = (catId) => {
     setCategories(categories.map(cat => {
       if (cat.id !== catId) return cat;
       const newItemId = `${catId}.${cat.items.length + 1}`;
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       return {
         ...cat,
         items: [...cat.items, { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 }]
@@ -490,7 +758,11 @@ export default function App() {
   const subTotal = grandTotalMaterial + grandTotalLabor;
   const overheadProfit = subTotal * profitMargin;
   const totalWithProfit = subTotal + overheadProfit;
+<<<<<<< HEAD
+  const grandTotal = Math.round(totalWithProfit - (Number(discountRounding) || 0));
+=======
   const grandTotal = totalWithProfit - discountRounding;
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
 
   const costPerSqm = projectInfo.area > 0 ? (grandTotal / projectInfo.area) : 0;
   const matPercent = subTotal > 0 ? (grandTotalMaterial / subTotal) * 100 : 0;
@@ -506,6 +778,27 @@ export default function App() {
     return acc;
   }, {});
 
+<<<<<<< HEAD
+  // ฟังก์ชันสร้างช่องกรอกข้อมูลขนาดจิ๋ว (Minimalist Style) ป้องกัน undefined
+  const renderMiniInput = (label, field, val, tooltipText) => (
+    <div className="flex flex-col shrink-0" title={tooltipText}>
+      <label className="block text-[9px] text-slate-500 mb-0.5 whitespace-nowrap font-sans font-medium uppercase">
+        {label}
+      </label>
+      <input 
+        type="number" 
+        value={val !== undefined && val !== null ? val : ''} 
+        onChange={e => {
+          if (e.target.value.length <= 7) handleProjectInfoChange(field, e.target.value === '' ? '' : Number(e.target.value));
+        }} 
+        className="w-[62px] bg-slate-100 border-transparent rounded px-1 py-1 text-[11px] font-bold text-center text-slate-800 focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all" 
+      />
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-screen bg-gray-200 font-sans text-gray-800 print:bg-white font-smk">
+=======
   // คอมโพเนนต์ Header โทนคลาสสิค + ฟอนต์ Supermarket พร้อมเลขหน้าและวันที่
   const DocumentHeader = ({ title, pageIndex, totalPages }) => {
     // สร้างวันที่และเวลาปัจจุบัน สำหรับพิมพ์กำกับมุมขวาบน
@@ -556,6 +849,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-200 pb-12 font-sans text-gray-800 print:py-0 print:bg-white print:pb-0 font-smk">
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
       <style>{`
         /* นำเข้าฟอนต์ Supermarket และ ฟอนต์สำรอง */
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap');
@@ -600,6 +894,10 @@ export default function App() {
         
         /* ซ่อน Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
+<<<<<<< HEAD
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+=======
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
         
         /* สไตล์ Input กระชับในตาราง */
         .clean-input {
@@ -615,6 +913,209 @@ export default function App() {
         .clean-input:focus { background-color: white; border-color: #818cf8; box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.2); }
       `}</style>
 
+<<<<<<< HEAD
+      {/* แถบเมนูด้านซ้าย (Sidebar) แทนที่ Navbar แนวนอนเดิม */}
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        categories={categories} 
+        updateAllFromBom={updateAllFromBom} 
+        syncGoogleSheet={syncGoogleSheet} 
+        isSyncing={isSyncing} 
+        handlePrint={handlePrint} 
+      />
+
+      {/* พื้นที่เนื้อหาหลัก (Main Content) */}
+      <main className="flex-1 py-8 overflow-x-auto print:py-0 print:overflow-visible">
+        {/* สั่ง print:block ไว้ที่ตัวครอบสุด เพื่อให้ไหลไปได้หลายๆ หน้า */}
+        <div className="flex flex-col items-center gap-10 print:block min-w-max">
+
+          {/* =========================================
+              หน้า 0.1: DASHBOARD
+          ========================================== */}
+          {activeTab === 'dashboard' && (
+            <Dashboard 
+              projectInfo={projectInfo}
+              handleProjectInfoChange={handleProjectInfoChange}
+              resetProject={resetProject}
+              importProjectFromJSON={importProjectFromJSON}
+              exportProjectToJSON={exportProjectToJSON}
+              formatNum={formatNum}
+              grandTotal={grandTotal}
+              costPerSqm={costPerSqm}
+              profitMargin={profitMargin}
+              overheadProfit={overheadProfit}
+              matPercent={matPercent}
+              laborPercent={laborPercent}
+              grandTotalMaterial={grandTotalMaterial}
+              grandTotalLabor={grandTotalLabor}
+              sortedCategories={sortedCategories}
+              subTotal={subTotal}
+              maxCategoryTotal={maxCategoryTotal}
+            />
+          )}
+
+          {/* =========================================
+              หน้า 0.1.5: RECHECK FORMULAS & ADVANCED PARAMS
+          ========================================== */}
+          {activeTab === 'recheck' && (
+            <div className="w-[210mm] bg-white rounded shadow-xl border border-gray-300 p-6 text-gray-800 no-print print:hidden font-smk mx-auto">
+              <div className="border-b border-gray-300 pb-4 mb-4">
+                <h2 className="text-xl font-extrabold text-gray-900">🔍 รีเช็คสูตร & ตัวแปรเชิงลึก (Formula & Parameters)</h2>
+                <p className="text-gray-600 text-[12px] mt-0.5 font-bold">ทดสอบสูตรการคำนวณและกำหนดค่าตัวแปรโครงสร้างที่ใช้ในสูตรอัตโนมัติ (Advanced Variables)</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                {/* Section 1: Simulator */}
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200 flex flex-col">
+                  <h3 className="text-sm font-bold text-purple-800 mb-3 flex items-center gap-2">
+                    🧪 ทดสอบคำนวณปริมาณอัตโนมัติ (Simulator)
+                  </h3>
+                  <div className="flex flex-col gap-3 flex-1">
+                    <div>
+                      <label className="block text-[11px] font-bold text-gray-600 mb-1">ชื่อวัสดุ / รายการ (Keyword)</label>
+                      <input type="text" value={testFormula.name} onChange={e => setTestFormula({...testFormula, name: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น กระเบื้องซีแพค, สีทาภายใน" />
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                          <label className="block text-[11px] font-bold text-gray-600 mb-1">หน่วย (Unit)</label>
+                          <input type="text" value={testFormula.unit} onChange={e => setTestFormula({...testFormula, unit: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น ตร.ม., ม." />
+                      </div>
+                      <div className="flex-1">
+                          <label className="block text-[11px] font-bold text-gray-600 mb-1">หมวดงาน (Cat ID)</label>
+                          <input type="text" value={testFormula.catId} onChange={e => setTestFormula({...testFormula, catId: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น 11" />
+                      </div>
+                    </div>
+
+                    <div className="mt-auto bg-white p-4 rounded border border-purple-200 text-center shadow-inner">
+                      <p className="text-[11px] font-bold text-gray-500 mb-1">ปริมาณที่ระบบจะใส่ให้อัตโนมัติ (Qty)</p>
+                      <div className="text-3xl font-extrabold text-purple-700">
+                          {calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo) !== null
+                            ? calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo)
+                            : <span className="text-gray-300 text-lg">ไม่เข้าเงื่อนไขสูตร</span>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 2: Advanced Variables */}
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h3 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    📐 ตัวแปรโครงสร้างที่ใช้คำนวณ (Structural Variables)
+                  </h3>
+                  <div className="grid grid-cols-1 gap-y-2 text-[12px] h-[220px] overflow-y-auto no-scrollbar pr-2">
+                    {[
+                      { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)' },
+                      { key: 'bathroomArea', label: 'พื้นที่ห้องน้ำรวม (ตร.ม.)' },
+                      { key: 'bedroomArea', label: 'พื้นที่ห้องนอนรวม (ตร.ม.)' },
+                      { key: 'kitchenArea', label: 'พื้นที่ห้องครัว (ตร.ม.)' },
+                      { key: 'perimeter', label: 'ความยาวเส้นรอบรูปอาคาร (ม.)' },
+                      { key: 'beamLength', label: 'ความยาวคานรวม (ม.)' },
+                      { key: 'aseLength', label: 'ความยาวอะเส (ม.)' },
+                      { key: 'foundationCount', label: 'จำนวนฐานราก (หลุม)' },
+                      { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)' },
+                      { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)' },
+                      { key: 'totalWallVolume', label: 'ปริมาตรผนังรวม (ลบ.ม.)' },
+                    ].map(field => (
+                      <div key={field.key} className="flex justify-between items-center border-b border-gray-200 pb-1">
+                        <span className="text-gray-600 font-bold">{field.label}:</span>
+                        <input 
+                          type="number" 
+                          value={projectInfo[field.key] || ''} 
+                          onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
+                          className="w-20 text-right border border-gray-300 rounded px-1 py-0.5 outline-none focus:border-blue-500 font-bold bg-white" 
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3: Dictionary */}
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <h3 className="text-sm font-bold text-blue-800 mb-3">📖 พจนานุกรมคำค้นหา (Keyword Dictionary) ตัวอย่าง</h3>
+                  <div className="grid grid-cols-3 gap-4 text-[11px]">
+                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
+                        <li><b className="text-blue-700">ลวดผูกเหล็ก</b> = พท.ใช้สอย * 0.22</li>
+                        <li><b className="text-blue-700">ตะปู</b> = พท.ใช้สอย * 0.15</li>
+                        <li><b className="text-blue-700">กระเบื้องซีแพค</b> = พท.หลังคา * 11</li>
+                    </ul>
+                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
+                        <li><b className="text-blue-700">บล็อกแอร์</b> = ห้องนอน + 1</li>
+                        <li><b className="text-blue-700">ดาวน์ไลท์</b> = ห้องนอน * 4</li>
+                        <li><b className="text-blue-700">ประตูภายใน</b> = จำนวนห้องนอน</li>
+                    </ul>
+                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
+                        <li><b className="text-blue-700">ปูนก่อ/ฉาบ</b> = คำนวณจากปริมาตร/พื้นที่ผนัง</li>
+                        <li><b className="text-blue-700">สีทาภายใน</b> = พื้นที่ผนังภายใน</li>
+                        <li><b className="text-blue-700">DB20/DB16</b> = คาน * 6 * ค่าสัมประสิทธิ์</li>
+                    </ul>
+                  </div>
+              </div>
+            </div>
+          )}
+
+          {/* =========================================
+              หน้า 0.2: ฐานข้อมูล BOM 
+          ========================================== */}
+          {activeTab === 'bom' && (
+            <MasterBom 
+              masterBom={masterBom}
+              groupedMasterBom={groupedMasterBom}
+              addMasterBom={addMasterBom}
+              exportMasterBomToCSV={exportMasterBomToCSV}
+              handleFileUpload={handleFileUpload}
+              clearMasterBom={clearMasterBom}
+              removeMasterBom={removeMasterBom}
+              handleMasterBomChange={handleMasterBomChange}
+            />
+          )}
+
+          {/* =========================================
+              หน้า 1: หน้าสรุป (SUMMARY)
+          ========================================== */}
+          <Summary 
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            categoriesLength={categories.length}
+            summaryRows={summaryRows}
+            grandTotalMaterial={grandTotalMaterial}
+            grandTotalLabor={grandTotalLabor}
+            subTotal={subTotal}
+            profitMargin={profitMargin}
+            overheadProfit={overheadProfit}
+            discountRounding={discountRounding}
+            setDiscountRounding={setDiscountRounding}
+            grandTotal={grandTotal}
+            formatNum={formatNum}
+            THBText={THBText}
+            projectInfo={projectInfo}
+          />
+
+          {/* =========================================
+              หน้า 2-N: หน้ารายละเอียด (BREAKDOWN)
+          ========================================== */}
+          {categories.map((cat, index) => (
+            <CategoryDetail
+              key={cat.id}
+              cat={cat}
+              index={index}
+              activeTab={activeTab}
+              categoriesLength={categories.length}
+              projectInfo={projectInfo}
+              getCategoryTotals={getCategoryTotals}
+              masterBom={masterBom}
+              formatNum={formatNum}
+              handleRemoveItem={handleRemoveItem}
+              handleItemChange={handleItemChange}
+              applyBomToItem={applyBomToItem}
+              handleAddItem={handleAddItem}
+            />
+          ))}
+
+        </div>
+      </main>
+=======
       {/* เมนูนำทาง (Nav Bar) */}
       <div className="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-md mb-6 no-print px-4 py-2 flex flex-wrap gap-3 items-center justify-between">
         <div className="flex-1 min-w-[300px] flex items-center gap-3">
@@ -1107,6 +1608,7 @@ export default function App() {
         })}
 
       </div>
+>>>>>>> 30d7bcc64e48810e8a9aa265651dd8e38e1d4ce7
     </div>
   );
 }
