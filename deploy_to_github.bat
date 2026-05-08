@@ -45,6 +45,17 @@ git branch -M main
 
 echo [Step 3/5] Pulling latest code from GitHub...
 git pull origin main --no-edit
+git pull origin main --no-edit --allow-unrelated-histories
+
+:: ตรวจสอบว่า Pull ผ่านหรือไม่ (มีปัญหา Merge Conflict หรือไม่)
+if %errorlevel% neq 0 (
+    echo.
+    echo [Error] การดึงโค้ด (Pull) จาก GitHub ไม่สำเร็จ! [อาจเกิดจากโค้ดชนกัน]
+    echo ระบบกำลังเปิด VS Code เพื่อให้คุณแก้ไขไฟล์ที่มีปัญหา...
+    call code .
+    pause
+    exit /b
+)
 
 echo [Step 4/5] Pushing source code to GitHub...
 git push origin HEAD
