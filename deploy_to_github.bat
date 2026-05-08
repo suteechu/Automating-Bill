@@ -44,7 +44,6 @@ git commit -m "%COMMIT_MSG%"
 git branch -M main
 
 echo [Step 3/5] Pulling latest code from GitHub...
-git pull origin main --no-edit
 git pull origin main --no-edit --allow-unrelated-histories
 
 :: ตรวจสอบว่า Pull ผ่านหรือไม่ (มีปัญหา Merge Conflict หรือไม่)
