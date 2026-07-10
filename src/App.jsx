@@ -6,6 +6,31 @@ import Dashboard from './Dashboard';
 import MasterBom from './MasterBom';
 import { initialCategories, emptyProjectInfo } from './constants';
 import { THBText, sanitizeCategories, calculateAutoFillQty } from './utils';
+import defaultData from './default_data.json';
+
+// ฟังก์ชันสำหรับแปลง ID เก่าที่ค้างในระบบ (item_...) ให้กลายเป็นเลขลำดับ (เช่น 1.1, 1.2) อัตโนมัติ
+const fixOldIds = (cats) => {
+  return cats.map(cat => {
+    let maxSubId = 0;
+    cat.items.forEach(item => {
+      const parts = String(item.id).split('.');
+      if (parts.length === 2 && parts[0] == cat.id) {
+        const subId = parseInt(parts[1], 10);
+        if (!isNaN(subId) && subId > maxSubId) maxSubId = subId;
+      }
+    });
+    return {
+      ...cat,
+      items: cat.items.map(item => {
+        if (String(item.id).startsWith('item_') || !String(item.id).includes('.')) {
+          maxSubId++;
+          return { ...item, id: `${cat.id}.${maxSubId}` };
+        }
+        return item;
+      })
+    };
+  });
+};
 
 export default function App() {
   const [categories, setCategories] = useState(() => {
@@ -13,13 +38,13 @@ export default function App() {
       try {
         const saved = localStorage.getItem('kid_bom_categories');
         if (saved) {
-           return sanitizeCategories(JSON.parse(saved));
+           return fixOldIds(sanitizeCategories(JSON.parse(saved)));
         }
       } catch (e) {
         console.error("Error parsing categories from localStorage", e);
       }
     }
-    return initialCategories;
+    return fixOldIds(defaultData.categories ? sanitizeCategories(defaultData.categories) : initialCategories);
   });
 
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -34,7 +59,7 @@ export default function App() {
         console.error("Error parsing discount from localStorage", e);
       }
     }
-    return 0;
+    return defaultData.discountRounding || 0;
   });
   
   const [projectInfo, setProjectInfo] = useState(() => {
@@ -48,7 +73,7 @@ export default function App() {
         console.error("Error parsing project info from localStorage", e);
       }
     }
-    return { ...emptyProjectInfo };
+    return { ...emptyProjectInfo, ...(defaultData.projectInfo || {}) };
   });
 
   const [masterBom, setMasterBom] = useState(() => {
@@ -60,7 +85,7 @@ export default function App() {
         console.error("Error parsing master BOM from localStorage", e);
       }
     }
-    return [];
+    return defaultData.masterBom || [];
   });
 
   const [testFormula, setTestFormula] = useState({ name: '', unit: '', catId: '' });
@@ -110,7 +135,7 @@ export default function App() {
       try {
         const data = JSON.parse(evt.target.result);
         if (data.projectInfo) setProjectInfo({ ...emptyProjectInfo, ...data.projectInfo });
-        if (data.categories) setCategories(sanitizeCategories(data.categories));
+        if (data.categories) setCategories(fixOldIds(sanitizeCategories(data.categories)));
         if (data.discountRounding !== undefined) setDiscountRounding(data.discountRounding);
         if (data.masterBom) setMasterBom(data.masterBom);
         alert('โหลดโปรเจกต์สำเร็จ!');
@@ -124,9 +149,9 @@ export default function App() {
 
   const resetProject = () => {
     if (window.confirm('คุณต้องการรีเซ็ตโปรเจกต์และเริ่มใหม่ทั้งหมดหรือไม่? (ข้อมูลเดิมจะหายไป)')) {
-      setCategories(initialCategories);
-      setProjectInfo({ ...emptyProjectInfo });
-      setDiscountRounding(0);
+      setCategories(fixOldIds(defaultData.categories ? sanitizeCategories(defaultData.categories) : initialCategories));
+      setProjectInfo({ ...emptyProjectInfo, ...(defaultData.projectInfo || {}) });
+      setDiscountRounding(defaultData.discountRounding || 0);
     }
   };
 
@@ -408,7 +433,7 @@ export default function App() {
     alert('อัปเดตข้อมูลทุกรายการตามฐาน BOM สำเร็จ!');
   };
 
-  const formatNum = (num) => num?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) ?? '0.00';
+  const formatNum = (num) => (!isNaN(num) && num !== null && num !== '') ? Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
 
   const handlePrint = () => {
     const fileName = `BOQ ${projectInfo.owner || projectInfo.name || 'Project'} (${projectInfo.area || 0} ตร.ม.)`;
@@ -449,21 +474,20 @@ export default function App() {
     }));
   };
 
-  const handleInsertItem = (catId, index) => {
-    setCategories(categories.map(cat => {
-      if (cat.id !== catId) return cat;
-      const newItemId = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      const newItem = { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 };
-      const newItems = [...cat.items];
-      newItems.splice(index + 1, 0, newItem);
-      return { ...cat, items: newItems };
-    }));
-  };
-
   const handleAddItem = (catId) => {
     setCategories(categories.map(cat => {
       if (cat.id !== catId) return cat;
-      const newItemId = `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      let maxSubId = 0;
+      cat.items.forEach(item => {
+        const parts = String(item.id).split('.');
+        if (parts.length === 2) {
+          const subId = parseInt(parts[1], 10);
+          if (!isNaN(subId) && subId > maxSubId) maxSubId = subId;
+        }
+      });
+      const newItemId = `${cat.id}.${maxSubId + 1}`;
+
       return {
         ...cat,
         items: [...cat.items, { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 }]
@@ -612,33 +636,36 @@ export default function App() {
               หน้า 0.1: DASHBOARD
           ========================================== */}
           {activeTab === 'dashboard' && (
-            <Dashboard 
-              projectInfo={projectInfo}
-              handleProjectInfoChange={handleProjectInfoChange}
-              resetProject={resetProject}
-              importProjectFromJSON={importProjectFromJSON}
-              exportProjectToJSON={exportProjectToJSON}
-              formatNum={formatNum}
-              grandTotal={grandTotal}
-              costPerSqm={costPerSqm}
-              profitMargin={profitMargin}
-              overheadProfit={overheadProfit}
-              matPercent={matPercent}
-              laborPercent={laborPercent}
-              grandTotalMaterial={grandTotalMaterial}
-              grandTotalLabor={grandTotalLabor}
-              sortedCategories={sortedCategories}
-              subTotal={subTotal}
-              maxCategoryTotal={maxCategoryTotal}
-            />
+            <div className="transform scale-110 origin-top mt-4 mb-24 flex justify-center w-full">
+              <Dashboard 
+                projectInfo={projectInfo}
+                handleProjectInfoChange={handleProjectInfoChange}
+                resetProject={resetProject}
+                importProjectFromJSON={importProjectFromJSON}
+                exportProjectToJSON={exportProjectToJSON}
+                formatNum={formatNum}
+                grandTotal={grandTotal}
+                costPerSqm={costPerSqm}
+                profitMargin={profitMargin}
+                overheadProfit={overheadProfit}
+                matPercent={matPercent}
+                laborPercent={laborPercent}
+                grandTotalMaterial={grandTotalMaterial}
+                grandTotalLabor={grandTotalLabor}
+                sortedCategories={sortedCategories}
+                subTotal={subTotal}
+                maxCategoryTotal={maxCategoryTotal}
+              />
+            </div>
           )}
 
           {/* =========================================
               หน้า 0.1.5: RECHECK FORMULAS & ADVANCED PARAMS
           ========================================== */}
           {activeTab === 'recheck' && (
-            <div className="w-[210mm] bg-white rounded shadow-xl border border-gray-300 p-6 text-gray-800 no-print print:hidden font-smk mx-auto">
-              <div className="border-b border-gray-300 pb-4 mb-4">
+            <div className="transform scale-110 origin-top mt-4 mb-24 flex justify-center w-full">
+              <div className="w-[210mm] bg-white rounded shadow-xl border border-gray-300 p-6 text-gray-800 no-print print:hidden font-smk">
+                <div className="border-b border-gray-300 pb-4 mb-4">
                 <h2 className="text-xl font-extrabold text-gray-900">🔍 รีเช็คสูตร & ตัวแปรเชิงลึก (Formula & Parameters)</h2>
                 <p className="text-gray-600 text-[12px] mt-0.5 font-bold">ทดสอบสูตรการคำนวณและกำหนดค่าตัวแปรโครงสร้างที่ใช้ในสูตรอัตโนมัติ (Advanced Variables)</p>
               </div>
@@ -729,6 +756,7 @@ export default function App() {
                         <li><b className="text-blue-700">DB20/DB16</b> = คาน * 6 * ค่าสัมประสิทธิ์</li>
                     </ul>
                   </div>
+              </div>
               </div>
             </div>
           )}

@@ -144,7 +144,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="bg-white rounded p-5 border border-gray-200 h-[240px] overflow-y-auto no-scrollbar">
+      <div className="bg-white rounded p-5 border border-gray-200 h-[280px] overflow-y-auto no-scrollbar">
           <h3 className="text-sm font-bold text-gray-800 mb-4 sticky top-0 bg-white z-10 pb-2 border-b border-gray-100">
              หมวดงานที่ใช้งบสูงสุด
           </h3>

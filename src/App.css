@@ -7,6 +7,13 @@
   border: 2px solid transparent;
   transition: border-color 0.3s;
   margin-bottom: 24px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
 
   &:hover {
     border-color: var(--accent-border);
@@ -15,6 +22,13 @@
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .hero {
@@ -54,6 +68,10 @@
     transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
       scale(0.8);
   }
+h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 #center {
@@ -68,12 +86,21 @@
     padding: 32px 20px 24px;
     gap: 18px;
   }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
 }
 
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
   text-align: left;
+  vertical-align: middle;
+}
 
   & > div {
     flex: 1 1 0;
@@ -82,17 +109,31 @@
       padding: 24px 20px;
     }
   }
+th {
+  background-color: #f2f2f2;
+  font-weight: 600;
+}
 
   .icon {
     margin-bottom: 16px;
     width: 22px;
     height: 22px;
   }
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
 
   @media (max-width: 1024px) {
     flex-direction: column;
     text-align: center;
   }
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box; /* Important */
 }
 
 #docs {
@@ -102,6 +143,13 @@
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
+.add-btn, .delete-btn {
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
 }
 
 #next-steps ul {
@@ -151,6 +199,9 @@
       box-sizing: border-box;
     }
   }
+.add-btn {
+  background-color: #28a745;
+  color: white;
 }
 
 #spacer {
@@ -159,6 +210,9 @@
   @media (max-width: 1024px) {
     height: 48px;
   }
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
 }
 
 .ticks {
@@ -181,4 +235,6 @@
     right: 0;
     border-right-color: var(--border);
   }
+.add-btn:active, .delete-btn:active {
+    transform: scale(0.98);
 }
