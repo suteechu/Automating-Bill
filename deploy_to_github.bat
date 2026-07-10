@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 >nul
+setlocal enabledelayedexpansion
 
 :: ===================================================
 :: ⚙️      ตัวแปรสำหรับตั้งค่า (Structural Variables)
@@ -27,17 +28,40 @@ if not exist .git (
 :: 📝 ตรวจสอบว่ามีไฟล์ให้ Commit หรือไม่
 set "HAS_CHANGES="
 for /f "delims=" %%i in ('git status --porcelain') do set HAS_CHANGES=1
+
+:: ตรวจสอบเพิ่มเติมว่ามี commit ที่ยังไม่ได้ push หรือไม่ (กรณีแก้ conflict แล้วรันสคริปต์อีกครั้ง)
 if not defined HAS_CHANGES (
-    echo [Info] ไม่มีไฟล์ไหนถูกแก้ไข [โค้ดปัจจุบันอัปเดตล่าสุดอยู่แล้วครับ]
+    git fetch origin %BRANCH_NAME% >nul 2>&1
+    for /f "delims=" %%i in ('git log origin/%BRANCH_NAME%..HEAD') do (
+        echo [Info] พบ Commit ที่ยังไม่ได้ Push, กำลังจะ Push โค้ดขึ้น GitHub...
+        set "SKIP_TO_PUSH=1"
+        set "HAS_CHANGES=1"
+    )
+)
+
+if not defined HAS_CHANGES (
+    echo [Info] ไม่มีไฟล์ที่ต้อง Commit หรือ Push [โค้ดปัจจุบันอัปเดตล่าสุดอยู่แล้วครับ]
     echo.
     pause
     exit /b
 )
 
+:: ถ้ามีแค่ commit ที่รอ push ให้ข้ามไปขั้นตอน push เลย
+if defined SKIP_TO_PUSH goto push_code
+
 :: 💬 รับข้อความ Commit จากผู้ใช้
 set "COMMIT_MSG="
 set /p COMMIT_MSG="Enter commit message [กด Enter เพื่อใช้ข้อความอัตโนมัติ]: "
-if not defined COMMIT_MSG set "COMMIT_MSG=Auto-update: %date% %time%"
+if not defined COMMIT_MSG (
+    for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set "dt=%%I"
+    set "YYYY=!dt:~0,4!"
+    set "MM=!dt:~4,2!"
+    set "DD=!dt:~6,2!"
+    set "HH=!dt:~8,2!"
+    set "MIN=!dt:~10,2!"
+    set "SEC=!dt:~12,2!"
+    set "COMMIT_MSG=Auto-update: !YYYY!-!MM!-!DD! !HH!:!MIN!:!SEC!"
+)
 
 :: ▶️ รันคำสั่ง Git
 echo.
@@ -63,6 +87,7 @@ if %errorlevel% neq 0 (
     exit /b
 )
 
+:push_code
 echo [Step 4/5] Pushing source code to GitHub...
 git push origin HEAD
 
