@@ -4,8 +4,8 @@ import CategoryDetail from './CategoryDetail';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import MasterBom from './MasterBom';
-import { initialCategories, emptyProjectInfo } from './constants';
-import { THBText, sanitizeCategories, calculateAutoFillQty } from './utils';
+import { initialCategories, emptyProjectInfo, variableGroups } from './constants';
+import { THBText, sanitizeCategories, calculateAutoFillQty, getQtyRules } from './utils';
 import defaultData from './default_data.json';
 
 // ฟังก์ชันสำหรับแปลง ID เก่าที่ค้างในระบบ (item_...) ให้กลายเป็นเลขลำดับ (เช่น 1.1, 1.2) อัตโนมัติ
@@ -199,13 +199,13 @@ export default function App() {
             const category = categoryMap.get(String(bomItem.catId));
             if (category) {
                 // Calculate quantity based on the project info we just set
-                const autoQty = calculateAutoFillQty(bomItem.name, bomItem.unit, bomItem.catId, infoToUse);
+                const { value: autoQty } = calculateAutoFillQty(bomItem.name, bomItem.unit, bomItem.catId, infoToUse);
 
                 const newItem = {
                     id: `bom_${bomItem.id}`, // Temporary ID for fixOldIds to replace
                     name: bomItem.name || '', unit: bomItem.unit || '',
                     matPrice: bomItem.matPrice || 0, laborPrice: bomItem.laborPrice || 0,
-                    qty: autoQty !== null ? autoQty : 1, // Default to 1 if no formula applies
+                    qty: autoQty !== null ? autoQty : 1,
                     bomId: bomItem.id,
                 };
                 category.items.push(newItem);
@@ -420,7 +420,7 @@ export default function App() {
         ...cat,
         items: cat.items.map(item => {
           if (item.id !== itemId) return item;
-          const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+          const { value: autoQty } = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
           return { 
             ...item, 
             bomId: bom.id,
@@ -428,7 +428,7 @@ export default function App() {
             unit: bom.unit || '', 
             matPrice: bom.matPrice || 0, 
             laborPrice: bom.laborPrice || 0,
-            qty: autoQty !== null ? autoQty : item.qty 
+            qty: autoQty !== null ? autoQty : item.qty
           };
         })
       };
@@ -452,7 +452,7 @@ export default function App() {
             return item;
           }
 
-          const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+          const { value: autoQty } = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
 
           return {
             ...item,
@@ -480,7 +480,7 @@ export default function App() {
         
         if (!bom) return item; 
         
-        const autoQty = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
+        const { value: autoQty } = calculateAutoFillQty(bom.name, bom.unit, cat.id, projectInfo);
         
         return {
           ...item,
@@ -590,6 +590,9 @@ export default function App() {
   
   const sortedCategories = [...summaryRows].sort((a, b) => b.total - a.total);
   const maxCategoryTotal = sortedCategories[0]?.total || 1;
+
+  const liveQtyRules = getQtyRules(projectInfo);
+  const simResult = calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo);
 
   const groupedMasterBom = masterBom.reduce((acc, item) => {
     const cat = item.catId ? item.catId.toString().trim() : '';
@@ -756,45 +759,40 @@ export default function App() {
 
                     <div className="mt-auto bg-white p-4 rounded border border-purple-200 text-center shadow-inner">
                       <p className="text-[11px] font-bold text-gray-500 mb-1">ปริมาณที่ระบบจะใส่ให้อัตโนมัติ (Qty)</p>
-                      <div className="text-3xl font-extrabold text-purple-700">
-                          {calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo) !== null
-                            ? calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo)
+                      <div className="text-3xl font-extrabold text-purple-700 h-10 flex items-center justify-center">
+                          {simResult.value !== null
+                            ? simResult.value
                             : <span className="text-gray-300 text-lg">ไม่เข้าเงื่อนไขสูตร</span>}
                       </div>
+                      {simResult.matchedRule && (
+                        <div className="text-[10px] text-purple-600 mt-1.5 font-bold bg-purple-100 px-2 py-1 rounded">
+                            <b>Rule:</b> {simResult.matchedRule.description}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* Section 2: Advanced Variables */}
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
                     📐 ตัวแปรโครงสร้างที่ใช้คำนวณ (Structural Variables)
                   </h3>
-                  <div className="grid grid-cols-1 gap-y-2 text-[12px] h-[220px] overflow-y-auto no-scrollbar pr-2">
-                    {[
-                      { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)' },
-                      { key: 'bathroomArea', label: 'พื้นที่ห้องน้ำรวม (ตร.ม.)' },
-                      { key: 'bedroomArea', label: 'พื้นที่ห้องนอนรวม (ตร.ม.)' },
-                      { key: 'kitchenArea', label: 'พื้นที่ห้องครัว (ตร.ม.)' },
-                      { key: 'perimeter', label: 'ความยาวเส้นรอบรูปอาคาร (ม.)' },
-                      { key: 'beamLength', label: 'ความยาวคานรวม (ม.)' },
-                      { key: 'aseLength', label: 'ความยาวอะเส (ม.)' },
-                      { key: 'rafterLength', label: 'ความยาวจันทัน (ม.)' },
-                      { key: 'purlinLength', label: 'ความยาวแป (ม.)' },
-                      { key: 'foundationCount', label: 'จำนวนฐานราก (หลุม)' },
-                      { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)' },
-                      { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)' },
-                      { key: 'totalWallVolume', label: 'ปริมาตรผนังรวม (ลบ.ม.)' },
-                      { key: 'parkingArea', label: 'พื้นที่จอดรถ (ตร.ม.)' },
-                    ].map(field => (
-                      <div key={field.key} className="flex justify-between items-center border-b border-gray-200 pb-1">
-                        <span className="text-gray-600 font-bold">{field.label}:</span>
-                        <input 
-                          type="number" 
-                          value={projectInfo[field.key] || ''} 
-                          onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
-                          className="w-20 text-right border border-gray-300 rounded px-1 py-0.5 outline-none focus:border-blue-500 font-bold bg-white" 
-                        />
+                  <div className="text-[12px] h-[225px] overflow-y-auto no-scrollbar pr-2">
+                    {variableGroups.map(group => (
+                      <div key={group.title} className="mb-2">
+                        <h4 className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider mb-1.5 mt-2">{group.title}</h4>
+                        {group.fields.map(field => (
+                          <div key={field.key} className="flex justify-between items-center border-b border-gray-200 py-1">
+                            <span className="text-gray-600 font-bold">{field.label}:</span>
+                            <input 
+                              type="number" 
+                              value={projectInfo[field.key] || ''} 
+                              onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
+                              className="w-20 text-right border border-gray-300 rounded px-1 py-0.5 outline-none focus:border-blue-500 font-bold bg-white" 
+                            />
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
@@ -802,24 +800,21 @@ export default function App() {
               </div>
 
               {/* Section 3: Dictionary */}
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <h3 className="text-sm font-bold text-blue-800 mb-3">📖 พจนานุกรมคำค้นหา (Keyword Dictionary) ตัวอย่าง</h3>
-                  <div className="grid grid-cols-3 gap-4 text-[11px]">
-                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
-                        <li><b className="text-blue-700">ลวดผูกเหล็ก</b> = พท.ใช้สอย * 0.22</li>
-                        <li><b className="text-blue-700">ตะปู</b> = พท.ใช้สอย * 0.15</li>
-                        <li><b className="text-blue-700">กระเบื้องซีแพค</b> = พท.หลังคา * 11</li>
-                    </ul>
-                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
-                        <li><b className="text-blue-700">บล็อกแอร์</b> = ห้องนอน + 1</li>
-                        <li><b className="text-blue-700">ดาวน์ไลท์</b> = ห้องนอน * 4</li>
-                        <li><b className="text-blue-700">ประตูภายใน</b> = จำนวนห้องนอน</li>
-                    </ul>
-                    <ul className="list-disc pl-4 text-gray-700 space-y-1">
-                        <li><b className="text-blue-700">ปูนก่อ/ฉาบ</b> = คำนวณจากปริมาตร/พื้นที่ผนัง</li>
-                        <li><b className="text-blue-700">สีทาภายใน</b> = พื้นที่ผนังภายใน</li>
-                        <li><b className="text-blue-700">DB20/DB16</b> = คาน * 6 * ค่าสัมประสิทธิ์</li>
-                    </ul>
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <h3 className="text-sm font-bold text-green-800 mb-3">📖 พจนานุกรมสูตรคำนวณอัตโนมัติ (Live Rules)</h3>
+                  <div className="grid grid-cols-3 gap-x-6 gap-y-1.5 text-[10px] h-[90px] overflow-y-auto no-scrollbar pr-2">
+                    {liveQtyRules.map((rule, index) => (
+                      <div key={index} className="flex items-start bg-white/50 p-1 rounded border border-green-100">
+                        <div className="flex-1">
+                          <p className="font-bold text-green-800 truncate" title={rule.keywords.join(', ')}>
+                            {rule.keywords.join(', ') || '(เงื่อนไขพิเศษ)'}
+                          </p>
+                          <p className="text-gray-600 font-medium">
+                            {`↳ ${rule.description || 'สูตรกำหนดเอง'}`}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
               </div>
               </div>
@@ -866,23 +861,33 @@ export default function App() {
           {/* =========================================
               หน้า 2-N: หน้ารายละเอียด (BREAKDOWN)
           ========================================== */}
-          {categories.map((cat, index) => (
-            <CategoryDetail
-              key={cat.id}
-              cat={cat}
-              index={index}
-              activeTab={activeTab}
-              categoriesLength={categories.length}
-              projectInfo={projectInfo}
-              getCategoryTotals={getCategoryTotals}
-              masterBom={masterBom}
-              formatNum={formatNum}
-              handleRemoveItem={handleRemoveItem}
-              handleItemChange={handleItemChange}
-              applyBomToItem={applyBomToItem}
-              handleAddItem={handleAddItem}
-            />
-          ))}
+          {categories.map((cat, index) => {
+            // เพิ่มเลขลำดับที่ถูกต้องเข้าไปในแต่ละ item ก่อนส่งไปแสดงผล
+            const categoryWithNumberedItems = {
+              ...cat,
+              items: cat.items.map((item, itemIndex) => ({
+                ...item,
+                displayNumber: itemIndex + 1,
+              })),
+            };
+            return (
+              <CategoryDetail
+                key={cat.id}
+                cat={categoryWithNumberedItems}
+                index={index}
+                activeTab={activeTab}
+                categoriesLength={categories.length}
+                projectInfo={projectInfo}
+                getCategoryTotals={getCategoryTotals}
+                masterBom={masterBom}
+                formatNum={formatNum}
+                handleRemoveItem={handleRemoveItem}
+                handleItemChange={handleItemChange}
+                applyBomToItem={applyBomToItem}
+                handleAddItem={handleAddItem}
+              />
+            );
+          })}
 
         </div>
       </main>

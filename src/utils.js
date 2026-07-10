@@ -77,7 +77,7 @@ export const sanitizeCategories = (cats) => {
 // ==============================================================
 
 // Data-Driven Rules Engine for Quantity Calculation
-const getQtyRules = (projectInfo) => {
+export const getQtyRules = (projectInfo) => {
   const getVal = (field) => parseFloat(projectInfo[field]) || 0;
   const totalArea = getVal('area');
   const roofArea = getVal('roofArea');
@@ -104,72 +104,72 @@ const getQtyRules = (projectInfo) => {
 
   return [
     // Roof Structure
-    { keywords: ['อเส', 'อกไก่', 'ดั้ง'], calculation: () => aseL > 0 ? Math.ceil(aseL / 6) : null, exclude: ['ทาสี', 'แผ่นปิดกันนก'] },
-    { keywords: ['จันทัน'], calculation: () => rafterL > 0 ? Math.ceil(rafterL / 6) : null, exclude: ['ทาสี'] },
-    { keywords: ['แป'], calculation: () => purlinL > 0 ? Math.ceil(purlinL / 6) : null, exclude: ['ทาสี', 'แปลง'] },
+    { description: "ความยาวอะเส / 6 (ท่อน)", keywords: ['อเส', 'อกไก่', 'ดั้ง'], calculation: () => aseL > 0 ? Math.ceil(aseL / 6) : null, exclude: ['ทาสี', 'แผ่นปิดกันนก'] },
+    { description: "ความยาวจันทัน / 6 (ท่อน)", keywords: ['จันทัน'], calculation: () => rafterL > 0 ? Math.ceil(rafterL / 6) : null, exclude: ['ทาสี'] },
+    { description: "ความยาวแป / 6 (ท่อน)", keywords: ['แป'], calculation: () => purlinL > 0 ? Math.ceil(purlinL / 6) : null, exclude: ['ทาสี', 'แปลง'] },
 
     // Roof Area
-    { keywords: ['ค่าแรงประกอบโครงหลังคา', 'ค่าแรงมุงกระเบื้อง', 'มุงเมทัลชีท', 'วัสดุสิ้นเปลืองลวดเชื่อม', 'ทาสีเหล็กโครงสร้าง', 'แผ่นหลังคาเมทัลชีท', 'ค่าแรงมุงหลังคา'], calculation: () => Math.ceil(roofArea) },
-    { keywords: ['สกรูยิงเมทัลชีท'], calculation: () => Math.ceil((roofArea * 5) / 100) },
-    { keywords: ['แผ่นสะท้อนความร้อน'], calculation: () => Math.ceil(roofArea * 0.0133) },
-    { keywords: ['กระเบื้องซีแพค'], calculation: () => Math.ceil(roofArea * 11) },
-    { keywords: ['สกรูยึดกระเบื้อง'], calculation: () => Math.ceil((roofArea * 11 * 2.2) / 250) },
+    { description: "พื้นที่หลังคา (ตร.ม.)", keywords: ['ค่าแรงประกอบโครงหลังคา', 'ค่าแรงมุงกระเบื้อง', 'มุงเมทัลชีท', 'วัสดุสิ้นเปลืองลวดเชื่อม', 'ทาสีเหล็กโครงสร้าง', 'แผ่นหลังคาเมทัลชีท', 'ค่าแรงมุงหลังคา'], calculation: () => Math.ceil(roofArea) },
+    { description: "พท.หลังคา * 5 / 100 (กล่อง)", keywords: ['สกรูยิงเมทัลชีท'], calculation: () => Math.ceil((roofArea * 5) / 100) },
+    { description: "พท.หลังคา * 0.0133 (ม้วน)", keywords: ['แผ่นสะท้อนความร้อน'], calculation: () => Math.ceil(roofArea * 0.0133) },
+    { description: "พท.หลังคา * 11 (แผ่น)", keywords: ['กระเบื้องซีแพค'], calculation: () => Math.ceil(roofArea * 11) },
+    { description: "พท.หลังคา * 11 * 2.2 / 250 (กล่อง)", keywords: ['สกรูยึดกระเบื้อง'], calculation: () => Math.ceil((roofArea * 11 * 2.2) / 250) },
 
     // Sanitary (catId: 11)
-    { catId: '11', keywords: ['fd', 'น้ำทิ้ง'], calculation: () => Math.ceil(bathrooms * 2) },
-    { catId: '11', keywords: [], calculation: () => Math.ceil(bathrooms) },
+    { description: "จำนวนห้องน้ำ * 2 (จุด)", catId: '11', keywords: ['fd', 'น้ำทิ้ง'], calculation: () => Math.ceil(bathrooms * 2) },
+    { description: "จำนวนห้องน้ำ (ชุด)", catId: '11', keywords: [], calculation: () => Math.ceil(bathrooms) },
 
     // Ceiling
-    { keywords: ['ฉาบเรียบ', 'c-line'], exclude: ['ทนชื้น'], calculation: () => Math.ceil(normalCeilingArea) },
-    { keywords: ['ทนชื้น'], calculation: () => Math.ceil(bathArea) },
+    { description: "พท.ใช้สอย - พท.ห้องน้ำ", keywords: ['ฉาบเรียบ', 'c-line'], exclude: ['ทนชื้น'], calculation: () => Math.ceil(normalCeilingArea) },
+    { description: "พื้นที่ห้องน้ำรวม (ตร.ม.)", keywords: ['ทนชื้น'], calculation: () => Math.ceil(bathArea) },
 
     // Total Area
-    { keywords: ['ดินขุด', 'ดินถม', 'ทรายหยาบ', 'คอนกรีตหยาบ', 'แบบหล่อคอนกรีต', 'wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก', 'กำจัดปลวก'], calculation: () => Math.ceil(totalArea) },
-    { keywords: ['ลวดผูกเหล็ก'], calculation: () => Math.ceil(totalArea * 0.22) },
-    { keywords: ['ตะปู'], calculation: () => Math.ceil(totalArea * 0.15) },
-    { keywords: ['วัสดุสิ้นเปลือง'], exclude: ['หลังคา'], calculation: () => Math.ceil(totalArea) },
-    { keywords: ['แผ่นพื้นสำเร็จ'], calculation: () => Math.ceil(Math.max(0, totalArea - bathArea)) },
+    { description: "พื้นที่ใช้สอยรวม (ตร.ม.)", keywords: ['ดินขุด', 'ดินถม', 'ทรายหยาบ', 'คอนกรีตหยาบ', 'แบบหล่อคอนกรีต', 'wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก', 'กำจัดปลวก'], calculation: () => Math.ceil(totalArea) },
+    { description: "พท.ใช้สอย * 0.22 (กก.)", keywords: ['ลวดผูกเหล็ก'], calculation: () => Math.ceil(totalArea * 0.22) },
+    { description: "พท.ใช้สอย * 0.15 (กก.)", keywords: ['ตะปู'], calculation: () => Math.ceil(totalArea * 0.15) },
+    { description: "พื้นที่ใช้สอยรวม (ตร.ม.)", keywords: ['วัสดุสิ้นเปลือง'], exclude: ['หลังคา'], calculation: () => Math.ceil(totalArea) },
+    { description: "พท.ใช้สอย - พท.ห้องน้ำ", keywords: ['แผ่นพื้นสำเร็จ'], calculation: () => Math.ceil(Math.max(0, totalArea - bathArea)) },
 
     // Wall, Paint, Plaster
-    { keywords: ['สีทารองพื้น', 'สีรองพื้น'], calculation: () => Math.ceil((intWallArea + extWallArea) / 2) },
-    { keywords: ['สีทาภายใน'], calculation: () => Math.ceil(intWallArea) },
-    { keywords: ['สีทาภายนอก'], calculation: () => Math.ceil(extWallArea) },
+    { description: "(พท.ผนังใน+นอก) / 2", keywords: ['สีทารองพื้น', 'สีรองพื้น'], calculation: () => Math.ceil((intWallArea + extWallArea) / 2) },
+    { description: "พื้นที่ผนังภายใน (ตร.ม.)", keywords: ['สีทาภายใน'], calculation: () => Math.ceil(intWallArea) },
+    { description: "พื้นที่ผนังภายนอก (ตร.ม.)", keywords: ['สีทาภายนอก'], calculation: () => Math.ceil(extWallArea) },
     // ... (More complex wall/plaster rules can be added here)
 
     // Flooring
-    { keywords: ['ลามิเนต'], calculation: () => Math.ceil(bedroomArea) },
-    { keywords: ['แกรนิตโต้'], calculation: () => Math.ceil(Math.max(0, totalArea - (bedroomArea + bathArea + kitchenArea + balconyArea + washingArea))) },
-    { keywords: ['เซรามิค'], unitKeywords: ['16', '40'], calculation: () => Math.ceil(kitchenArea + balconyArea + washingArea) },
-    { keywords: ['เซรามิค'], unitKeywords: ['12', '30'], calculation: () => Math.ceil(bathArea) },
-    { keywords: ['ขัดมัน', 'ขัดหยาบ', 'ฝ้าชายคา', 'สมาร์ทบอร์ดเซาะร่อง'], calculation: () => Math.ceil(perimeter * 1.18) },
+    { description: "พื้นที่ห้องนอนรวม (ตร.ม.)", keywords: ['ลามิเนต'], calculation: () => Math.ceil(bedroomArea) },
+    { description: "พท.โถงและอื่นๆ", keywords: ['แกรนิตโต้'], calculation: () => Math.ceil(Math.max(0, totalArea - (bedroomArea + bathArea + kitchenArea + balconyArea + washingArea))) },
+    { description: "พท.ครัว+ระเบียง+ซักล้าง", keywords: ['เซรามิค'], unitKeywords: ['16', '40'], calculation: () => Math.ceil(kitchenArea + balconyArea + washingArea) },
+    { description: "พื้นที่ห้องน้ำรวม (ตร.ม.)", keywords: ['เซรามิค'], unitKeywords: ['12', '30'], calculation: () => Math.ceil(bathArea) },
+    { description: "เส้นรอบรูป * 1.18", keywords: ['ขัดมัน', 'ขัดหยาบ', 'ฝ้าชายคา', 'สมาร์ทบอร์ดเซาะร่อง'], calculation: () => Math.ceil(perimeter * 1.18) },
 
     // Beam Steel
-    { keywords: ['db20'], calculation: () => Math.ceil(beamL * 6 * 2.466) },
-    { keywords: ['db16'], calculation: () => Math.ceil(beamL * 6 * 1.578) },
-    { keywords: ['db12'], calculation: () => Math.ceil(beamL * 6 * 0.888) },
-    { keywords: ['rb9'], calculation: () => Math.ceil(beamL * 6 * 0.499) },
-    { keywords: ['rb6'], calculation: () => Math.ceil(beamL * 6 * 0.222) },
+    { description: "ความยาวคาน * 6 * 2.466 (กก.)", keywords: ['db20'], calculation: () => Math.ceil(beamL * 6 * 2.466) },
+    { description: "ความยาวคาน * 6 * 1.578 (กก.)", keywords: ['db16'], calculation: () => Math.ceil(beamL * 6 * 1.578) },
+    { description: "ความยาวคาน * 6 * 0.888 (กก.)", keywords: ['db12'], calculation: () => Math.ceil(beamL * 6 * 0.888) },
+    { description: "ความยาวคาน * 6 * 0.499 (กก.)", keywords: ['rb9'], calculation: () => Math.ceil(beamL * 6 * 0.499) },
+    { description: "ความยาวคาน * 6 * 0.222 (กก.)", keywords: ['rb6'], calculation: () => Math.ceil(beamL * 6 * 0.222) },
 
     // Fascia
-    { keywords: ['แผ่นปิดกันนก', 'ไม้เชิงชาย', 'scgfascia', 'ครอบข้างเมทัลชีท'], calculation: () => Math.ceil(fasciaLength) },
+    { description: "ความยาวเชิงชาย (ม.)", keywords: ['แผ่นปิดกันนก', 'ไม้เชิงชาย', 'scgfascia', 'ครอบข้างเมทัลชีท'], calculation: () => Math.ceil(fasciaLength) },
 
     // Foundation
-    { keywords: ['เสาเข็มไอ', 'ฐานรากแผ่', 'สกัดหัวเข็ม', 'ขุดหลุมฐานราก'], calculation: () => Math.ceil(foundationCount) },
+    { description: "จำนวนฐานราก (หลุม)", keywords: ['เสาเข็มไอ', 'ฐานรากแผ่', 'สกัดหัวเข็ม', 'ขุดหลุมฐานราก'], calculation: () => Math.ceil(foundationCount) },
 
     // Electrical & Doors & Windows
-    { keywords: ['บล็อกเครื่องทำน้ำอุ่น'], calculation: () => Math.ceil(bathrooms) },
-    { keywords: ['บล็อกแอร์', 'โคมซาลาเปา'], calculation: () => Math.ceil(bedrooms + 1) },
-    { keywords: ['ดาวไลท์', 'ดาวน์ไลท์'], calculation: () => Math.ceil(bedrooms * 4) },
-    { keywords: ['ไฟกิ่งหน้าบ้าน', 'ไฟกิ่ง'], calculation: () => Math.ceil(bedrooms) },
-    { keywords: ['บล็อกปลั๊ก', 'เต้ารับคู่', 'บล็อกสวิทช์', 'สวิทช์ทางเดียว', 'สวิตช์'], calculation: () => Math.ceil(bedrooms * 6) },
-    { keywords: ['ประตูห้องน้ำ'], calculation: () => Math.ceil(bathrooms) },
-    { keywords: ['ประตูภายใน'], calculation: () => Math.ceil(bedrooms) },
-    { keywords: ['หน้าต่างบานกระทุ้ง'], calculation: () => Math.ceil(bathrooms) },
+    { description: "จำนวนห้องน้ำ (จุด)", keywords: ['บล็อกเครื่องทำน้ำอุ่น'], calculation: () => Math.ceil(bathrooms) },
+    { description: "จำนวนห้องนอน + 1 (จุด)", keywords: ['บล็อกแอร์', 'โคมซาลาเปา'], calculation: () => Math.ceil(bedrooms + 1) },
+    { description: "จำนวนห้องนอน * 4 (จุด)", keywords: ['ดาวไลท์', 'ดาวน์ไลท์'], calculation: () => Math.ceil(bedrooms * 4) },
+    { description: "จำนวนห้องนอน (จุด)", keywords: ['ไฟกิ่งหน้าบ้าน', 'ไฟกิ่ง'], calculation: () => Math.ceil(bedrooms) },
+    { description: "จำนวนห้องนอน * 6 (จุด)", keywords: ['บล็อกปลั๊ก', 'เต้ารับคู่', 'บล็อกสวิทช์', 'สวิทช์ทางเดียว', 'สวิตช์'], calculation: () => Math.ceil(bedrooms * 6) },
+    { description: "จำนวนห้องน้ำ (บาน)", keywords: ['ประตูห้องน้ำ'], calculation: () => Math.ceil(bathrooms) },
+    { description: "จำนวนห้องนอน (บาน)", keywords: ['ประตูภายใน'], calculation: () => Math.ceil(bedrooms) },
+    { description: "จำนวนห้องน้ำ (บาน)", keywords: ['หน้าต่างบานกระทุ้ง'], calculation: () => Math.ceil(bathrooms) },
   ];
 };
 
 export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => {
-  if (!itemName) return null;
+  if (!itemName) return { value: null, matchedRule: null };
   const nameLower = itemName.toString().toLowerCase();
   const unitLower = (itemUnit || '').toString().toLowerCase().replace(/\s+/g, '');
   const rules = getQtyRules(projectInfo);
@@ -181,9 +181,10 @@ export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => 
     const excludeMatch = !rule.exclude || !rule.exclude.some(kw => nameLower.includes(kw));
 
     if (nameMatch && unitMatch && catMatch && excludeMatch) {
-      return rule.calculation();
+      const value = rule.calculation();
+      return { value, matchedRule: rule };
     }
   }
 
-  return null; 
+  return { value: null, matchedRule: null }; 
 };

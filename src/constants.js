@@ -112,6 +112,42 @@ export const initialCategories = [
   },
 ];
 
+export const variableGroups = [
+    {
+        title: 'ข้อมูลทั่วไป & พื้นที่',
+        fields: [
+            { key: 'area', label: 'พื้นที่ใช้สอยรวม (ตร.ม.)' },
+            { key: 'bedrooms', label: 'จำนวนห้องนอน (ห้อง)' },
+            { key: 'bathrooms', label: 'จำนวนห้องน้ำ (ห้อง)' },
+            { key: 'bedroomArea', label: 'พื้นที่ห้องนอนรวม (ตร.ม.)' },
+            { key: 'bathroomArea', label: 'พื้นที่ห้องน้ำรวม (ตร.ม.)' },
+            { key: 'kitchenArea', label: 'พื้นที่ห้องครัว (ตร.ม.)' },
+        ]
+    },
+    {
+        title: 'งานหลังคาและโครงสร้าง',
+        fields: [
+            { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)' },
+            { key: 'fasciaLength', label: 'ความยาวเชิงชาย (ม.)' },
+            { key: 'aseLength', label: 'ความยาวอะเส (ม.)' },
+            { key: 'rafterLength', label: 'ความยาวจันทัน (ม.)' },
+            { key: 'purlinLength', label: 'ความยาวแป (ม.)' },
+            { key: 'beamLength', label: 'ความยาวคานรวม (ม.)' },
+            { key: 'foundationCount', label: 'จำนวนฐานราก (หลุม)' },
+        ]
+    },
+    {
+        title: 'งานผนังและอื่นๆ',
+        fields: [
+            { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)' },
+            { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)' },
+            { key: 'totalWallVolume', label: 'ปริมาตรผนังรวม (ลบ.ม.)' },
+            { key: 'perimeter', label: 'ความยาวเส้นรอบรูปอาคาร (ม.)' },
+            { key: 'parkingArea', label: 'พื้นที่จอดรถ (ตร.ม.)' },
+        ]
+    }
+];
+
 export const emptyProjectInfo = {
   name: '',
   floors: 'บ้านพักอาศัยชั้นเดียว',

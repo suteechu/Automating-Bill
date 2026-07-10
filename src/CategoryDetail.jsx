@@ -59,7 +59,7 @@ export default function CategoryDetail({
                 <tr key={item.id} className="group hover:bg-blue-50/50">
                   <td className="py-1.5 px-1 border border-blue-custom text-center font-bold text-gray-700 relative">
                     <button onClick={() => handleRemoveItem(cat.id, item.id)} className="absolute -left-5 top-1.5 text-red-500 hover:text-white bg-red-100 hover:bg-red-500 rounded px-1 text-[10px] opacity-0 group-hover:opacity-100 transition-all no-print" title="ลบรายการนี้">✕</button>
-                    {item.id}
+                    {item.displayNumber}
                   </td>
                   <td className="py-1.5 px-1 border border-blue-custom relative">
                     <div className="flex items-center gap-1">
