@@ -138,6 +138,7 @@ export const emptyProjectInfo = {
   intWallArea: '', 
   extWallArea: '', 
   totalWallVolume: '',
+  parkingArea: '',
   estimator: '',
   projectNo: '',
   date: ''

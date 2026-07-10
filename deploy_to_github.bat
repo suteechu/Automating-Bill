@@ -75,7 +75,7 @@ git commit -m "%COMMIT_MSG%"
 git branch -M %BRANCH_NAME%
 
 echo [Step 3/5] Pulling latest code from GitHub...
-git pull origin %BRANCH_NAME% --no-edit --allow-unrelated-histories
+git pull origin %BRANCH_NAME% --no-edit
 
 :: ❗ ตรวจสอบว่า Pull ผ่านหรือไม่ (มีปัญหา Merge Conflict หรือไม่)
 if %errorlevel% neq 0 (

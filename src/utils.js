@@ -75,15 +75,12 @@ export const sanitizeCategories = (cats) => {
 // ==============================================================
 // 📦 โมดูลส่วนกลางสำหรับคำนวณ Auto-Fill Quantity (ปัดขึ้นเป็นจำนวนเต็ม)
 // ==============================================================
-export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => {
-  if (!itemName) return null;
-  const nameLower = itemName.toString().toLowerCase();
-  const nameNoSpace = nameLower.replace(/\s+/g, '');
-  const unitLower = (itemUnit || '').toString().toLowerCase().replace(/\s+/g, '');
-  const isSqm = unitLower.includes('ตร.ม') || unitLower.includes('ตารางเมตร') || unitLower.includes('sqm') || unitLower.includes('ตรม');
 
+// Data-Driven Rules Engine for Quantity Calculation
+const getQtyRules = (projectInfo) => {
   const getVal = (field) => parseFloat(projectInfo[field]) || 0;
   const totalArea = getVal('area');
+  const roofArea = getVal('roofArea');
   const bedrooms = getVal('bedrooms');
   const bathrooms = getVal('bathrooms');
   const bathArea = getVal('bathroomArea');
@@ -100,165 +97,93 @@ export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => 
   const rafterL = getVal('rafterLength');
   const purlinL = getVal('purlinLength');
   const foundationCount = getVal('foundationCount');
+  const fasciaLength = getVal('fasciaLength');
+  const intWallArea = getVal('intWallArea');
+  const extWallArea = getVal('extWallArea');
+  const wallVolume = getVal('totalWallVolume');
 
-  // 1. งานโครงหลังคาเหล็ก (อะเส, จันทัน, แป)
-  const isSteelProfile = nameNoSpace.includes('เหล็กc') || nameNoSpace.includes('เหล็กซี') || nameNoSpace.includes('เหล็กกล่อง');
-  const isRoofStructure = nameNoSpace.includes('อเส') || nameNoSpace.includes('อะเส') || nameNoSpace.includes('จันทัน') || (nameNoSpace.includes('แป') && !nameNoSpace.includes('แปลง'));
-  
-  if ((isSteelProfile || isRoofStructure) && !nameNoSpace.includes('ทาสี') && !nameNoSpace.includes('แผ่นปิดกันนก')) {
-      if (nameNoSpace.includes('อเส') || nameNoSpace.includes('อะเส') || nameNoSpace.includes('อกไก่') || nameNoSpace.includes('ดั้ง')) {
-          return aseL > 0 ? Math.ceil(aseL / 6) : null;
-      }
-      if (nameNoSpace.includes('จันทัน')) {
-          return rafterL > 0 ? Math.ceil(rafterL / 6) : null;
-      }
-      if (nameNoSpace.includes('แป')) {
-          return purlinL > 0 ? Math.ceil(purlinL / 6) : null;
-      }
-      if (isSteelProfile) return null;
-  }
+  return [
+    // Roof Structure
+    { keywords: ['อเส', 'อกไก่', 'ดั้ง'], calculation: () => aseL > 0 ? Math.ceil(aseL / 6) : null, exclude: ['ทาสี', 'แผ่นปิดกันนก'] },
+    { keywords: ['จันทัน'], calculation: () => rafterL > 0 ? Math.ceil(rafterL / 6) : null, exclude: ['ทาสี'] },
+    { keywords: ['แป'], calculation: () => purlinL > 0 ? Math.ceil(purlinL / 6) : null, exclude: ['ทาสี', 'แปลง'] },
 
-  // 2. พื้นที่หลังคา
-  const roofKeywords = [
-    'ค่าแรงประกอบโครงหลังคาเหล็ก', 'ค่าแรงมุงกระเบื้องซีแพค', 'มุงเมทัลชีท',
-    'วัสดุสิ้นเปลืองลวดเชื่อม', 'ทาสีเหล็กโครงสร้าง',
-    'แผ่นหลังคาเมทัลชีท', 'แผ่นหลังคาเมทัสชีล', 'ค่าแรงประกอบโครงหลังคา', 'ค่าแรงมุงซีแพค',
-    'พร้อมมุงเมทัสชีล', 'ค่าแรงมุงหลังคา'
+    // Roof Area
+    { keywords: ['ค่าแรงประกอบโครงหลังคา', 'ค่าแรงมุงกระเบื้อง', 'มุงเมทัลชีท', 'วัสดุสิ้นเปลืองลวดเชื่อม', 'ทาสีเหล็กโครงสร้าง', 'แผ่นหลังคาเมทัลชีท', 'ค่าแรงมุงหลังคา'], calculation: () => Math.ceil(roofArea) },
+    { keywords: ['สกรูยิงเมทัลชีท'], calculation: () => Math.ceil((roofArea * 5) / 100) },
+    { keywords: ['แผ่นสะท้อนความร้อน'], calculation: () => Math.ceil(roofArea * 0.0133) },
+    { keywords: ['กระเบื้องซีแพค'], calculation: () => Math.ceil(roofArea * 11) },
+    { keywords: ['สกรูยึดกระเบื้อง'], calculation: () => Math.ceil((roofArea * 11 * 2.2) / 250) },
+
+    // Sanitary (catId: 11)
+    { catId: '11', keywords: ['fd', 'น้ำทิ้ง'], calculation: () => Math.ceil(bathrooms * 2) },
+    { catId: '11', keywords: [], calculation: () => Math.ceil(bathrooms) },
+
+    // Ceiling
+    { keywords: ['ฉาบเรียบ', 'c-line'], exclude: ['ทนชื้น'], calculation: () => Math.ceil(normalCeilingArea) },
+    { keywords: ['ทนชื้น'], calculation: () => Math.ceil(bathArea) },
+
+    // Total Area
+    { keywords: ['ดินขุด', 'ดินถม', 'ทรายหยาบ', 'คอนกรีตหยาบ', 'แบบหล่อคอนกรีต', 'wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก', 'กำจัดปลวก'], calculation: () => Math.ceil(totalArea) },
+    { keywords: ['ลวดผูกเหล็ก'], calculation: () => Math.ceil(totalArea * 0.22) },
+    { keywords: ['ตะปู'], calculation: () => Math.ceil(totalArea * 0.15) },
+    { keywords: ['วัสดุสิ้นเปลือง'], exclude: ['หลังคา'], calculation: () => Math.ceil(totalArea) },
+    { keywords: ['แผ่นพื้นสำเร็จ'], calculation: () => Math.ceil(Math.max(0, totalArea - bathArea)) },
+
+    // Wall, Paint, Plaster
+    { keywords: ['สีทารองพื้น', 'สีรองพื้น'], calculation: () => Math.ceil((intWallArea + extWallArea) / 2) },
+    { keywords: ['สีทาภายใน'], calculation: () => Math.ceil(intWallArea) },
+    { keywords: ['สีทาภายนอก'], calculation: () => Math.ceil(extWallArea) },
+    // ... (More complex wall/plaster rules can be added here)
+
+    // Flooring
+    { keywords: ['ลามิเนต'], calculation: () => Math.ceil(bedroomArea) },
+    { keywords: ['แกรนิตโต้'], calculation: () => Math.ceil(Math.max(0, totalArea - (bedroomArea + bathArea + kitchenArea + balconyArea + washingArea))) },
+    { keywords: ['เซรามิค'], unitKeywords: ['16', '40'], calculation: () => Math.ceil(kitchenArea + balconyArea + washingArea) },
+    { keywords: ['เซรามิค'], unitKeywords: ['12', '30'], calculation: () => Math.ceil(bathArea) },
+    { keywords: ['ขัดมัน', 'ขัดหยาบ', 'ฝ้าชายคา', 'สมาร์ทบอร์ดเซาะร่อง'], calculation: () => Math.ceil(perimeter * 1.18) },
+
+    // Beam Steel
+    { keywords: ['db20'], calculation: () => Math.ceil(beamL * 6 * 2.466) },
+    { keywords: ['db16'], calculation: () => Math.ceil(beamL * 6 * 1.578) },
+    { keywords: ['db12'], calculation: () => Math.ceil(beamL * 6 * 0.888) },
+    { keywords: ['rb9'], calculation: () => Math.ceil(beamL * 6 * 0.499) },
+    { keywords: ['rb6'], calculation: () => Math.ceil(beamL * 6 * 0.222) },
+
+    // Fascia
+    { keywords: ['แผ่นปิดกันนก', 'ไม้เชิงชาย', 'scgfascia', 'ครอบข้างเมทัลชีท'], calculation: () => Math.ceil(fasciaLength) },
+
+    // Foundation
+    { keywords: ['เสาเข็มไอ', 'ฐานรากแผ่', 'สกัดหัวเข็ม', 'ขุดหลุมฐานราก'], calculation: () => Math.ceil(foundationCount) },
+
+    // Electrical & Doors & Windows
+    { keywords: ['บล็อกเครื่องทำน้ำอุ่น'], calculation: () => Math.ceil(bathrooms) },
+    { keywords: ['บล็อกแอร์', 'โคมซาลาเปา'], calculation: () => Math.ceil(bedrooms + 1) },
+    { keywords: ['ดาวไลท์', 'ดาวน์ไลท์'], calculation: () => Math.ceil(bedrooms * 4) },
+    { keywords: ['ไฟกิ่งหน้าบ้าน', 'ไฟกิ่ง'], calculation: () => Math.ceil(bedrooms) },
+    { keywords: ['บล็อกปลั๊ก', 'เต้ารับคู่', 'บล็อกสวิทช์', 'สวิทช์ทางเดียว', 'สวิตช์'], calculation: () => Math.ceil(bedrooms * 6) },
+    { keywords: ['ประตูห้องน้ำ'], calculation: () => Math.ceil(bathrooms) },
+    { keywords: ['ประตูภายใน'], calculation: () => Math.ceil(bedrooms) },
+    { keywords: ['หน้าต่างบานกระทุ้ง'], calculation: () => Math.ceil(bathrooms) },
   ];
-  if (roofKeywords.some(kw => nameNoSpace.includes(kw))) {
-     return Math.ceil(getVal('roofArea'));
+};
+
+export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => {
+  if (!itemName) return null;
+  const nameLower = itemName.toString().toLowerCase();
+  const unitLower = (itemUnit || '').toString().toLowerCase().replace(/\s+/g, '');
+  const rules = getQtyRules(projectInfo);
+
+  for (const rule of rules) {
+    const nameMatch = rule.keywords.length === 0 || rule.keywords.some(kw => nameLower.includes(kw));
+    const unitMatch = !rule.unitKeywords || rule.unitKeywords.some(kw => unitLower.includes(kw));
+    const catMatch = !rule.catId || rule.catId === String(catId);
+    const excludeMatch = !rule.exclude || !rule.exclude.some(kw => nameLower.includes(kw));
+
+    if (nameMatch && unitMatch && catMatch && excludeMatch) {
+      return rule.calculation();
+    }
   }
-
-  if (nameNoSpace.includes('สกรูยิงเมทัลชีท')) return Math.ceil((getVal('roofArea') * 5) / 100);
-  if (nameNoSpace.includes('แผ่นสะท้อนความร้อน')) return Math.ceil(getVal('roofArea') * 0.0133);
-  if (nameNoSpace.includes('กระเบื้องซีแพค') || nameNoSpace.includes('แผ่นกระเบื้องซีแพค')) return Math.ceil(getVal('roofArea') * 11);
-  if (nameNoSpace.includes('สกรูยึดกระเบื้อง')) return Math.ceil((getVal('roofArea') * 11 * 2.2) / 250);
-
-  // 3. ห้องน้ำ
-  if (String(catId) === '11') {
-    const isFD = nameNoSpace.includes('fd') || nameNoSpace.includes('น้ำทิ้ง');
-    return Math.ceil(isFD ? bathrooms * 2 : bathrooms);
-  }
-
-  // 4. ฝ้าเพดาน
-  if (nameNoSpace.includes('ฉาบเรียบ') && nameNoSpace.includes('c-line') && !nameNoSpace.includes('ทนชื้น')) return Math.ceil(normalCeilingArea);
-  if (nameNoSpace.includes('ทนชื้น')) return Math.ceil(bathArea);
-
-  // 5. พื้นที่ใช้สอย
-  const areaKeywords = ['ดินขุด', 'ดินถม', 'ทรายหยาบ', 'คอนกรีตหยาบ', 'แบบหล่อคอนกรีต', 'wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก', 'กำจัดปลวก'];
-  if (areaKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(totalArea);
-  
-  if (nameNoSpace.includes('ลวดผูกเหล็ก')) return Math.ceil(totalArea * 0.22);
-  if (nameNoSpace.includes('ตะปู')) return Math.ceil(totalArea * 0.15);
-  
-  if (nameNoSpace.includes('วัสดุสิ้นเปลือง') && !nameNoSpace.includes('หลังคา')) return Math.ceil(totalArea);
-  if (nameNoSpace.includes('แผ่นพื้นสำเร็จ')) return Math.ceil(Math.max(0, totalArea - bathArea));
-
-  // 6. งานผนัง งานสี และงานปูน
-  const currentInt = getVal('intWallArea');
-  const currentExt = getVal('extWallArea');
-  const primerQty = (currentInt + currentExt) / 2;
-  
-  const wallVolume = getVal('totalWallVolume'); 
-  
-  let wallThickness = 0.10; 
-  if (nameNoSpace.includes('17.5')) wallThickness = 0.20; 
-  else if (nameNoSpace.includes('15')) wallThickness = 0.15;
-  else if (nameNoSpace.includes('7.5')) wallThickness = 0.10; 
-  
-  const wallArea = wallVolume > 0 ? (wallVolume / wallThickness) : 0; 
-  const plasterArea = (currentInt + currentExt) > 0 ? (currentInt + currentExt) : (wallArea * 2);
-  
-  if (nameNoSpace.includes('สีทารองพื้น') || nameNoSpace.includes('สีรองพื้น')) return Math.ceil(primerQty);
-  if (nameNoSpace.includes('สีทาภายใน')) return Math.ceil(currentInt);
-  if (nameNoSpace.includes('สีทาภายนอก')) return Math.ceil(currentExt);
-  
-  if (wallArea > 0) {
-      const brickKeywords = ['ผนังก่ออิฐ', 'อิฐมวลเบา', 'อิฐมอญ', 'อิฐบล็อก', 'ก่ออิฐ'];
-      if (brickKeywords.some(kw => nameNoSpace.includes(kw))) {
-          if (isSqm) return Math.ceil(wallArea); 
-          if (nameNoSpace.includes('มวลเบา')) return Math.ceil(wallArea * 8.33);
-          if (nameNoSpace.includes('มอญ')) return Math.ceil(wallArea * 135);
-          if (nameNoSpace.includes('บล็อก')) return Math.ceil(wallArea * 12.5); 
-      }
-
-      if ((nameNoSpace.includes('งานฉาบ') || nameNoSpace.includes('ฉาบปูน')) && isSqm) {
-          if (nameNoSpace.includes('ภายใน')) return Math.ceil(currentInt);
-          if (nameNoSpace.includes('ภายนอก')) return Math.ceil(currentExt);
-          return Math.ceil(plasterArea);
-      }
-      
-      const hasMasonryCement = nameNoSpace.includes('ปูนก่อ') || nameNoSpace.includes('ซีเมนต์ผสม');
-      const hasPlasterCement = nameNoSpace.includes('ปูนฉาบ') || nameNoSpace.includes('ฉาบปูน') || nameNoSpace.includes('ฉาบทั่วไป') || nameNoSpace.includes('ฉาบสำเร็จ') || nameNoSpace.includes('/ฉาบ') || nameNoSpace.includes('ซีเมนต์ผสม');
-      
-      if (hasMasonryCement || hasPlasterCement) {
-          let totalQty = 0;
-          if (isSqm) {
-              if (hasMasonryCement) totalQty += wallArea;
-              if (hasPlasterCement) {
-                  if (nameNoSpace.includes('ภายใน') && !nameNoSpace.includes('ภายนอก')) totalQty += currentInt;
-                  else if (nameNoSpace.includes('ภายนอก') && !nameNoSpace.includes('ภายใน')) totalQty += currentExt;
-                  else totalQty += plasterArea;
-              }
-              return Math.ceil(totalQty);
-          }
-          if (hasMasonryCement) totalQty += (wallArea / 3); 
-          if (hasPlasterCement) {
-              let currentPlasterArea = plasterArea;
-              if (nameNoSpace.includes('ภายใน') && !nameNoSpace.includes('ภายนอก')) currentPlasterArea = currentInt;
-              else if (nameNoSpace.includes('ภายนอก') && !nameNoSpace.includes('ภายใน')) currentPlasterArea = currentExt;
-              totalQty += (currentPlasterArea / 2.5);
-          }
-          return Math.ceil(totalQty);
-      }
-  } 
-
-  // 7. งานพื้น ลามิเนต ขัดมัน แกรนิตโต้ เซรามิค
-  if (nameNoSpace.includes('ลามิเนต')) return Math.ceil(bedroomArea);
-  if (nameNoSpace.includes('แกรนิตโต้')) {
-    if (nameNoSpace.includes('นอน')) return Math.ceil(bedroomArea);
-    if (nameNoSpace.includes('โถง') || nameNoSpace.includes('พระ')) return Math.ceil(hallArea + prayerRoomArea);
-    return Math.ceil(Math.max(0, totalArea - (bedroomArea + bathArea + kitchenArea + balconyArea + washingArea)));
-  }
-  if (nameNoSpace.includes('เซรามิค') && (nameNoSpace.includes('16') || nameNoSpace.includes('40'))) return Math.ceil(kitchenArea + balconyArea + washingArea);
-  if (nameNoSpace.includes('เซรามิค') && (nameNoSpace.includes('12') || nameNoSpace.includes('30'))) return Math.ceil(bathArea);
-  if (nameNoSpace.includes('ขัดมัน') || nameNoSpace.includes('ขัดหยาบ')) return Math.ceil(perimeter * 1.18);
-  if (nameNoSpace.includes('ฝ้าชายคา') || nameNoSpace.includes('สมาร์ทบอร์ดเซาะร่อง')) return Math.ceil(perimeter * 1.18);
-
-  // 8. เหล็กคาน
-  if (nameNoSpace.includes('db20')) return Math.ceil(beamL * 6 * 2.466);
-  if (nameNoSpace.includes('db16')) return Math.ceil(beamL * 6 * 1.578);
-  if (nameNoSpace.includes('db12')) return Math.ceil(beamL * 6 * 0.888);
-  if (nameNoSpace.includes('rb9')) return Math.ceil(beamL * 6 * 0.499);
-  if (nameNoSpace.includes('rb6')) return Math.ceil(beamL * 6 * 0.222);
-
-  // 9. ความยาวเชิงชาย
-  const fasciaKeywords = ['แผ่นปิดกันนก', 'ไม้เชิงชาย8', 'ไม้เชิงชาย6', 'scgfascia', 'ครอบข้างเมทัลชีท'];
-  if (fasciaKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(getVal('fasciaLength'));
-
-  // 10. จำนวนฐานราก
-  const foundationKeywords = ['เสาเข็มไอ', 'ฐานรากแผ่', 'สกัดหัวเข็ม', 'ขุดหลุมฐานราก'];
-  if (foundationKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(foundationCount);
-
-  // 11. งานไฟฟ้าและเครื่องทำน้ำอุ่น
-  if (nameNoSpace.includes('บล็อกเครื่องทำน้ำอุ่น')) return Math.ceil(bathrooms);
-  if (nameNoSpace.includes('บล็อกแอร์')) return Math.ceil(bedrooms + 1);
-  if (nameNoSpace.includes('โคมซาลาเปา')) return Math.ceil(bedrooms + 1);
-  if (nameNoSpace.includes('ดาวไลท์') || nameNoSpace.includes('ดาวน์ไลท์')) return Math.ceil(bedrooms * 4);
-  if (nameNoSpace.includes('ไฟกิ่งหน้าบ้าน') || nameNoSpace.includes('ไฟกิ่ง')) return Math.ceil(bedrooms);
-  if (nameNoSpace.includes('บล็อกปลั๊ก') || nameNoSpace.includes('เต้ารับคู่')) return Math.ceil(bedrooms * 6);
-  if (nameNoSpace.includes('บล็อกสวิทช์') || nameNoSpace.includes('สวิทช์ทางเดียว') || nameNoSpace.includes('สวิตช์')) return Math.ceil(bedrooms * 6);
-
-  // 12. งานประตู
-  const bathroomDoorKeywords = ['ประตูห้องน้ำเกร็ดไม้เนื้อแข็ง', 'ประตูห้องน้ำupvc'];
-  if (bathroomDoorKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(bathrooms);
-
-  const bedroomDoorKeywords = ['ประตูภายในไม้เนื้อแข็ง', 'ประตูภายในwpc', 'ประตูภายในไม้สังเคราะห์'];
-  if (bedroomDoorKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(bedrooms);
-
-  // 13. งานหน้าต่าง
-  const bathroomWindowKeywords = ['หน้าต่างบานกระทุ้งอลูมิเนียมa1', 'หน้าต่างบานกระทุ้งอลูมิเนียมa2'];
-  if (bathroomWindowKeywords.some(kw => nameNoSpace.includes(kw))) return Math.ceil(bathrooms);
 
   return null; 
 };

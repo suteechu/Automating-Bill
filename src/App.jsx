@@ -147,11 +147,75 @@ export default function App() {
     reader.readAsText(file);
   };
 
+  const saveAsDefaultTemplate = () => {
+    if (window.confirm('คุณต้องการบันทึกสถานะโปรเจกต์ปัจจุบันเป็นเทมเพลตเริ่มต้นหรือไม่? (เทมเพลตเดิมจะถูกเขียนทับ)')) {
+        const templateData = {
+            projectInfo,
+            categories,
+            discountRounding,
+        };
+        localStorage.setItem('kid_bom_user_template', JSON.stringify(templateData));
+        alert('บันทึกเทมเพลตเริ่มต้นสำเร็จ!\nครั้งต่อไปที่คุณกด "เริ่มโปรเจกต์ใหม่" ระบบจะใช้เทมเพลตนี้');
+    }
+  };
+
   const resetProject = () => {
-    if (window.confirm('คุณต้องการรีเซ็ตโปรเจกต์และเริ่มใหม่ทั้งหมดหรือไม่? (ข้อมูลเดิมจะหายไป)')) {
-      setCategories(fixOldIds(defaultData.categories ? sanitizeCategories(defaultData.categories) : initialCategories));
-      setProjectInfo({ ...emptyProjectInfo, ...(defaultData.projectInfo || {}) });
-      setDiscountRounding(defaultData.discountRounding || 0);
+    if (window.confirm('คุณต้องการเริ่มโปรเจกต์ใหม่โดยดึงข้อมูลทั้งหมดจากฐาน BOM หรือไม่? (ข้อมูลที่ยังไม่บันทึกจะหายไป)')) {
+        // 1. Handle Project Info and other settings (load from template if available)
+        const userTemplateJson = localStorage.getItem('kid_bom_user_template');
+        let infoToUse = { ...emptyProjectInfo };
+        let discountToUse = 0;
+
+        if (userTemplateJson) {
+            try {
+                const data = JSON.parse(userTemplateJson);
+                infoToUse = { ...emptyProjectInfo, ...(data.projectInfo || {}) };
+                discountToUse = data.discountRounding !== undefined ? data.discountRounding : 0;
+            } catch (e) {
+                console.error("Failed to load user template for project info.", e);
+            }
+        }
+        
+        setProjectInfo(infoToUse);
+        setDiscountRounding(discountToUse);
+        setProfitMargin(0.05); // Always reset profit margin
+
+        // 2. Build categories from Master BOM
+        if (masterBom.length === 0) {
+            alert("ฐานข้อมูล Master BOM ว่างเปล่า ไม่มีรายการให้ดึง");
+            setCategories([]); // Set to empty if BOM is empty
+            return;
+        }
+
+        // Start with a clean slate of all possible categories from constants, but with empty items arrays.
+        const allCatsWithEmptyItems = initialCategories.map(c => ({ ...c, items: [] }));
+
+        // Create a map for quick lookup: Map<string, Category>
+        const categoryMap = new Map(allCatsWithEmptyItems.map(c => [String(c.id), c]));
+
+        masterBom.forEach(bomItem => {
+            if (!bomItem.catId) return; // Skip items without a category ID
+
+            const category = categoryMap.get(String(bomItem.catId));
+            if (category) {
+                // Calculate quantity based on the project info we just set
+                const autoQty = calculateAutoFillQty(bomItem.name, bomItem.unit, bomItem.catId, infoToUse);
+
+                const newItem = {
+                    id: `bom_${bomItem.id}`, // Temporary ID for fixOldIds to replace
+                    name: bomItem.name || '', unit: bomItem.unit || '',
+                    matPrice: bomItem.matPrice || 0, laborPrice: bomItem.laborPrice || 0,
+                    qty: autoQty !== null ? autoQty : 1, // Default to 1 if no formula applies
+                    bomId: bomItem.id,
+                };
+                category.items.push(newItem);
+            }
+        });
+
+        const populatedCategories = Array.from(categoryMap.values()).filter(cat => cat.items.length > 0);
+        const finalCategories = fixOldIds(populatedCategories);
+        setCategories(finalCategories);
+        alert(`สร้างโปรเจกต์ใหม่จาก Master BOM สำเร็จ! (${masterBom.length} รายการ)`);
     }
   };
 
@@ -475,23 +539,20 @@ export default function App() {
   };
 
   const handleAddItem = (catId) => {
-    setCategories(categories.map(cat => {
+    setCategories(prevCategories => prevCategories.map(cat => {
       if (cat.id !== catId) return cat;
-      
+
       let maxSubId = 0;
       cat.items.forEach(item => {
         const parts = String(item.id).split('.');
-        if (parts.length === 2) {
-          const subId = parseInt(parts[1], 10);
-          if (!isNaN(subId) && subId > maxSubId) maxSubId = subId;
+        if (parts.length === 2 && parts[0] == cat.id) {
+            const subId = parseInt(parts[1], 10);
+            if (!isNaN(subId) && subId > maxSubId) maxSubId = subId;
         }
       });
       const newItemId = `${cat.id}.${maxSubId + 1}`;
-
-      return {
-        ...cat,
-        items: [...cat.items, { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 }]
-      };
+      const newItem = { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 };
+      return { ...cat, items: [...cat.items, newItem] };
     }));
   };
 
@@ -643,6 +704,7 @@ export default function App() {
                 resetProject={resetProject}
                 importProjectFromJSON={importProjectFromJSON}
                 exportProjectToJSON={exportProjectToJSON}
+                saveAsDefaultTemplate={saveAsDefaultTemplate}
                 formatNum={formatNum}
                 grandTotal={grandTotal}
                 costPerSqm={costPerSqm}
@@ -717,10 +779,13 @@ export default function App() {
                       { key: 'perimeter', label: 'ความยาวเส้นรอบรูปอาคาร (ม.)' },
                       { key: 'beamLength', label: 'ความยาวคานรวม (ม.)' },
                       { key: 'aseLength', label: 'ความยาวอะเส (ม.)' },
+                      { key: 'rafterLength', label: 'ความยาวจันทัน (ม.)' },
+                      { key: 'purlinLength', label: 'ความยาวแป (ม.)' },
                       { key: 'foundationCount', label: 'จำนวนฐานราก (หลุม)' },
                       { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)' },
                       { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)' },
                       { key: 'totalWallVolume', label: 'ปริมาตรผนังรวม (ลบ.ม.)' },
+                      { key: 'parkingArea', label: 'พื้นที่จอดรถ (ตร.ม.)' },
                     ].map(field => (
                       <div key={field.key} className="flex justify-between items-center border-b border-gray-200 pb-1">
                         <span className="text-gray-600 font-bold">{field.label}:</span>
