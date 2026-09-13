@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Summary from './Summary';
 import CategoryDetail from './CategoryDetail';
+import CoverPage from './CoverPage';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import MasterBom from './MasterBom';
+import AiMode from './AiMode';
 import { initialCategories, emptyProjectInfo, variableGroups } from './constants';
-import { THBText, sanitizeCategories, calculateAutoFillQty, getQtyRules } from './utils';
+import { THBText, sanitizeCategories, calculateAutoFillQty, getQtyRules, applyBulkPriceAdjustment } from './utils';
 import defaultData from './default_data.json';
 
 // ฟังก์ชันสำหรับแปลง ID เก่าที่ค้างในระบบ (item_...) ให้กลายเป็นเลขลำดับ (เช่น 1.1, 1.2) อัตโนมัติ
@@ -90,7 +92,51 @@ export default function App() {
 
   const [testFormula, setTestFormula] = useState({ name: '', unit: '', catId: '' });
   const [isSyncing, setIsSyncing] = useState(false);
-  const [sheetName, setSheetName] = useState('Sheet1'); 
+  const [sheetName] = useState('Sheet1');
+
+  const sheetId = '1qpAFF43n4ywYdVBpeR7eeO4wk7VY60amPxJptO-piyo';
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+
+  // --- START: Real-time Calculation Logic ---
+
+  // 1. สร้าง state สำหรับ "debounce" ค่า projectInfo เพื่อป้องกันการคำนวณที่หนักหน่วงทุกครั้งที่พิมพ์
+  //    โดย state นี้จะอัปเดตหลังจากผู้ใช้หยุดพิมพ์ไปแล้ว 400ms
+  const [debouncedProjectInfo, setDebouncedProjectInfo] = useState(projectInfo);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedProjectInfo(projectInfo);
+    }, 400); // 400ms delay
+
+    // Cleanup: เคลียร์ timeout หาก component unmount หรือ projectInfo เปลี่ยนอีกครั้ง
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [projectInfo]); // Effect นี้จะทำงานทุกครั้งที่ projectInfo ต้นฉบับมีการเปลี่ยนแปลง
+
+
+  // 2. Core Effect สำหรับการคำนวณแบบเรียลไทม์ ซึ่งจะทำงานเมื่อ "debouncedProjectInfo" เปลี่ยนแปลง
+  useEffect(() => {
+    setCategories(prevCategories => {
+      let hasChanged = false;
+      const newCategories = prevCategories.map(cat => ({
+        ...cat,
+        items: cat.items.map(item => {
+          const { value: autoQty } = calculateAutoFillQty(item.name, item.unit, cat.id, debouncedProjectInfo);
+          
+          // อัปเดตเฉพาะเมื่อมีสูตรคำนวณ และค่าที่ได้ไม่ตรงกับค่าปัจจุบัน
+          if (autoQty !== null && item.qty !== autoQty) {
+            hasChanged = true;
+            return { ...item, qty: autoQty };
+          }
+          return item;
+        })
+      }));
+
+      // อัปเดต state ก็ต่อเมื่อมีการเปลี่ยนแปลงเกิดขึ้นจริงๆ เพื่อประสิทธิภาพที่ดีขึ้น
+      return hasChanged ? newCategories : prevCategories;
+    });
+  }, [debouncedProjectInfo]); // Dependency array ทำให้ effect นี้ทำงานเมื่อค่าที่ debounce แล้วเปลี่ยนเท่านั้น
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -119,7 +165,27 @@ export default function App() {
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", dataStr);
     
-    const fileName = `BOQ ${projectInfo.owner || projectInfo.name || 'Project'} (${projectInfo.area || 0} ตร.ม.).json`;
+    let totalMat = 0, totalLab = 0;
+    categories.forEach(cat => {
+      cat.items.forEach(item => {
+        const q = item.qty === '-' ? 0 : Number(item.qty) || 0;
+        totalMat += q * (Number(item.matPrice) || 0);
+        totalLab += q * (Number(item.laborPrice) || 0);
+      });
+    });
+    const subTotal = totalMat + totalLab;
+    const currentGrandTotal = Math.round(subTotal + (subTotal * profitMargin) - (Number(discountRounding) || 0));
+    
+    let formattedBudget = '';
+    if (currentGrandTotal >= 1000000) {
+      formattedBudget = (currentGrandTotal / 1000000).toFixed(1) + 'ล้าน';
+    } else {
+      formattedBudget = (currentGrandTotal / 100000).toFixed(1) + 'แสน';
+    }
+    
+    const ownerName = projectInfo.owner || projectInfo.name || 'Project';
+    const area = projectInfo.area || 0;
+    const fileName = `BOQ ${ownerName} (${area} & ${formattedBudget}).json`;
     downloadAnchorNode.setAttribute("download", fileName);
     
     document.body.appendChild(downloadAnchorNode);
@@ -139,7 +205,7 @@ export default function App() {
         if (data.discountRounding !== undefined) setDiscountRounding(data.discountRounding);
         if (data.masterBom) setMasterBom(data.masterBom);
         alert('โหลดโปรเจกต์สำเร็จ!');
-      } catch (err) {
+      } catch {
         alert('ไฟล์โปรเจกต์ไม่ถูกต้อง หรืออาจเสียหาย');
       }
       e.target.value = '';
@@ -205,7 +271,7 @@ export default function App() {
                     id: `bom_${bomItem.id}`, // Temporary ID for fixOldIds to replace
                     name: bomItem.name || '', unit: bomItem.unit || '',
                     matPrice: bomItem.matPrice || 0, laborPrice: bomItem.laborPrice || 0,
-                    qty: autoQty !== null ? autoQty : 1,
+                    qty: autoQty !== null ? autoQty : '-',
                     bomId: bomItem.id,
                 };
                 category.items.push(newItem);
@@ -257,7 +323,6 @@ export default function App() {
     if (isSyncing) return;
     setIsSyncing(true);
     try {
-      const sheetId = '1qpAFF43n4ywYdVBpeR7eeO4wk7VY60amPxJptO-piyo';
       const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${sheetName ? `&sheet=${encodeURIComponent(sheetName)}` : ''}`;
       
       const response = await fetch(url);
@@ -435,6 +500,7 @@ export default function App() {
     }));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const updateItemFromBom = (catId, itemId) => {
     setCategories(categories.map(cat => {
       if (cat.id !== catId) return cat;
@@ -497,13 +563,19 @@ export default function App() {
     alert('อัปเดตข้อมูลทุกรายการตามฐาน BOM สำเร็จ!');
   };
 
+
+
+  const handleBulkPriceAdjust = (targetCatId, percentage, priceTypes) => {
+    // applyBulkPriceAdjustment is now imported at the top
+    const updatedCategories = applyBulkPriceAdjustment(categories, targetCatId, percentage, priceTypes);
+    setCategories(updatedCategories);
+    const targetName = categories.find(c => c.id === targetCatId)?.name || 'ทุกหมวด';
+    alert(`ปรับราคาสำหรับหมวด "${targetName}" สำเร็จ!`);
+  };
+
   const formatNum = (num) => (!isNaN(num) && num !== null && num !== '') ? Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00';
 
-  const handlePrint = () => {
-    const fileName = `BOQ ${projectInfo.owner || projectInfo.name || 'Project'} (${projectInfo.area || 0} ตร.ม.)`;
-    document.title = fileName;
-    window.print();
-  };
+
 
   const handleItemChange = (catId, itemId, field, value) => {
     setCategories(categories.map(cat => {
@@ -514,7 +586,12 @@ export default function App() {
           if (item.id !== itemId) return item;
           let val = value;
           if (field === 'qty') {
-             val = value === '' ? '' : Math.ceil(parseFloat(value) || 0);
+            if (value === '' || value === '-') {
+                val = '-';
+            } else {
+                // ทำให้สอดคล้องกัน: ป้องกันค่าลบโดยใช้ Math.abs และปัดเศษขึ้นเสมอ
+                val = Math.ceil(Math.abs(parseFloat(value) || 0));
+            }
           } else if (field === 'matPrice' || field === 'laborPrice') {
              val = value === '' ? '' : parseFloat(value) || 0;
           }
@@ -525,16 +602,24 @@ export default function App() {
   };
 
   const handleMoveItem = (catId, index, direction) => {
-    setCategories(categories.map(cat => {
+    setCategories(prevCategories => prevCategories.map(cat => {
       if (cat.id !== catId) return cat;
+      
       const newItems = [...cat.items];
-      if (index + direction < 0 || index + direction >= newItems.length) return cat;
+      const targetIndex = index + direction;
+
+      if (targetIndex < 0 || targetIndex >= newItems.length) {
+        return cat;
+      }
       
+      // สลับตำแหน่งไอเทม
       const temp = newItems[index];
-      newItems[index] = newItems[index + direction];
-      newItems[index + direction] = temp;
+      newItems[index] = newItems[targetIndex];
+      newItems[targetIndex] = temp;
       
-      return { ...cat, items: newItems };
+      // แก้ไข ID ของทุกไอเทมในหมวดหมู่นี้ใหม่เพื่อให้เรียงลำดับถูกต้อง
+      const finalItems = newItems.map((item, itemIndex) => ({ ...item, id: `${cat.id}.${itemIndex + 1}` }));
+      return { ...cat, items: finalItems };
     }));
   };
 
@@ -551,7 +636,7 @@ export default function App() {
         }
       });
       const newItemId = `${cat.id}.${maxSubId + 1}`;
-      const newItem = { id: newItemId, name: 'รายการใหม่', qty: 1, unit: 'หน่วย', matPrice: 0, laborPrice: 0 };
+      const newItem = { id: newItemId, name: 'รายการใหม่', qty: '-', unit: 'หน่วย', matPrice: 0, laborPrice: 0 };
       return { ...cat, items: [...cat.items, newItem] };
     }));
   };
@@ -559,38 +644,55 @@ export default function App() {
   const handleRemoveItem = (catId, itemId) => {
     setCategories(categories.map(cat => {
       if (cat.id !== catId) return cat;
-      return { ...cat, items: cat.items.filter(item => item.id !== itemId) };
+      const updatedItems = cat.items.filter(item => item.id !== itemId);
+      const finalItems = updatedItems.map((item, itemIndex) => ({ ...item, id: `${cat.id}.${itemIndex + 1}` }));
+      return { ...cat, items: finalItems };
     }));
   };
 
   const getCategoryTotals = (cat) => {
-    const material = cat.items.reduce((sum, item) => sum + ((Number(item.qty) || 0) * (Number(item.matPrice) || 0)), 0);
-    const labor = cat.items.reduce((sum, item) => sum + ((Number(item.qty) || 0) * (Number(item.laborPrice) || 0)), 0);
+    const material = cat.items.reduce((sum, item) => sum + ((item.qty === '-' ? 0 : Number(item.qty) || 0) * (Number(item.matPrice) || 0)), 0);
+    const labor = cat.items.reduce((sum, item) => sum + ((item.qty === '-' ? 0 : Number(item.qty) || 0) * (Number(item.laborPrice) || 0)), 0);
     return { material, labor, total: material + labor };
   };
 
-  let grandTotalMaterial = 0;
-  let grandTotalLabor = 0;
-
-  const summaryRows = categories.map(cat => {
-    const totals = getCategoryTotals(cat);
-    grandTotalMaterial += totals.material;
-    grandTotalLabor += totals.labor;
-    return { id: cat.id, name: cat.name, ...totals };
-  });
+  const { summaryRows, grandTotalMaterial, grandTotalLabor } = useMemo(() => {
+    let grandTotalMaterial = 0;
+    let grandTotalLabor = 0;
+    const summaryRows = categories.map(cat => {
+      const totals = getCategoryTotals(cat);
+      grandTotalMaterial += totals.material;
+      grandTotalLabor += totals.labor;
+      return { id: cat.id, name: cat.name, ...totals };
+    });
+    return { summaryRows, grandTotalMaterial, grandTotalLabor };
+  }, [categories]);
 
   const subTotal = grandTotalMaterial + grandTotalLabor;
   const overheadProfit = subTotal * profitMargin;
   const totalWithProfit = subTotal + overheadProfit;
   const grandTotal = Math.round(totalWithProfit - (Number(discountRounding) || 0));
 
-  const costPerSqm = projectInfo.area > 0 ? (grandTotal / projectInfo.area) : 0;
+  const costPerSqm = (parseFloat(projectInfo.area) || 0) > 0 ? (grandTotal / projectInfo.area) : 0;
   const matPercent = subTotal > 0 ? (grandTotalMaterial / subTotal) * 100 : 0;
   const laborPercent = subTotal > 0 ? (grandTotalLabor / subTotal) * 100 : 0;
   
   const sortedCategories = [...summaryRows].sort((a, b) => b.total - a.total);
   const maxCategoryTotal = sortedCategories[0]?.total || 1;
-
+  
+  const handlePrint = () => {
+    let formattedBudget = '';
+    if (grandTotal >= 1000000) {
+      formattedBudget = (grandTotal / 1000000).toFixed(1) + 'ล้าน';
+    } else {
+      formattedBudget = (grandTotal / 100000).toFixed(1) + 'แสน';
+    }
+    const ownerName = projectInfo.owner || projectInfo.name || 'Project';
+    const area = projectInfo.area || 0;
+    const fileName = `BOQ ${ownerName} (${area} & ${formattedBudget})`;
+    document.title = fileName;
+    window.print();
+  };
   const liveQtyRules = getQtyRules(projectInfo);
   const simResult = calculateAutoFillQty(testFormula.name, testFormula.unit, testFormula.catId, projectInfo);
 
@@ -601,7 +703,25 @@ export default function App() {
     return acc;
   }, {});
 
+  const manualInputItems = useMemo(() => 
+    categories.flatMap(cat => 
+      cat.items
+        .filter(item => {
+          const hasNoFormula = calculateAutoFillQty(item.name, item.unit, cat.id, projectInfo).value === null;
+          const isNotLinked = !item.bomId;
+          const needsInput = item.qty === '-';
+          // แสดงในลิสต์ "Manual" ก็ต่อเมื่อ:
+          // 1. ไม่มีสูตรคำนวณอัตโนมัติ
+          // 2. ยังไม่ได้ผูกกับ Master BOM
+          // 3. และยังคงมีค่าเป็นค่าเริ่มต้น ('-') ที่รอการกรอกข้อมูล
+          return hasNoFormula && isNotLinked && needsInput;
+        })
+        .map(item => ({ ...item, categoryName: cat.name, catId: cat.id }))
+    )
+  , [categories, projectInfo]);
+
   // ฟังก์ชันสร้างช่องกรอกข้อมูลขนาดจิ๋ว (Minimalist Style) ป้องกัน undefined
+  // eslint-disable-next-line no-unused-vars
   const renderMiniInput = (label, field, val, tooltipText) => (
     <div className="flex flex-col shrink-0" title={tooltipText}>
       <label className="block text-[9px] text-slate-500 mb-0.5 whitespace-nowrap font-sans font-medium uppercase">
@@ -647,6 +767,10 @@ export default function App() {
               page-break-before: always !important; 
               break-before: page !important; 
           }
+          .page-break-after {
+              page-break-after: always !important;
+              break-after: page !important;
+          }
           .a4-container { 
               display: block !important;       /* บังคับเป็น Block แทน Flex ป้องกันแผ่นขาด */
               min-height: 0 !important;        /* ลบความสูงบังคับออก ให้เนื้อหาไหลไปหน้าใหม่ตามจริง */
@@ -688,7 +812,12 @@ export default function App() {
         updateAllFromBom={updateAllFromBom} 
         syncGoogleSheet={syncGoogleSheet} 
         isSyncing={isSyncing} 
-        handlePrint={handlePrint} 
+        handlePrint={handlePrint}
+        grandTotal={grandTotal}
+        formatNum={formatNum}
+        sheetUrl={sheetUrl}
+        handleBulkPriceAdjust={handleBulkPriceAdjust}
+        saveAsDefaultTemplate={saveAsDefaultTemplate}
       />
 
       {/* พื้นที่เนื้อหาหลัก (Main Content) */}
@@ -697,128 +826,202 @@ export default function App() {
         <div className="flex flex-col items-center gap-10 print:block min-w-max">
 
           {/* =========================================
+              หน้า 0: หน้าปก (COVER PAGE) - สำหรับพิมพ์เท่านั้น
+          ========================================== */}
+          <div className="hidden print:block page-break-after">
+            <CoverPage projectInfo={projectInfo} />
+          </div>
+
+          {/* =========================================
               หน้า 0.1: DASHBOARD
           ========================================== */}
           {activeTab === 'dashboard' && (
-            <div className="transform scale-110 origin-top mt-4 mb-24 flex justify-center w-full">
-              <Dashboard 
-                projectInfo={projectInfo}
-                handleProjectInfoChange={handleProjectInfoChange}
-                resetProject={resetProject}
-                importProjectFromJSON={importProjectFromJSON}
-                exportProjectToJSON={exportProjectToJSON}
-                saveAsDefaultTemplate={saveAsDefaultTemplate}
-                formatNum={formatNum}
-                grandTotal={grandTotal}
-                costPerSqm={costPerSqm}
-                profitMargin={profitMargin}
-                overheadProfit={overheadProfit}
-                matPercent={matPercent}
-                laborPercent={laborPercent}
-                grandTotalMaterial={grandTotalMaterial}
-                grandTotalLabor={grandTotalLabor}
-                sortedCategories={sortedCategories}
-                subTotal={subTotal}
-                maxCategoryTotal={maxCategoryTotal}
+            <div className="transform scale-110 origin-top mt-4 mb-24 flex flex-col items-center gap-6 w-full no-print">
+              <Dashboard
+                  projectInfo={projectInfo}
+                  handleProjectInfoChange={handleProjectInfoChange}
+                  resetProject={resetProject}
+                  importProjectFromJSON={importProjectFromJSON}
+                  exportProjectToJSON={exportProjectToJSON}
+                  saveAsDefaultTemplate={saveAsDefaultTemplate}
+                  formatNum={formatNum}
+                  grandTotal={grandTotal}
+                  costPerSqm={costPerSqm}
+                  profitMargin={profitMargin}
+                  overheadProfit={overheadProfit}
+                  matPercent={matPercent}
+                  laborPercent={laborPercent}
+                  grandTotalMaterial={grandTotalMaterial}
+                  grandTotalLabor={grandTotalLabor}
+                  sortedCategories={sortedCategories}
+                  subTotal={subTotal}
+                  maxCategoryTotal={maxCategoryTotal}
               />
             </div>
           )}
 
           {/* =========================================
-              หน้า 0.1.5: RECHECK FORMULAS & ADVANCED PARAMS
+              หน้า 0.1.5: VARIABLES & SIMULATOR
           ========================================== */}
-          {activeTab === 'recheck' && (
-            <div className="transform scale-110 origin-top mt-4 mb-24 flex justify-center w-full">
-              <div className="w-[210mm] bg-white rounded shadow-xl border border-gray-300 p-6 text-gray-800 no-print print:hidden font-smk">
-                <div className="border-b border-gray-300 pb-4 mb-4">
-                <h2 className="text-xl font-extrabold text-gray-900">🔍 รีเช็คสูตร & ตัวแปรเชิงลึก (Formula & Parameters)</h2>
-                <p className="text-gray-600 text-[12px] mt-0.5 font-bold">ทดสอบสูตรการคำนวณและกำหนดค่าตัวแปรโครงสร้างที่ใช้ในสูตรอัตโนมัติ (Advanced Variables)</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-6 mb-6">
-                {/* Section 1: Simulator */}
-                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200 flex flex-col">
-                  <h3 className="text-sm font-bold text-purple-800 mb-3 flex items-center gap-2">
-                    🧪 ทดสอบคำนวณปริมาณอัตโนมัติ (Simulator)
-                  </h3>
-                  <div className="flex flex-col gap-3 flex-1">
-                    <div>
-                      <label className="block text-[11px] font-bold text-gray-600 mb-1">ชื่อวัสดุ / รายการ (Keyword)</label>
-                      <input type="text" value={testFormula.name} onChange={e => setTestFormula({...testFormula, name: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น กระเบื้องซีแพค, สีทาภายใน" />
-                    </div>
-                    <div className="flex gap-2">
-                      <div className="flex-1">
-                          <label className="block text-[11px] font-bold text-gray-600 mb-1">หน่วย (Unit)</label>
-                          <input type="text" value={testFormula.unit} onChange={e => setTestFormula({...testFormula, unit: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น ตร.ม., ม." />
-                      </div>
-                      <div className="flex-1">
-                          <label className="block text-[11px] font-bold text-gray-600 mb-1">หมวดงาน (Cat ID)</label>
-                          <input type="text" value={testFormula.catId} onChange={e => setTestFormula({...testFormula, catId: e.target.value})} className="w-full bg-white border border-gray-300 rounded px-2 py-1.5 outline-none focus:border-purple-500 font-bold text-sm" placeholder="เช่น 11" />
-                      </div>
-                    </div>
-
-                    <div className="mt-auto bg-white p-4 rounded border border-purple-200 text-center shadow-inner">
-                      <p className="text-[11px] font-bold text-gray-500 mb-1">ปริมาณที่ระบบจะใส่ให้อัตโนมัติ (Qty)</p>
-                      <div className="text-3xl font-extrabold text-purple-700 h-10 flex items-center justify-center">
-                          {simResult.value !== null
-                            ? simResult.value
-                            : <span className="text-gray-300 text-lg">ไม่เข้าเงื่อนไขสูตร</span>}
-                      </div>
-                      {simResult.matchedRule && (
-                        <div className="text-[10px] text-purple-600 mt-1.5 font-bold bg-purple-100 px-2 py-1 rounded">
-                            <b>Rule:</b> {simResult.matchedRule.description}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+          {(activeTab === 'variables' || activeTab === 'simulator') && (
+            <div className="w-full max-w-6xl mx-auto mt-6 mb-24 px-4">
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sm:p-8 text-gray-800 font-smk no-print print:hidden">
+                <div className="border-b border-gray-200 pb-5 mb-6">
+                  <h2 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <span className="text-3xl">{activeTab === 'variables' ? '📐' : '🧪'}</span> 
+                    {activeTab === 'variables' ? 'ตัวแปรโครงสร้างที่ใช้คำนวณ (Structural Variables)' : 'จำลองสูตรคำนวณอัตโนมัติ (Simulator & Rules)'}
+                  </h2>
+                  <p className="text-gray-500 text-sm mt-2 font-medium">
+                    {activeTab === 'variables' 
+                      ? 'จัดการตัวแปรหลักทั้งหมดที่ใช้สำหรับคำนวณปริมาณวัสดุอัตโนมัติ' 
+                      : 'ทดสอบสูตรที่มีในพจนานุกรม และตรวจสอบรายการที่ระบบไม่ทราบจำนวน'}
+                  </p>
                 </div>
 
-                {/* Section 2: Advanced Variables */}
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h3 className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
-                    📐 ตัวแปรโครงสร้างที่ใช้คำนวณ (Structural Variables)
-                  </h3>
-                  <div className="text-[12px] h-[225px] overflow-y-auto no-scrollbar pr-2">
-                    {variableGroups.map(group => (
-                      <div key={group.title} className="mb-2">
-                        <h4 className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider mb-1.5 mt-2">{group.title}</h4>
-                        {group.fields.map(field => (
-                          <div key={field.key} className="flex justify-between items-center border-b border-gray-200 py-1">
-                            <span className="text-gray-600 font-bold">{field.label}:</span>
-                            <input 
-                              type="number" 
-                              value={projectInfo[field.key] || ''} 
-                              onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
-                              className="w-20 text-right border border-gray-300 rounded px-1 py-0.5 outline-none focus:border-blue-500 font-bold bg-white" 
-                            />
+                {activeTab === 'variables' ? (
+                  /* TAB: VARIABLES */
+                  <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {variableGroups.map(group => (
+                        <div key={group.title} className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                          <h4 className="text-sm font-extrabold text-blue-600 uppercase tracking-wider mb-4 pb-2 border-b border-blue-100">{group.title}</h4>
+                          <div className="flex flex-col gap-3">
+                            {group.fields.map(field => {
+                              const value = projectInfo[field.key];
+                              const isMissing = value === undefined || value === null || value === '' || value === 0;
+
+                              return (
+                                <div key={field.key} className="flex justify-between items-center group gap-2" title={field.tooltip}>
+                                  <span className={`font-medium text-sm flex items-center gap-1.5 leading-tight flex-1 ${isMissing ? 'text-red-600' : 'text-gray-700'}`}>
+                                    {isMissing && <span className="text-red-500 animate-pulse" title="กรุณาระบุค่าตัวแปรนี้">⚠️</span>}
+                                    {field.label}
+                                    {field.tooltip && <span className={`${isMissing ? 'text-red-400 border-red-400 group-hover:text-red-600' : 'text-gray-400 border-gray-400 group-hover:text-blue-500'} cursor-help text-[10px] border rounded-full min-w-[16px] w-4 h-4 flex items-center justify-center transition-colors shrink-0`}>?</span>}
+                                  </span>
+                                  <input 
+                                    type="number" 
+                                    value={value || ''} 
+                                    onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
+                                    className={`w-24 shrink-0 text-right border rounded-md px-2 py-1.5 outline-none focus:ring-1 font-bold text-sm transition-all ${isMissing ? 'border-red-400 bg-red-50 text-red-700 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-blue-500'}`} 
+                                  />
+                                </div>
+                              );
+                            })}
                           </div>
-                        ))}
-                      </div>
-                    ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </div>
+                ) : (
+                  /* TAB: SIMULATOR */
+                  <div className="flex flex-col gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      {/* Section 2: Simulator */}
+                      <div className="bg-purple-50 p-6 rounded-xl border border-purple-200 shadow-sm flex flex-col h-full">
+                        <h3 className="text-lg font-bold text-purple-800 mb-5 flex items-center gap-2 pb-3 border-b border-purple-200/50">
+                          🧪 จำลองการทำงานของสูตร
+                        </h3>
+                        <div className="flex flex-col gap-5 flex-1 justify-center">
+                          <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">ชื่อวัสดุ / รายการ (Keyword)</label>
+                            <input type="text" value={testFormula.name} onChange={e => setTestFormula({...testFormula, name: e.target.value})} className="w-full bg-white border border-purple-300 rounded-lg px-4 py-2.5 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 font-bold text-base transition-all shadow-sm" placeholder="เช่น กระเบื้องซีแพค, สีทาภายใน" />
+                          </div>
+                          <div className="flex gap-4">
+                            <div className="flex-1">
+                              <label className="block text-sm font-bold text-gray-700 mb-2">หน่วย (Unit)</label>
+                              <input type="text" value={testFormula.unit} onChange={e => setTestFormula({...testFormula, unit: e.target.value})} className="w-full bg-white border border-purple-300 rounded-lg px-4 py-2.5 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 font-bold text-base transition-all shadow-sm" placeholder="เช่น ตร.ม." />
+                            </div>
+                            <div className="flex-1">
+                              <label className="block text-sm font-bold text-gray-700 mb-2">หมวดงาน (Cat ID)</label>
+                              <input type="text" value={testFormula.catId} onChange={e => setTestFormula({...testFormula, catId: e.target.value})} className="w-full bg-white border border-purple-300 rounded-lg px-4 py-2.5 outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 font-bold text-base transition-all shadow-sm" placeholder="เช่น 11" />
+                            </div>
+                          </div>
 
-              {/* Section 3: Dictionary */}
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                  <h3 className="text-sm font-bold text-green-800 mb-3">📖 พจนานุกรมสูตรคำนวณอัตโนมัติ (Live Rules)</h3>
-                  <div className="grid grid-cols-3 gap-x-6 gap-y-1.5 text-[10px] h-[90px] overflow-y-auto no-scrollbar pr-2">
-                    {liveQtyRules.map((rule, index) => (
-                      <div key={index} className="flex items-start bg-white/50 p-1 rounded border border-green-100">
-                        <div className="flex-1">
-                          <p className="font-bold text-green-800 truncate" title={rule.keywords.join(', ')}>
-                            {rule.keywords.join(', ') || '(เงื่อนไขพิเศษ)'}
-                          </p>
-                          <p className="text-gray-600 font-medium">
-                            {`↳ ${rule.description || 'สูตรกำหนดเอง'}`}
-                          </p>
+                          <div className="bg-white p-5 rounded-xl border border-purple-200 text-center shadow-inner mt-4">
+                            <p className="text-sm font-bold text-gray-500 mb-3">ปริมาณที่ระบบคำนวณให้ (Qty)</p>
+                            <div className="text-5xl font-extrabold text-purple-700 h-16 flex items-center justify-center">
+                                {simResult.value !== null
+                                  ? simResult.value
+                                  : <span className="text-gray-300 text-2xl font-medium">ไม่มีสูตรตรงเงื่อนไข</span>}
+                            </div>
+                            {simResult.matchedRule && (
+                              <div className="text-sm text-purple-700 mt-4 font-medium bg-purple-100/50 px-4 py-3 rounded-lg border border-purple-100">
+                                  <b className="mr-2">สูตรที่ถูกใช้:</b> {simResult.matchedRule.description}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    ))}
+
+                      {/* Section 3: Live Rules Dictionary */}
+                      <div className="bg-green-50 p-6 rounded-xl border border-green-200 shadow-sm flex flex-col h-[520px]">
+                          <h3 className="text-lg font-bold text-green-800 mb-4 pb-3 border-b border-green-200/50">📖 พจนานุกรมสูตรที่มีในระบบ (คลิกเพื่อทดสอบ)</h3>
+                          <div className="flex-1 overflow-y-auto pr-3 space-y-3 custom-scrollbar">
+                            {liveQtyRules.map((rule, index) => (
+                              <div 
+                                key={index}
+                                onClick={() => setTestFormula({ name: rule.keywords[0] || '', unit: '', catId: rule.catId || '' })}
+                                className="flex items-center bg-white p-3 rounded-xl border border-green-100 hover:bg-green-100 hover:border-green-300 cursor-pointer transition-all shadow-sm group"
+                              >
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-bold text-green-900 text-base truncate group-hover:text-green-700" title={rule.keywords.join(', ')}>
+                                    {rule.keywords.join(', ') || '(เงื่อนไขพิเศษ)'}
+                                  </p>
+                                  <p className="text-gray-500 font-medium text-sm mt-1 truncate">
+                                    {`↳ ${rule.description || 'สูตรกำหนดเอง'}`}
+                                  </p>
+                                </div>
+                                <div 
+                                  className={`ml-4 text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 border ${
+                                    rule.usesVariable 
+                                      ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                                      : 'bg-gray-100 text-gray-600 border-gray-200'
+                                  }`}
+                                >
+                                  {rule.usesVariable ? 'อิงตัวแปร' : 'ค่าคงที่'}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                      </div>
+                    </div>
+
+                    {/* Section 4: Manual Input List */}
+                    <div className="bg-yellow-50 p-6 rounded-xl border border-yellow-200 shadow-sm">
+                      <h3 className="text-lg font-bold text-yellow-800 mb-5 pb-3 border-b border-yellow-200/50">
+                        📝 รายการที่ระบบไม่ทราบจำนวน ต้องกรอกด้วยตนเอง (Manual Input Needed)
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {manualInputItems.length > 0 ? manualInputItems.map(item => (
+                          <button 
+                            key={item.id}
+                            onClick={() => setActiveTab(item.catId)}
+                            className="text-left bg-white p-4 rounded-xl border border-yellow-300 hover:bg-blue-50 hover:border-blue-400 transition-all shadow-sm group"
+                          >
+                            <p className="font-bold text-base text-gray-800 group-hover:text-blue-700 transition-colors">{item.name}</p>
+                            <p className="text-sm text-gray-500 mt-2">อยู่ใน: {item.categoryName}</p>
+                          </button>
+                        )) : (
+                          <p className="text-base font-medium text-gray-500 italic p-6 bg-white rounded-xl border border-dashed border-gray-300 col-span-full text-center">
+                            เยี่ยมมาก! ทุกรายการถูกคำนวณปริมาณอัตโนมัติแล้ว 🎉
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-              </div>
+                )}
               </div>
             </div>
+          )}
+
+          {/* =========================================
+              หน้า 0.1.6: AI MODE
+          ========================================== */}
+          {activeTab === 'ai' && (
+            <AiMode 
+              projectInfo={projectInfo}
+              categories={categories}
+              formatNum={formatNum}
+            />
           )}
 
           {/* =========================================
@@ -885,6 +1088,7 @@ export default function App() {
                 handleItemChange={handleItemChange}
                 applyBomToItem={applyBomToItem}
                 handleAddItem={handleAddItem}
+                handleMoveItem={handleMoveItem}
               />
             );
           })}

@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* เพิ่ม CSS สำหรับจัดการการพิมพ์ */
+@media print {
+  body {
+    /* ช่วยให้สีพื้นหลังและสีตัวอักษรแสดงผลถูกต้องตอนพิมพ์ */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-page {
+    /* บังคับให้ขึ้นหน้าใหม่ก่อนถึง element นี้ */
+    page-break-before: always;
+    page-break-inside: avoid;
+  }
+
+  /* ไม่ต้องขึ้นหน้าใหม่สำหรับหน้าแรกสุด */
+  .print-page:first-child {
+    page-break-before: auto;
+  }
+}

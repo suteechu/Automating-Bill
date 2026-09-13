@@ -1,14 +1,10 @@
 import React from 'react';
 
 export default function DocumentHeader({ title, pageIndex, totalPages, projectInfo }) {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
-  const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-
   return (
     <div className="bg-white font-smk relative z-10 border-b-2 border-blue-custom print:border-b-2">
       <div className="hidden print:block absolute -top-4 right-0 text-right text-[10px] text-gray-500 font-bold">
-        วันที่พิมพ์: {dateStr} เวลา {timeStr} น. &nbsp;&nbsp;|&nbsp;&nbsp; แผ่นที่ {pageIndex} / {totalPages}
+        แผ่นที่ {pageIndex} / {totalPages}
       </div>
 
       <div className="grid grid-cols-12 gap-2 p-3 text-[12px] leading-tight">

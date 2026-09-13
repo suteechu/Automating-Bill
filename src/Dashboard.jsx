@@ -51,7 +51,7 @@ export default function Dashboard({
             <input type="text" value={projectInfo.name} onChange={e => handleProjectInfoChange('name', e.target.value)} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold transition-colors" />
           </div>
           <div>
-            <label className="block text-[11px] font-bold text-gray-500 mb-1">ลักษณะบ้าน (จำนวนชั้น)</label>
+            <label className="block text-[11px] font-bold text-gray-500 mb-1">ลักษณะบ้าน</label>
             <select 
               value={projectInfo.floors} 
               onChange={e => handleProjectInfoChange('floors', e.target.value)} 
@@ -78,11 +78,11 @@ export default function Dashboard({
           <div className="flex gap-2">
               <div className="flex-1">
                 <label className="block text-[11px] font-bold text-gray-500 mb-1">ห้องนอน</label>
-                <input type="number" value={projectInfo.bedrooms} onChange={e => handleProjectInfoChange('bedrooms', e.target.value)} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold text-center transition-colors" />
+                <input type="number" value={projectInfo.bedrooms} onChange={e => handleProjectInfoChange('bedrooms', Number(e.target.value) || '')} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold text-center transition-colors" />
               </div>
               <div className="flex-1">
                 <label className="block text-[11px] font-bold text-gray-500 mb-1">ห้องน้ำ</label>
-                <input type="number" value={projectInfo.bathrooms} onChange={e => handleProjectInfoChange('bathrooms', e.target.value)} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold text-center transition-colors" />
+                <input type="number" value={projectInfo.bathrooms} onChange={e => handleProjectInfoChange('bathrooms', Number(e.target.value) || '')} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold text-center transition-colors" />
               </div>
           </div>
           <div>

@@ -20,7 +20,7 @@ export default function Summary({
 }) {
   // เปลี่ยน print:flex เป็น print:block เพื่อป้องกันบั๊ก Chrome พริ้นท์หน้าเดียว
   return (
-    <div className={`a4-container w-[210mm] bg-white border border-blue-custom shadow-xl relative text-[13px] mx-auto ${activeTab === 'summary' ? 'flex flex-col' : 'hidden print:block'}`}>
+    <div className={`a4-container w-[210mm] bg-white border border-blue-custom shadow-xl relative text-[13px] mx-auto page-break ${activeTab === 'summary' ? 'flex flex-col' : 'hidden print:block'}`}>
       <DocumentHeader title="SUMMARY BOQ" pageIndex={1} totalPages={categoriesLength + 1} projectInfo={projectInfo} />
 
       <div className="flex-grow p-4">

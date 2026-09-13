@@ -8,6 +8,7 @@ setlocal enabledelayedexpansion
 set "REMOTE_URL=https://github.com/suteechu/Automating-Bill.git"
 set "BRANCH_NAME=main"
 set "VERCEL_URL=https://automating-bill.vercel.app/"
+set "PRE_COMMIT_COMMAND=npm run build"
 
 :: 📂 บังคับให้รันในโฟลเดอร์เดียวกับไฟล์ .bat เสมอ (แก้ปัญหาดับเบิลคลิกแล้วผิด Path)
 cd /d "%~dp0"
@@ -65,17 +66,28 @@ if not defined COMMIT_MSG (
 
 :: ▶️ รันคำสั่ง Git
 echo.
-echo [Step 1/5] Adding files to git...
+echo [Step 1/6] Running pre-commit command (%PRE_COMMIT_COMMAND%)...
+call %PRE_COMMIT_COMMAND%
+
+:: ❗ ตรวจสอบว่าคำสั่ง pre-commit ผ่านหรือไม่
+if %errorlevel% neq 0 (
+    echo.
+    echo [Error] คำสั่ง '%PRE_COMMIT_COMMAND%' ไม่สำเร็จ! [กรุณาตรวจสอบข้อผิดพลาดด้านบน]
+    pause
+    exit /b
+)
+
+echo [Step 2/6] Adding files to git...
 git add .
 
-echo [Step 2/5] Committing...
+echo [Step 3/6] Committing...
 git commit -m "%COMMIT_MSG%"
 
 :: บังคับให้เป็น branch main เสมอ (ป้องกัน error ตอน push ครั้งแรก)
 git branch -M %BRANCH_NAME%
 
-echo [Step 3/5] Pulling latest code from GitHub...
-git pull origin %BRANCH_NAME% --no-edit
+echo [Step 4/6] Pulling latest code from GitHub (with rebase)...
+git pull origin %BRANCH_NAME% --rebase --autostash
 
 :: ❗ ตรวจสอบว่า Pull ผ่านหรือไม่ (มีปัญหา Merge Conflict หรือไม่)
 if %errorlevel% neq 0 (
@@ -88,7 +100,7 @@ if %errorlevel% neq 0 (
 )
 
 :push_code
-echo [Step 4/5] Pushing source code to GitHub...
+echo [Step 5/6] Pushing source code to GitHub...
 git push origin HEAD
 
 :: ❗ ตรวจสอบว่า Push ผ่านหรือไม่
@@ -102,7 +114,7 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo === ✅ เสร็จสิ้น! โค้ดถูก Push ขึ้น GitHub แล้ว ===
+echo === ✅ [Step 6/6] เสร็จสิ้น! โค้ดถูก Push ขึ้น GitHub แล้ว ===
 echo [Vercel จะรับช่วงต่อ ทำการ Build และ Deploy ให้อัตโนมัติ ใช้เวลาประมาณ 1 นาที]
 
 :: 🌐 เมื่อคุณได้ URL จาก Vercel แล้ว สามารถนำมาใส่แทนบรรทัดล่างนี้เพื่อเปิดเว็บอัตโนมัติได้เลย
