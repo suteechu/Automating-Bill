@@ -40,7 +40,16 @@ export default function App() {
       try {
         const saved = localStorage.getItem('kid_bom_categories');
         if (saved) {
-           return fixOldIds(sanitizeCategories(JSON.parse(saved)));
+           let parsed = fixOldIds(sanitizeCategories(JSON.parse(saved)));
+           // Update names from initialCategories and remove cat 15
+           parsed = parsed
+             .filter(c => c.id !== 15)
+             .map(c => {
+               const ic = initialCategories.find(i => i.id === c.id);
+               return ic ? { ...c, name: ic.name } : c;
+             });
+           const missingCats = initialCategories.filter(ic => !parsed.some(pc => pc.id === ic.id));
+           return [...parsed, ...missingCats];
         }
       } catch (e) {
         console.error("Error parsing categories from localStorage", e);
@@ -323,10 +332,10 @@ export default function App() {
     if (isSyncing) return;
     setIsSyncing(true);
     try {
-      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv${sheetName ? `&sheet=${encodeURIComponent(sheetName)}` : ''}`;
+      const url = `${import.meta.env.BASE_URL}BOQ_Fixed_Original_Format.csv`;
       
       const response = await fetch(url);
-      if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลได้');
+      if (!response.ok) throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
       
       const text = await response.text(); 
       const rows = text.split(/\r?\n/);

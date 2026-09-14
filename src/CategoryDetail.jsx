@@ -97,7 +97,14 @@ export default function CategoryDetail({
                   </td>
                   <td className="py-1.5 px-1 border border-blue-custom relative">
                     <div className="flex items-center gap-1">
-                      <input type="text" value={item.name} onChange={(e) => handleItemChange(cat.id, item.id, 'name', e.target.value)} className="clean-input font-bold text-gray-900 w-full" placeholder="ระบุรายการ..." />
+                      <div className="w-full">
+                        <input type="text" value={item.name} onChange={(e) => handleItemChange(cat.id, item.id, 'name', e.target.value)} className="clean-input font-bold text-gray-900 w-full" placeholder="ระบุรายการ..." />
+                        {item.name.includes('สี') && item.unit === 'ตร.ม.' && parseFloat(item.qty) > 0 && (
+                          <div className="text-[10.5px] text-gray-500 font-normal mt-0.5 ml-1 no-print">
+                            💡 ประเมินสั่งซื้อ: ~{Math.ceil(parseFloat(item.qty) / (item.name.includes('ทา 1 รอบ') ? 150 : 75))} ถัง (18.9L)
+                          </div>
+                        )}
+                      </div>
 
                       <div className="flex items-center shrink-0 opacity-0 group-hover:opacity-100 transition-opacity no-print">
                         {masterBom.length > 0 && (

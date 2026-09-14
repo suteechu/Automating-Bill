@@ -49,14 +49,9 @@ export const THBText = (n) => {
   return res;
 };
 
-// ฟังก์ชันย่อชื่อหมวดงานสำหรับแสดงผลบนแถบเมนู (Navbar/Sidebar)
+// ฟังก์ชันย่อชื่อหมวดงาน// ฟังก์ชันสำหรับตัดคำสั้นๆ เพื่อให้แสดงผลสวยงาม (Navbar/Sidebar)
 export const getShortCatName = (name) => {
-  if (!name) return '';
-  if (name.includes('ประตู')) return 'ประตู';
-  if (name.includes('หน้าต่าง')) return 'หน้าต่าง';
-  if (name.includes('โครงหลังคา')) return 'โครงหลังคา';
-  if (name === 'งานฝ้า') return 'ฝ้าเพดาน';
-  return name.replace('งานระบบ', '').replace('งาน', '').trim();
+  return name || '';
 };
 
 // ฟังก์ชันสำหรับแสดงผล Quantity ใน UI
@@ -107,6 +102,7 @@ export const getQtyRules = (projectInfo) => {
   const floors = projectInfo.floors || '';
   const totalArea = getVal('area');
   const roofArea = getVal('roofArea');
+  const ridgeLength = getVal('ridgeLength');
   const bedrooms = getVal('bedrooms');
   const bathrooms = getVal('bathrooms');
   const bathArea = getVal('bathroomArea');
@@ -148,7 +144,7 @@ export const getQtyRules = (projectInfo) => {
 
   // List of variable names to check for in calculation functions
   const varNames = [
-    'totalArea', 'roofArea', 'bedrooms', 'bathrooms', 'bathArea', 
+    'totalArea', 'roofArea', 'ridgeLength', 'bedrooms', 'bathrooms', 'bathArea', 
     'normalCeilingArea', 'bedroomArea', 'kitchenArea', 'balconyArea', 
     'washingArea', 'hallArea', 'prayerRoomArea', 'perimeter', 'beamL', 
     'aseL', 'rafterL', 'purlinL', 'foundationCount', 'pilesPerFoundation', 'fasciaLength',
@@ -177,7 +173,9 @@ export const getQtyRules = (projectInfo) => {
     { description: "พื้นที่หลังคา (ตร.ม.)", keywords: ['ค่าแรงประกอบโครงหลังคา', 'ค่าแรงประกอบโครงเหล็ก', 'ค่าแรงมุงกระเบื้อง', 'ค่าแรงมุงเมทัลชีท', 'ทาสีเหล็กโครงสร้าง', 'ค่าแรงมุงหลังคา'], calculation: () => Math.ceil(roofArea), exclude: ['สีเทา'] },
 
     { description: "พท.หลังคา * 5 / 100 (กล่อง)", keywords: ['สกรูยิงเมทัลชีท'], calculation: () => Math.ceil((roofArea * 5) / 100) },
-    { description: "พท.หลังคา * 0.0133 (ม้วน)", keywords: ['แผ่นสะท้อนความร้อน'], calculation: () => Math.ceil(roofArea * 0.0133) },
+    { description: "พท.หลังคา / 75 (ม้วน)", keywords: ['แผ่นสะท้อนความร้อน'], calculation: () => Math.ceil(roofArea / 75) },
+    { description: "ความยาวสันรวม / 3 (ม้วน)", keywords: ['แผ่นปิดรอยต่อ'], calculation: () => Math.ceil(ridgeLength / 3) },
+
     { description: "พท.หลังคา * 11 (แผ่น)", keywords: ['กระเบื้องซีแพค'], calculation: () => Math.ceil(roofArea * 11) },
     { description: "พท.หลังคา * 11 * 2.2 / 250 (กล่อง)", keywords: ['สกรูยึดกระเบื้อง'], calculation: () => Math.ceil((roofArea * 11 * 2.2) / 250) },
 
