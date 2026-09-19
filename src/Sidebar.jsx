@@ -11,6 +11,8 @@ export default function Sidebar({
   isSyncing,
   handlePrint,
   grandTotal,
+  profitMargin,
+  discountRounding,
   formatNum,
   sheetUrl,
   handleBulkPriceAdjust,
@@ -189,6 +191,8 @@ export default function Sidebar({
         categories={categories}
         activeTab={activeTab}
         saveAsDefaultTemplate={saveAsDefaultTemplate}
+        profitMargin={profitMargin}
+        discountRounding={discountRounding}
       />
     </>
   );

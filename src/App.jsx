@@ -332,8 +332,8 @@ export default function App() {
     if (isSyncing) return;
     setIsSyncing(true);
     try {
-      const url = `${import.meta.env.BASE_URL}BOQ_Fixed_Original_Format.csv`;
-      
+      // ดึงจาก Google Sheets โดยตรง
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${sheetName}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
       
@@ -823,6 +823,8 @@ export default function App() {
         isSyncing={isSyncing} 
         handlePrint={handlePrint}
         grandTotal={grandTotal}
+        profitMargin={profitMargin}
+        discountRounding={discountRounding}
         formatNum={formatNum}
         sheetUrl={sheetUrl}
         handleBulkPriceAdjust={handleBulkPriceAdjust}

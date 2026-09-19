@@ -1,4 +1,4 @@
-import { initialCategories } from './constants';
+import { initialCategories } from './constants.js';
 
 // ฐานข้อมูลกลางสำหรับข้อมูลจำเพาะของเหล็กเสริม
 const rebarSpecs = [
@@ -209,30 +209,30 @@ export const getQtyRules = (projectInfo) => {
         const columnStirrupPerimeter = (avgColumnWidth > 0 && avgColumnHeight > 0) ? (avgColumnWidth + avgColumnHeight) * 2 : 1.0; // Default for 20x20 col
 
         return [
-            {
-                description: `เหล็กปลอกคาน ${spec.name} (กก.) [@0.20m]`,
-                keywords: ['คาน', 'ปลอก', ...spec.keywords],
-                unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
-                calculation: () => Math.ceil((beamL / 0.20) * beamStirrupPerimeter * spec.weight * 1.1), // เผื่อ 10%
-                exclude: ['เสา', 'ตอม่อ', 'เข็ม']
-            },
-            {
-                description: `เหล็กปลอกเสา/ตอม่อ ${spec.name} (กก.) [@0.15m]`,
-                keywords: ['เสา', 'ตอม่อ', 'ปลอก', ...spec.keywords],
-                unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
-                calculation: () => Math.ceil((columnL / 0.15) * columnStirrupPerimeter * spec.weight * 1.1), // เผื่อ 10%
-                exclude: ['คาน', 'เข็ม']
-            },
-            { // General rule for 'เหล็กปลอก'
+            { // กฎทั่วไป
                 description: `เหล็กปลอก ${spec.name} (คาน+เสา) (กก.)`,
                 keywords: ['ปลอก', ...spec.keywords],
-                unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
+                unitKeywords: ['กก.', 'kg', 'ตัน', 'ton'],
                 calculation: () => {
                     const beamStirrups = (beamL / 0.20) * beamStirrupPerimeter;
                     const columnStirrups = (columnL / 0.15) * columnStirrupPerimeter;
                     return Math.ceil((beamStirrups + columnStirrups) * spec.weight * 1.1);
                 }, // เผื่อ 10%
                 exclude: ['คาน', 'เสา', 'ตอม่อ']
+            },
+            {
+                description: `เหล็กปลอกคาน ${spec.name} (กก.) [@0.20m]`,
+                keywords: ['คาน', 'ปลอก', ...spec.keywords],
+                unitKeywords: ['กก.', 'kg', 'ตัน', 'ton'],
+                calculation: () => Math.ceil((beamL / 0.20) * beamStirrupPerimeter * spec.weight * 1.1), // เผื่อ 10%
+                exclude: ['เสา', 'ตอม่อ', 'เข็ม']
+            },
+            {
+                description: `เหล็กปลอกเสา/ตอม่อ ${spec.name} (กก.) [@0.15m]`,
+                keywords: ['เสา', 'ตอม่อ', 'ปลอก', ...spec.keywords],
+                unitKeywords: ['กก.', 'kg', 'ตัน', 'ton'],
+                calculation: () => Math.ceil((columnL / 0.15) * columnStirrupPerimeter * spec.weight * 1.1), // เผื่อ 10%
+                exclude: ['คาน', 'เข็ม']
             }
         ];
     })(),
@@ -245,6 +245,13 @@ export const getQtyRules = (projectInfo) => {
         .flatMap(s => s.keywords);
 
       return [
+          { // กฎทั่วไป ต้องอยู่ท้ายสุด
+              description: `เหล็กยืน ${spec.name} (ทั่วไป) (กก.)`,
+              keywords: spec.keywords,
+              unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
+              calculation: () => Math.ceil(((beamL * 4) + (columnL * columnRebarCount)) * spec.weight * 1.1), // เผื่อ 10%
+              exclude: ['คาน', 'เสา', 'ตอม่อ', 'ปลอก', 'พื้น', ...otherDbKeywords, 'เหล็กกล่อง']
+          },
           {
               description: `เหล็กยืน ${spec.name} ในคาน (กก.)`,
               keywords: ['คาน', ...spec.keywords],
@@ -258,13 +265,6 @@ export const getQtyRules = (projectInfo) => {
               unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
               calculation: () => Math.ceil(columnL * columnRebarCount * spec.weight * 1.1), // เผื่อ 10%
               exclude: ['คาน', 'ปลอก', 'พื้น', ...otherDbKeywords, 'เหล็กกล่อง', 'เข็ม']
-          },
-          { // กฎทั่วไป ต้องอยู่ท้ายสุด
-              description: `เหล็กยืน ${spec.name} (ทั่วไป) (กก.)`,
-              keywords: spec.keywords,
-              unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
-              calculation: () => Math.ceil(((beamL * 4) + (columnL * columnRebarCount)) * spec.weight * 1.1), // เผื่อ 10%
-              exclude: ['คาน', 'เสา', 'ตอม่อ', 'ปลอก', 'พื้น', ...otherDbKeywords, 'เหล็กกล่อง']
           }
       ];
     }),
@@ -276,28 +276,29 @@ export const getQtyRules = (projectInfo) => {
       calculation: () => Math.ceil((foundationCount * foundationWidth * foundationLength * 0.10) * 1.10),
       exclude: ['โครงสร้าง', 'คาน', 'เสา', 'พื้น', 'ฟุตติ้ง']
     },
+    { // กฎรวม (กรณีไม่ระบุเจาะจงว่าคานหรือเสา)
+      description: "ปริมาตรคอนกรีต โครงสร้างรวม (ฐานราก+คาน+เสา) เผื่อ 5% (ลบ.ม.)",
+      keywords: ['คอนกรีต โครงสร้าง', 'คอนกรีต'],
+      calculation: () => { const foundationVolume = foundationCount * foundationWidth * foundationLength * foundationHeight; const beamVolume = beamL * avgBeamWidth * avgBeamHeight; const columnVolume = columnL * avgColumnWidth * avgColumnHeight; return Math.ceil((foundationVolume + beamVolume + columnVolume) * 1.05); },
+      exclude: ['พื้น', 'เข็มเจาะ', 'เทพื้น']
+    },
     {
-      description: "ปริมาตรคอนกรีตฐานราก เผื่อ 10% (ลบ.ม.)",
-      keywords: ['คอนกรีตฐานราก', 'คอนกรีตฟุตติ้ง', 'footing'],
+      description: "ปริมาตรคอนกรีต ฐานราก/ฟุตติ้ง เผื่อ 10% (ลบ.ม.)",
+      keywords: ['คอนกรีต ฐานราก', 'คอนกรีต ฟุตติ้ง', 'footing'],
       calculation: () => Math.ceil((foundationCount * foundationWidth * foundationLength * foundationHeight) * 1.10),
-      exclude: ['หยาบ', 'โครงสร้าง', 'คาน', 'เสา', 'พื้น']
+      exclude: ['เสา', 'โครงสร้างรวม', 'คาน', 'พื้น', 'เทพื้น']
     },
     {
-      description: "ปริมาตรคอนกรีตคาน เผื่อ 5% (ลบ.ม.)",
-      keywords: ['คอนกรีตคาน'],
+      description: "ปริมาตรคอนกรีต คาน/คอดิน เผื่อ 5% (ลบ.ม.)",
+      keywords: ['คอนกรีต คาน'],
       calculation: () => Math.ceil((beamL * avgBeamWidth * avgBeamHeight) * 1.05),
-      exclude: ['เสา', 'ตอม่อ', 'โครงสร้าง']
+      exclude: ['พื้น', 'ตอม่อ', 'โครงสร้างรวม']
     },
     {
-      description: "ปริมาตรคอนกรีตเสา/ตอม่อ เผื่อ 5% (ลบ.ม.)",
-      keywords: ['คอนกรีตเสา', 'คอนกรีตตอม่อ'],
+      description: "ปริมาตรคอนกรีต เสา/ตอม่อ เผื่อ 5% (ลบ.ม.)",
+      keywords: ['คอนกรีต เสา', 'คอนกรีต ตอม่อ'],
       calculation: () => Math.ceil((columnL * avgColumnWidth * avgColumnHeight) * 1.05),
-      exclude: ['คาน', 'โครงสร้าง']
-    },
-    { // กฎทั่วไปสำหรับคอนกรีตโครงสร้าง
-      description: "ปริมาตรคอนกรีต (คาน + เสา) เผื่อ 5% (ลบ.ม.)",
-      keywords: ['คอนกรีตโครงสร้าง'],
-      calculation: () => { const beamVolume = beamL * avgBeamWidth * avgBeamHeight; const columnVolume = columnL * avgColumnWidth * avgColumnHeight; return Math.ceil((beamVolume + columnVolume) * 1.05); }, exclude: ['หยาบ', 'พื้น', 'คาน', 'เสา', 'ตอม่อ']
+      exclude: ['คาน', 'โครงสร้างรวม']
     },
 
     // สูตรสำหรับคอนกรีตพื้น (Slab on Ground)
@@ -822,7 +823,7 @@ export const applyBulkPriceAdjustment = (categories, targetCatId, percentage, pr
       priceFields.forEach(field => {
         const oldPrice = parseFloat(newItem[field]);
         if (!isNaN(oldPrice) && oldPrice > 0) {
-          newItem[field] = (oldPrice * factor).toFixed(2);
+          newItem[field] = Math.round(oldPrice * factor);
         }
       });
       

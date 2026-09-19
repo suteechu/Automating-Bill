@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function BulkPriceAdjustModal({ isOpen, onClose, onSubmit, categories, activeTab, saveAsDefaultTemplate }) {
+export default function BulkPriceAdjustModal({ isOpen, onClose, onSubmit, categories, activeTab, saveAsDefaultTemplate, profitMargin, discountRounding }) {
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [targetCatId, setTargetCatId] = useState('all');
   const [percentage, setPercentage] = useState(10);
@@ -51,8 +51,8 @@ export default function BulkPriceAdjustModal({ isOpen, onClose, onSubmit, catego
         
         if (isTargetCat) {
            const factor = 1 + (parseFloat(percentage || 0) / 100);
-           const newMat = priceTypes === 'mat' || priceTypes === 'both' ? currentMat * factor : currentMat;
-           const newLabor = priceTypes === 'labor' || priceTypes === 'both' ? currentLabor * factor : currentLabor;
+           const newMat = priceTypes === 'mat' || priceTypes === 'both' ? Math.round(currentMat * factor) : currentMat;
+           const newLabor = priceTypes === 'labor' || priceTypes === 'both' ? Math.round(currentLabor * factor) : currentLabor;
            newTotal += qty * (newMat + newLabor);
         } else {
            newTotal += qty * (currentMat + currentLabor);
@@ -62,6 +62,18 @@ export default function BulkPriceAdjustModal({ isOpen, onClose, onSubmit, catego
   }
 
   const diff = newTotal - currentTotal;
+  
+  const calculateGrandTotal = (subTotal) => {
+    const margin = typeof profitMargin === 'number' ? profitMargin : 0;
+    const discount = typeof discountRounding === 'number' ? discountRounding : 0;
+    const overheadProfit = subTotal * margin;
+    const totalWithProfit = subTotal + overheadProfit;
+    return Math.round(totalWithProfit - discount);
+  };
+
+  const currentGrandTotal = calculateGrandTotal(currentTotal);
+  const newGrandTotal = calculateGrandTotal(newTotal);
+  const grandTotalDiff = newGrandTotal - currentGrandTotal;
 
   return (
     <div className={`fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-[100] transition-opacity duration-300 ease-in-out ${internalIsOpen ? 'opacity-100' : 'opacity-0'}`}>
@@ -142,6 +154,28 @@ export default function BulkPriceAdjustModal({ isOpen, onClose, onSubmit, catego
                 </span>
               </div>
             )}
+            
+            <div className="mt-4 pt-3 border-t-2 border-dashed border-gray-300">
+              <h4 className="text-xs font-bold text-gray-500 mb-2 uppercase">ยอดสุทธิ (Grand Total)</h4>
+              <div className="flex justify-between items-center text-sm mb-1">
+                <span className="text-gray-500 font-medium">ยอดปัจจุบัน:</span>
+                <span className="font-bold text-gray-800">{currentGrandTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿</span>
+              </div>
+              <div className="flex justify-between items-center text-lg">
+                <span className="text-gray-800 font-extrabold">ยอดใหม่:</span>
+                <span className={`font-extrabold ${newGrandTotal > currentGrandTotal ? 'text-red-600' : newGrandTotal < currentGrandTotal ? 'text-green-600' : 'text-blue-700'}`}>
+                  {newGrandTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿
+                </span>
+              </div>
+              {grandTotalDiff !== 0 && (
+                <div className="flex justify-between items-center text-xs mt-1">
+                  <span className="text-gray-500">ส่วนต่างยอดสุทธิ:</span>
+                  <span className={`font-bold ${grandTotalDiff > 0 ? 'text-red-500' : 'text-green-500'}`}>
+                    {grandTotalDiff > 0 ? '+' : '-'}{Math.abs(grandTotalDiff).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
