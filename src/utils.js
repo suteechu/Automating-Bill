@@ -136,6 +136,8 @@ export const getQtyRules = (projectInfo) => {
   const kitchenWallArea = getVal('kitchenWallArea');
   const plasterThickness = getVal('plasterThickness') || 0.0125; // ค่าเริ่มต้น 1.25 ซม.
   const wallVolume = getVal('totalWallVolume');
+  const wallType = projectInfo.wallType || 'lightweight_7_5';
+  const layerMultiplier = wallType.includes('17_5') ? 2 : 1;
   const psArea = getVal('psArea');
   const gsArea = getVal('gsArea');
   const sArea = getVal('sArea');
@@ -346,12 +348,21 @@ export const getQtyRules = (projectInfo) => {
     // Wall, Paint, Plaster
     { description: "พื้นที่ผนังห้องน้ำ (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6x12สูงชนฝ้า(ห้องน้ำ)'], calculation: () => Math.ceil(bathroomWallArea) },
     { description: "พื้นที่ผนังห้องครัว (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6x12(ห้องครัว)'], calculation: () => Math.ceil(kitchenWallArea) },
+    // Assembly logic (7.5 cm)
     { description: "พื้นที่ผนังรวม (ตร.ม.) [คำนวณจากปริมาตรหรือพื้นที่]", keywords: ['ผนังก่ออิฐมวลเบา'], calculation: () => wallVolume > 0 ? Math.ceil(wallVolume / 0.08) : Math.ceil(intWallArea + extWallArea), exclude: ['17.5'] }, // ค่าแรงก่ออิฐมวลเบา (8 ซม.)
     { description: "พื้นที่ผนังรวม (ตร.ม.) [คำนวณจากปริมาตรหรือพื้นที่]", keywords: ['ผนังก่ออิฐมอญ'], calculation: () => wallVolume > 0 ? Math.ceil(wallVolume / 0.08) : Math.ceil(intWallArea + extWallArea), exclude: ['17.5'] }, // ค่าแรงก่ออิฐมอญ (8 ซม.)
     { description: "พื้นที่ผนังรวม (ตร.ม.) [คำนวณจากปริมาตรหรือพื้นที่]", keywords: ['ผนังก่ออิฐบล็อก'], calculation: () => wallVolume > 0 ? Math.ceil(wallVolume / 0.07) : Math.ceil(intWallArea + extWallArea), exclude: ['17.5'] }, // ค่าแรงก่ออิฐบล็อก (7 ซม.)
-    { description: "พท.ผนังรวม * 8.33 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐมวลเบา'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.08) : (intWallArea + extWallArea)) * 8.33 * 1.05), exclude: ['ก่อ', 'ผนังก่อ'] }, // วัสดุอิฐมวลเบา (8 ซม.)
-    { description: "พท.ผนังรวม * 125 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐมอญ'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.08) : (intWallArea + extWallArea)) * 125 * 1.05), exclude: ['ก่อ', 'ผนังก่อ'] }, // วัสดุอิฐมอญ (8 ซม.)
-    { description: "พท.ผนังรวม * 13 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐบล็อก'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.07) : (intWallArea + extWallArea)) * 13 * 1.05), exclude: ['ก่อ', 'ผนังก่อ'] }, // วัสดุอิฐบล็อก (7 ซม.)
+    
+    // Assembly logic (17.5 cm)
+    { description: "พื้นที่ผนังรวม (ตร.ม.)", keywords: ['ผนังก่ออิฐมวลเบา(17.5'], calculation: () => Math.ceil(intWallArea + extWallArea) },
+    { description: "พื้นที่ผนังรวม (ตร.ม.)", keywords: ['ผนังก่ออิฐมอญ(17.5'], calculation: () => Math.ceil(intWallArea + extWallArea) },
+    { description: "พื้นที่ผนังรวม (ตร.ม.)", keywords: ['ผนังก่ออิฐบล็อก(17.5'], calculation: () => Math.ceil(intWallArea + extWallArea) },
+
+    // Brick / Block quantities
+    { description: "พท.ผนังรวม * 8.33 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐมวลเบา'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.08) : (intWallArea + extWallArea)) * 8.33 * layerMultiplier * 1.05), exclude: ['ก่อ', 'ผนังก่อ'] }, // วัสดุอิฐมวลเบา (8 ซม.)
+    { description: "พท.ผนังรวม * 125 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐมอญ'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.08) : (intWallArea + extWallArea)) * 125 * layerMultiplier * 1.05), exclude: ['ก่อ', 'ผนังก่อ'] }, // วัสดุอิฐมอญ (8 ซม.)
+    { description: "พท.ผนังรวม * 13 * 1.05 (ก้อน) [จากปริมาตรหรือพื้นที่]", keywords: ['อิฐบล็อก'], calculation: () => Math.ceil((wallVolume > 0 ? (wallVolume / 0.07) : (intWallArea + extWallArea)) * 13 * layerMultiplier * 1.05), exclude: ['ก่อ', 'ผนังก่อ', 'TAN-BRICK'] }, // วัสดุอิฐบล็อก (7 ซม.)
+    { description: "พท.ผนังรวม * 22.2 * 1.05 (ก้อน)", keywords: ['TAN-BRICK'], calculation: () => Math.ceil((intWallArea + extWallArea) * 22.2 * layerMultiplier * 1.05) },
     {
       description: 'ปริมาณปูนก่ออิฐมวลเบา (ถุง 50kg) @ 25 ตร.ม./ถุง',
       keywords: ['ปูนก่อ', 'อิฐมวลเบา'],
