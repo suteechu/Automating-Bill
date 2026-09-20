@@ -166,9 +166,9 @@ export default function App() {
       
       const group1 = ['แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)', 'ครอบเส้นโค้ง (ครอบสันลอน)', 'ครอบโค้งปิดจั่ว', 'ครอบข้าง', 'ครอบข้างปิดชาย', 'ครอบโค้งหางมน (ปิดปลายสันตะเข้)', 'ครอบโค้งสองทาง', 'ครอบโค้งสามทาง', 'ครอบโค้งสี่ทาง'];
       const group2 = ['แผ่นกระเบื้องซีแพคแบบเรียบ (สีมาตรฐาน)', 'ครอบสันหลังคา', 'ครอบปิดจั่ว', 'ครอบตะเข้สัน', 'ครอบปิดปลายตะเข้สัน', 'ครอบปั้นลม', 'ครอบปิดปลายปั้นลม', 'ครอบข้างติดผนัง', 'ครอบหัวผนัง'];
-      const group3 = ['แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE', 'สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)', 'ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)'];
+      const group3 = ['แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE', 'สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)', 'ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)', 'เชิงชาย SCG Fascia Board_One Piece', 'ไม้ตกแต่งซีเฟรม ขนาด 22.3 x 300 x 1.2 ซม. สีซีเมนต์', 'ไม้ตกแต่งซีเฟรม ขนาด 305 x 300 x 1.2 ซม. สีซีเมนต์'];
+      const cpacCommon = ['แผ่นปิดรอยต่อ (กว้าง 30 ซม. x 3 ม.) (1 ม้วน = 0.9 ตร.ม.)', 'แผ่นสะท้อนความร้อน (กว้าง 1.25 ม. x 60 ม.) (1 ม้วน = 75 ตร.ม.)', 'สกรูเกลียวยึดแป (กล่อง 250 ตัว)', 'สกรูยึดกระเบื้อง 2.5 นิ้ว (กล่อง 250 ตัว)', 'แผ่นปิดกันนก (แพ็ก 10-20 แผ่น)', 'ไม้เชิงชาย 8 นิ้ว (หน้ากว้าง 20 ซม.)', 'ไม้เชิงชาย 6 นิ้ว (หน้ากว้าง 15 ซม.)'];
       
-      // Get all items from initialCategories for Cat 3
       const initialCat3 = initialCategories.find(c => String(c.id) === '3');
       if (!initialCat3) return cat;
 
@@ -177,13 +177,15 @@ export default function App() {
         const isG1 = group1.includes(name);
         const isG2 = group2.includes(name);
         const isG3 = group3.includes(name);
+        const isCpacCommon = cpacCommon.includes(name);
         
-        // If it belongs to a group, only keep if it matches roofType
-        if (isG1) return roofType === 'cpac_lon';
-        if (isG2) return roofType === 'cpac_flat';
-        if (isG3) return roofType === 'metal_sheet';
-        
-        // Keep common accessories
+        if (roofType === 'metal_sheet') {
+            return isG3;
+        } else if (roofType === 'cpac_lon') {
+            return isG1 || isCpacCommon;
+        } else if (roofType === 'cpac_flat') {
+            return isG2 || isCpacCommon;
+        }
         return true;
       });
 
