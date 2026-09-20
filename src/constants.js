@@ -206,7 +206,7 @@ export const initialCategories = [
       },
       {
         id: "1.26",
-        name: " เหล็กเส้น DB 20 mm. (ข้ออ้อย SD40)",
+        name: "เหล็กเส้น DB 20 mm. (ข้ออ้อย SD40)",
         qty: "-",
         unit: "กก.",
         matPrice: 25.0,
@@ -214,7 +214,7 @@ export const initialCategories = [
       },
       {
         id: "1.27",
-        name: " เหล็กเส้น DB 16 mm. (ข้ออ้อย SD40)",
+        name: "เหล็กเส้น DB 16 mm. (ข้ออ้อย SD40)",
         qty: "-",
         unit: "กก.",
         matPrice: 25.0,
@@ -222,7 +222,7 @@ export const initialCategories = [
       },
       {
         id: "1.28",
-        name: " เหล็กเส้น DB 12 mm. (ข้ออ้อย SD40)",
+        name: "เหล็กเส้น DB 12 mm. (ข้ออ้อย SD40)",
         qty: "-",
         unit: "กก.",
         matPrice: 25.0,
@@ -230,7 +230,7 @@ export const initialCategories = [
       },
       {
         id: "1.29",
-        name: " เหล็กเส้น RB 9 mm. (เหล็กกลม SR24)",
+        name: "เหล็กเส้น RB 9 mm. (เหล็กกลม SR24)",
         qty: "-",
         unit: "กก.",
         matPrice: 25.0,
@@ -238,7 +238,7 @@ export const initialCategories = [
       },
       {
         id: "1.30",
-        name: " เหล็กเส้น RB 6 mm. (เหล็กกลม SR24)",
+        name: "เหล็กเส้น RB 6 mm. (เหล็กกลม SR24)",
         qty: "-",
         unit: "กก.",
         matPrice: 25.0,
@@ -396,6 +396,22 @@ export const initialCategories = [
       },
       {
         id: "2.10",
+        name: "เหล็กC 200x50x20x2.3 มม. (อเส, อกไก่)",
+        qty: "-",
+        unit: "ท่อน",
+        matPrice: 1200.0,
+        laborPrice: 0.0
+      },
+      {
+        id: "2.11",
+        name: "เหล็กC 200x50x20x3.2 มม. (อเส, อกไก่)",
+        qty: "-",
+        unit: "ท่อน",
+        matPrice: 1500.0,
+        laborPrice: 0.0
+      },
+      {
+        id: "2.12",
         name: "เหล็กC 150x50x20x2.3 มม.4.96กก.(อเส, อกไก่)",
         qty: "-",
         unit: "ท่อน",
@@ -403,7 +419,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.11",
+        id: "2.13",
         name: "เหล็กC 150x50x20x3.2 มม.6.76กก.(อเส, อกไก่)",
         qty: "-",
         unit: "ท่อน",
@@ -411,7 +427,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.12",
+        id: "2.14",
         name: "เหล็กC 125x50x20x2.3 มม.4.51กก.(อเส, ดั้ง)",
         qty: "-",
         unit: "ท่อน",
@@ -419,7 +435,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.13",
+        id: "2.15",
         name: "เหล็กC 125x50x20x3.2 มม.6.13กก.(อเส, ดั้ง)",
         qty: "-",
         unit: "ท่อน",
@@ -427,7 +443,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.14",
+        id: "2.16",
         name: "เหล็กC 100x50x20x1.6มม.2.88กก.(จันทัน)",
         qty: "-",
         unit: "ท่อน",
@@ -435,7 +451,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.15",
+        id: "2.17",
         name: "เหล็กC 100x50x20x2.3มม.4.06กก.(อเส, ดั้ง, อกไก่)",
         qty: "-",
         unit: "ท่อน",
@@ -443,7 +459,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.16",
+        id: "2.18",
         name: "เหล็กC 100x50x20x3.2มม.5.50กก.(อเส, ดั้ง, อกไก่)",
         qty: "-",
         unit: "ท่อน",
@@ -451,24 +467,8 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.17",
-        name: "เหล็กC 100x50x20x1.6มม.2.88กก.(แป)",
-        qty: "-",
-        unit: "ท่อน",
-        matPrice: 420.0,
-        laborPrice: 0.0
-      },
-      {
-        id: "2.18",
-        name: "เหล็กC 100x50x20x2.3มม.4.06กก.(จันทัน, สะพานเหล็ก)",
-        qty: "-",
-        unit: "ท่อน",
-        matPrice: 590.0,
-        laborPrice: 0.0
-      },
-      {
         id: "2.19",
-        name: "เหล็กC 100x50x20x1.6มม.2.88กก.(จันทัน)",
+        name: "เหล็กC 100x50x20x1.6มม.2.88กก.(แป)",
         qty: "-",
         unit: "ท่อน",
         matPrice: 420.0,
@@ -484,6 +484,22 @@ export const initialCategories = [
       },
       {
         id: "2.21",
+        name: "เหล็กC 100x50x20x1.6มม.2.88กก.(จันทัน)",
+        qty: "-",
+        unit: "ท่อน",
+        matPrice: 420.0,
+        laborPrice: 0.0
+      },
+      {
+        id: "2.22",
+        name: "เหล็กC 100x50x20x2.3มม.4.06กก.(จันทัน, สะพานเหล็ก)",
+        qty: "-",
+        unit: "ท่อน",
+        matPrice: 590.0,
+        laborPrice: 0.0
+      },
+      {
+        id: "2.23",
         name: "เหล็กC 75x45x15x1.6มม.2.32กก.(จันทัน)",
         qty: "-",
         unit: "ท่อน",
@@ -491,7 +507,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.22",
+        id: "2.24",
         name: "เหล็กC 75x45x15x2.3มม.3.25กก.(สะพานเหล็ก, จันทัน)",
         qty: "-",
         unit: "ท่อน",
@@ -499,7 +515,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.23",
+        id: "2.25",
         name: "แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)",
         qty: "-",
         unit: "ท่อน",
@@ -507,7 +523,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.24",
+        id: "2.26",
         name: "แปสำเร็จรูปสำหรับหลังคาเมทัลชีท",
         qty: "-",
         unit: "ท่อน",
@@ -515,7 +531,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.25",
+        id: "2.27",
         name: "แป๊บโปร่งกัลวาไนซ์ 32 x32x1.2 มม. (1.1/4 x 1.1/4 นิ้ว)",
         qty: "-",
         unit: "ท่อน",
@@ -523,7 +539,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "2.26",
+        id: "2.28",
         name: "รางน้ำตะเข้ กัลวาไนซ์ (Galvanized Steel)",
         qty: "-",
         unit: "เมตร",
@@ -531,7 +547,7 @@ export const initialCategories = [
         laborPrice: 80.0
       },
       {
-        id: "2.27",
+        id: "2.29",
         name: "รางน้ำตะเข้ สแตนเลส (Stainless Steel)",
         qty: "-",
         unit: "เมตร",
@@ -539,7 +555,7 @@ export const initialCategories = [
         laborPrice: 105.0
       },
       {
-        id: "2.28",
+        id: "2.30",
         name: "วัสดุสิ้นเปลือง ลวดเชื่อม,ใบตัด โครงสร้างหลังคา",
         qty: "-",
         unit: "ตร.ม",
@@ -547,7 +563,7 @@ export const initialCategories = [
         laborPrice: 250.0
       },
       {
-        id: "2.29",
+        id: "2.31",
         name: "ทาสีเหล็กโครงสร้าง (เหล็กรูปพรรณ)",
         qty: "-",
         unit: "ตร.ม",
@@ -562,7 +578,7 @@ export const initialCategories = [
     items: [
       {
         id: "3.1",
-        name: "แผ่นกระเบื้องซีแพค (สีมาตรฐาน)",
+        name: "แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)",
         qty: "-",
         unit: "แผ่น",
         matPrice: 19.0,
@@ -634,6 +650,78 @@ export const initialCategories = [
       },
       {
         id: "3.10",
+        name: "แผ่นกระเบื้องซีแพคแบบเรียบ (สีมาตรฐาน)",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 25.0,
+        laborPrice: 3.0
+      },
+      {
+        id: "3.11",
+        name: "ครอบสันหลังคา",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 85.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.12",
+        name: "ครอบปิดจั่ว",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 95.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.13",
+        name: "ครอบตะเข้สัน",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 85.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.14",
+        name: "ครอบปิดปลายตะเข้สัน",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 100.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.15",
+        name: "ครอบปั้นลม",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 85.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.16",
+        name: "ครอบปิดปลายปั้นลม",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 90.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.17",
+        name: "ครอบข้างติดผนัง",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 85.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.18",
+        name: "ครอบหัวผนัง",
+        qty: "-",
+        unit: "แผ่น",
+        matPrice: 85.0,
+        laborPrice: 5.0
+      },
+      {
+        id: "3.19",
         name: "แผ่นปิดรอยต่อ (กว้าง 30 ซม. x 3 ม.) (1 ม้วน = 0.9 ตร.ม.)",
         qty: "-",
         unit: "ม้วน",
@@ -641,7 +729,7 @@ export const initialCategories = [
         laborPrice: 300.0
       },
       {
-        id: "3.11",
+        id: "3.20",
         name: "แผ่นสะท้อนความร้อน (กว้าง 1.25 ม. x 60 ม.) (1 ม้วน = 75 ตร.ม.)",
         qty: "-",
         unit: "ม้วน",
@@ -649,7 +737,7 @@ export const initialCategories = [
         laborPrice: 300.0
       },
       {
-        id: "3.12",
+        id: "3.21",
         name: "สกรูเกลียวยึดแป (กล่อง 250 ตัว)",
         qty: "-",
         unit: "กล่อง",
@@ -657,7 +745,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "3.13",
+        id: "3.22",
         name: "สกรูยึดกระเบื้อง 2.5 นิ้ว (กล่อง 250 ตัว)",
         qty: "-",
         unit: "กล่อง",
@@ -665,7 +753,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "3.14",
+        id: "3.23",
         name: "แผ่นปิดกันนก (แพ็ก 10-20 แผ่น)",
         qty: "-",
         unit: "เมตร",
@@ -673,7 +761,7 @@ export const initialCategories = [
         laborPrice: 85.0
       },
       {
-        id: "3.15",
+        id: "3.24",
         name: "ไม้เชิงชาย 8 นิ้ว (หน้ากว้าง 20 ซม.)",
         qty: "-",
         unit: "เมตร",
@@ -681,7 +769,7 @@ export const initialCategories = [
         laborPrice: 25.0
       },
       {
-        id: "3.16",
+        id: "3.25",
         name: "ไม้เชิงชาย 6 นิ้ว (หน้ากว้าง 15 ซม.)",
         qty: "-",
         unit: "เมตร",
@@ -689,7 +777,7 @@ export const initialCategories = [
         laborPrice: 25.0
       },
       {
-        id: "3.17",
+        id: "3.26",
         name: "แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE",
         qty: "-",
         unit: "ตร.ม",
@@ -697,7 +785,7 @@ export const initialCategories = [
         laborPrice: 150.0
       },
       {
-        id: "3.18",
+        id: "3.27",
         name: "สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)",
         qty: "-",
         unit: "กล่อง",
@@ -705,7 +793,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "3.19",
+        id: "3.28",
         name: "ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)",
         qty: "-",
         unit: "เมตร",
@@ -713,7 +801,7 @@ export const initialCategories = [
         laborPrice: 0.0
       },
       {
-        id: "3.20",
+        id: "3.29",
         name: "เชิงชาย SCG Fascia Board_One Piece",
         qty: "-",
         unit: "เมตร",
@@ -721,7 +809,7 @@ export const initialCategories = [
         laborPrice: 65.0
       },
       {
-        id: "3.21",
+        id: "3.30",
         name: "ไม้ตกแต่งซีเฟรม ขนาด 22.3 x 300 x 1.2 ซม. สีซีเมนต์",
         qty: "-",
         unit: "เมตร",
@@ -729,7 +817,7 @@ export const initialCategories = [
         laborPrice: 35.0
       },
       {
-        id: "3.22",
+        id: "3.31",
         name: "ไม้ตกแต่งซีเฟรม ขนาด 305 x 300 x 1.2 ซม. สีซีเมนต์",
         qty: "-",
         unit: "เมตร",
@@ -787,7 +875,7 @@ export const initialCategories = [
         name: "อิฐมอญ 2 รู (ขนาดทั่วไป 3x6x14 ซม.)",
         qty: "-",
         unit: "ก้อน",
-        matPrice: 1.5,
+        matPrice: 2.0,
         laborPrice: 0.0
       },
       {
@@ -811,7 +899,7 @@ export const initialCategories = [
         name: "อิฐบล็อก (TAN-BRICK) ขนาด 30 x 7 x 15 ซม.",
         qty: "-",
         unit: "ก้อน",
-        matPrice: 8.5,
+        matPrice: 9.0,
         laborPrice: 0.0
       },
       {
@@ -1021,7 +1109,7 @@ export const initialCategories = [
         name: "สีทาฝ้าสีภายใน TOA 4 Seasons (ทา 2 รอบ)",
         qty: "-",
         unit: "ตร.ม.",
-        matPrice: 33.33,
+        matPrice: 33.0,
         laborPrice: 50.0
       },
       {
@@ -1029,7 +1117,7 @@ export const initialCategories = [
         name: "สีรองพื้นปูนใหม่ TOA 4 Seasons (ทา 1 รอบ)",
         qty: "-",
         unit: "ตร.ม.",
-        matPrice: 16.67,
+        matPrice: 17.0,
         laborPrice: 65.0
       },
       {
@@ -1037,7 +1125,7 @@ export const initialCategories = [
         name: "สีรองพื้นปูนใหม่ TOA Shield-1 Nano (ทา 1 รอบ)",
         qty: "-",
         unit: "ตร.ม.",
-        matPrice: 19.33,
+        matPrice: 19.0,
         laborPrice: 65.0
       },
       {
@@ -1069,7 +1157,7 @@ export const initialCategories = [
         name: "สีทาภายใน TOA 4 Seasons (ทา 2 รอบ)",
         qty: "-",
         unit: "ตร.ม.",
-        matPrice: 33.33,
+        matPrice: 33.0,
         laborPrice: 70.0
       },
       {
@@ -1077,7 +1165,7 @@ export const initialCategories = [
         name: "สีทาภายใน TOA SuperShield Duraclean (ทา 2 รอบ)",
         qty: "-",
         unit: "ตร.ม.",
-        matPrice: 57.33,
+        matPrice: 57.0,
         laborPrice: 70.0
       },
       {
@@ -1382,7 +1470,7 @@ export const initialCategories = [
       },
       {
         id: "9.21",
-        name: "หน้าต่างบานกระทุ้งอลูมิเนียม A2  (บานคู่) (120x50 ซม.)+พร้อมอุปกรณ์",
+        name: "หน้าต่างบานกระทุ้งอลูมิเนียม A2 (บานคู่) (120x50 ซม.)+พร้อมอุปกรณ์",
         qty: "-",
         unit: "ชุด",
         matPrice: 2000.0,
@@ -1476,7 +1564,7 @@ export const initialCategories = [
       },
       {
         id: "10.11",
-        name: "สายเมนเข้ามิเตอร์ (THW/NYY  มิเตอร์ 15(45)A ) รวมไม่เกิน 25 เมตร",
+        name: "สายเมนเข้ามิเตอร์ (THW/NYY มิเตอร์ 15(45)A ) รวมไม่เกิน 25 เมตร",
         qty: "-",
         unit: "เมตร",
         matPrice: 350.0,
@@ -1744,7 +1832,7 @@ export const initialCategories = [
       },
       {
         id: "12.7",
-        name: "แทงค์น้ำ 1,000 ลิตร + ปั๊มน้ำ 200W ",
+        name: "แทงค์น้ำ 1,000 ลิตร + ปั๊มน้ำ 200W",
         qty: "-",
         unit: "เหมา",
         matPrice: 9000.0,
