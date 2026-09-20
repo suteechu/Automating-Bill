@@ -117,6 +117,32 @@ export default function App() {
     const roofType = projectInfo.roofType || 'cpac_lon';
     
     setCategories(prev => prev.map(cat => {
+      // Filter Cat 2 (Structural Roof)
+      if (String(cat.id) === '2') {
+        const cat2_cpac = ['ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)', 'แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)'];
+        const cat2_lon = ['ค่าแรงมุงกระเบื้องซีแพค (แบบลอน)'];
+        const cat2_flat = ['ค่าแรงมุงกระเบื้องซีแพค (แบบเรียบ)'];
+        const cat2_metal = ['ค่าแรงประกอบโครงเหล็ก + มุงเมทัลชีท (เบ็ดเสร็จ)', 'แปสำเร็จรูปสำหรับหลังคาเมทัลชีท'];
+        
+        const initialCat2 = initialCategories.find(c => String(c.id) === '2');
+        if (!initialCat2) return cat;
+
+        const filteredItems2 = initialCat2.items.filter(item => {
+          const name = item.name.trim();
+          if (cat2_cpac.includes(name)) return roofType === 'cpac_lon' || roofType === 'cpac_flat';
+          if (cat2_lon.includes(name)) return roofType === 'cpac_lon';
+          if (cat2_flat.includes(name)) return roofType === 'cpac_flat';
+          if (cat2_metal.includes(name)) return roofType === 'metal_sheet';
+          return true;
+        });
+
+        const newItems2 = filteredItems2.map((item, index) => {
+          const existingItem = cat.items.find(e => e.name === item.name);
+          return existingItem ? { ...existingItem, id: '2.' + (index + 1) } : { ...item, id: '2.' + (index + 1) };
+        });
+        return { ...cat, items: newItems2 };
+      }
+
       if (String(cat.id) !== '3') return cat;
       
       const group1 = ['แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)', 'ครอบเส้นโค้ง (ครอบสันลอน)', 'ครอบโค้งปิดจั่ว', 'ครอบข้าง', 'ครอบข้างปิดชาย', 'ครอบโค้งหางมน (ปิดปลายสันตะเข้)', 'ครอบโค้งสองทาง', 'ครอบโค้งสามทาง', 'ครอบโค้งสี่ทาง'];
