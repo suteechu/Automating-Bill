@@ -1,13 +1,13 @@
 // ข้อมูลเริ่มต้นแบบเจาะลึก
 export const initialCategories = [
   {
-    "id": 1,
+    "id": "1",
     "name": "งานโครงสร้างคอนกรีตเสริมเหล็ก",
     "items": [
       {
         "id": "1.1",
         "name": "เสาเข็มไอ 0.15 x 0.15 ยาว 6 ม. (2 ท่อนต่อ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 800.0,
         "laborPrice": 650.0
@@ -15,7 +15,7 @@ export const initialCategories = [
       {
         "id": "1.2",
         "name": "เสาเข็มไอ 0.18 x 0.18 ยาว 6 ม. (ท่อนเดียว)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 950.0,
         "laborPrice": 700.0
@@ -23,7 +23,7 @@ export const initialCategories = [
       {
         "id": "1.3",
         "name": "เสาเข็มไอ 0.18 x 0.18 ยาว 12 ม. (2 ท่อนต่อ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 2500.0,
         "laborPrice": 1200.0
@@ -31,7 +31,7 @@ export const initialCategories = [
       {
         "id": "1.4",
         "name": "เสาเข็มไอ 0.22 x 0.22 ยาว 6 ม. (ท่อนเดียว)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 1500.0,
         "laborPrice": 850.0
@@ -39,7 +39,7 @@ export const initialCategories = [
       {
         "id": "1.5",
         "name": "เสาเข็มไอ 0.22 x 0.22 ยาว 7 ม. (ท่อนเดียว)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 1650.0,
         "laborPrice": 850.0
@@ -47,7 +47,7 @@ export const initialCategories = [
       {
         "id": "1.6",
         "name": "เสาเข็มไอ 0.22 x 0.22 ยาว 8 ม. (ท่อนเดียว)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 1850.0,
         "laborPrice": 850.0
@@ -55,7 +55,7 @@ export const initialCategories = [
       {
         "id": "1.7",
         "name": "เสาเข็มไอ 0.22 x 0.22 ยาว 12 ม. (2 ท่อนต่อ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 3600.0,
         "laborPrice": 1500.0
@@ -63,7 +63,7 @@ export const initialCategories = [
       {
         "id": "1.8",
         "name": "เสาตอม่อ คสล.(ตามแบบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 550.0,
         "laborPrice": 250.0
@@ -71,7 +71,7 @@ export const initialCategories = [
       {
         "id": "1.9",
         "name": "ฐานรากเข็ม 0.60x0.60 ม.ลึกตามแบบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 1250.0,
         "laborPrice": 850.0
@@ -79,7 +79,7 @@ export const initialCategories = [
       {
         "id": "1.10",
         "name": "ฐานรากแผ่ 1.00x1.00 ม.ลึก1.10",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 1750.0,
         "laborPrice": 1500.0
@@ -87,7 +87,7 @@ export const initialCategories = [
       {
         "id": "1.11",
         "name": "ฐานรากแผ่ 1.00x1.00 ม.ลึก1.50",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 2250.0,
         "laborPrice": 1500.0
@@ -95,7 +95,7 @@ export const initialCategories = [
       {
         "id": "1.12",
         "name": "ฐานรากแผ่ 1.20x1.20 ม.ลึก1.10",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 2750.0,
         "laborPrice": 1500.0
@@ -103,7 +103,7 @@ export const initialCategories = [
       {
         "id": "1.13",
         "name": "ฐานรากแผ่ 1.20x1.20 ม.ลึก1.50",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 4500.0,
         "laborPrice": 1500.0
@@ -111,7 +111,7 @@ export const initialCategories = [
       {
         "id": "1.14",
         "name": "ฐานรากแผ่ 1.35x1.35 ม.ลึก1.10",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 3750.0,
         "laborPrice": 1500.0
@@ -119,7 +119,7 @@ export const initialCategories = [
       {
         "id": "1.15",
         "name": "ฐานรากแผ่ 1.35x1.35 ม.ลึก1.50",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 4750.0,
         "laborPrice": 1500.0
@@ -127,7 +127,7 @@ export const initialCategories = [
       {
         "id": "1.16",
         "name": "ฐานรากแผ่ 1.50x1.50 ม.ลึก1.10",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 5500.0,
         "laborPrice": 1500.0
@@ -135,7 +135,7 @@ export const initialCategories = [
       {
         "id": "1.17",
         "name": "ฐานรากแผ่ 1.50x1.50 ม.ลึก1.50",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 6500.0,
         "laborPrice": 1500.0
@@ -143,7 +143,7 @@ export const initialCategories = [
       {
         "id": "1.18",
         "name": "ค่าแรงสกัดหัวเข็ม (มี Dowel)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 0.0,
         "laborPrice": 300.0
@@ -151,7 +151,7 @@ export const initialCategories = [
       {
         "id": "1.19",
         "name": "ค่าแรงขุดหลุมฐานราก (กรณีแยกจากค่าเหมาฐาน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 0.0,
         "laborPrice": 600.0
@@ -159,7 +159,7 @@ export const initialCategories = [
       {
         "id": "1.20",
         "name": "ดินขุด / ดินถม (งานฐานราก/ปรับระดับ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 350.0,
         "laborPrice": 50.0
@@ -167,7 +167,7 @@ export const initialCategories = [
       {
         "id": "1.21",
         "name": "ทรายหยาบอัดแน่น (หนา 5-10 ซม.)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 120.0,
         "laborPrice": 150.0
@@ -175,7 +175,7 @@ export const initialCategories = [
       {
         "id": "1.22",
         "name": "คอนกรีตหยาบ (Lean 1:3:6 หนา 5 ซม.)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 150.0,
         "laborPrice": 200.0
@@ -183,7 +183,7 @@ export const initialCategories = [
       {
         "id": "1.23",
         "name": "แบบหล่อคอนกรีต (ไม้แบบ/เหล็กแบบ + ค่าแรง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 350.0,
         "laborPrice": 200.0
@@ -191,7 +191,7 @@ export const initialCategories = [
       {
         "id": "1.24",
         "name": "คอนกรีต 240 ksc. (หนา 10 ซม. สำหรับพื้น)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 350.0,
         "laborPrice": 200.0
@@ -199,7 +199,7 @@ export const initialCategories = [
       {
         "id": "1.25",
         "name": "คอนกรีต 240 ksc. (กรณีสั่งเป็นคิว/Ready Mix)",
-        "qty": "-",
+        "qty": "",
         "unit": "ลบ.ม.",
         "matPrice": 2250.0,
         "laborPrice": 300.0
@@ -207,7 +207,7 @@ export const initialCategories = [
       {
         "id": "1.26",
         "name": "เหล็กเส้น DB 20 mm. (ข้ออ้อย SD40)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -215,7 +215,7 @@ export const initialCategories = [
       {
         "id": "1.27",
         "name": "เหล็กเส้น DB 16 mm. (ข้ออ้อย SD40)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -223,7 +223,7 @@ export const initialCategories = [
       {
         "id": "1.28",
         "name": "เหล็กเส้น DB 12 mm. (ข้ออ้อย SD40)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -231,7 +231,7 @@ export const initialCategories = [
       {
         "id": "1.29",
         "name": "เหล็กเส้น RB 9 mm. (เหล็กกลม SR24)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -239,7 +239,7 @@ export const initialCategories = [
       {
         "id": "1.30",
         "name": "เหล็กเส้น RB 6 mm. (เหล็กกลม SR24)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -247,7 +247,7 @@ export const initialCategories = [
       {
         "id": "1.31",
         "name": "ปลอก RB 9 mm. (เหล็กกลม SR24) @0.15m.",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -255,7 +255,7 @@ export const initialCategories = [
       {
         "id": "1.32",
         "name": "ปลอก RB 6 mm. (เหล็กกลม SR24) @0.15m.",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -263,7 +263,7 @@ export const initialCategories = [
       {
         "id": "1.33",
         "name": "ปลอก RB 9 mm. (เหล็กกลม SR24) @0.20m.",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -271,7 +271,7 @@ export const initialCategories = [
       {
         "id": "1.34",
         "name": "ปลอก RB 6 mm. (เหล็กกลม SR24) @0.20m.",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -279,7 +279,7 @@ export const initialCategories = [
       {
         "id": "1.35",
         "name": "ลวดผูกเหล็ก (เบอร์ 18)",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 55.0,
         "laborPrice": 0.0
@@ -287,7 +287,7 @@ export const initialCategories = [
       {
         "id": "1.36",
         "name": "ตะปู ขนาดต่างๆ (1\", 3\", 4\")",
-        "qty": "-",
+        "qty": "",
         "unit": "กก.",
         "matPrice": 35.0,
         "laborPrice": 0.0
@@ -295,7 +295,7 @@ export const initialCategories = [
       {
         "id": "1.37",
         "name": "งานแผ่นพื้นสำเร็จรูป (รวมค่าแรงวาง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 310.0,
         "laborPrice": 180.0
@@ -303,7 +303,7 @@ export const initialCategories = [
       {
         "id": "1.38",
         "name": "ตะแกรงเหล็ก Wiremesh (หนา 4 มม. @20)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 65.0,
         "laborPrice": 0.0
@@ -311,7 +311,7 @@ export const initialCategories = [
       {
         "id": "1.39",
         "name": "วัสดุสิ้นเปลือง (ลวดเชื่อม, ใบตัด)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 0.0,
         "laborPrice": 45.0
@@ -319,13 +319,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 2,
+    "id": "2",
     "name": "งานโครงสร้าง โครงหลังคา",
     "items": [
       {
         "id": "2.1",
         "name": "ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 450.0
@@ -333,7 +333,7 @@ export const initialCategories = [
       {
         "id": "2.2",
         "name": "ค่าแรงมุงกระเบื้องซีแพค (แบบลอน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 150.0
@@ -341,7 +341,7 @@ export const initialCategories = [
       {
         "id": "2.3",
         "name": "ค่าแรงมุงกระเบื้องซีแพค (แบบเรียบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 185.0
@@ -349,7 +349,7 @@ export const initialCategories = [
       {
         "id": "2.4",
         "name": "ค่าแรงประกอบโครงเหล็ก + มุงเมทัลชีท (เบ็ดเสร็จ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 350.0
@@ -357,7 +357,7 @@ export const initialCategories = [
       {
         "id": "2.5",
         "name": "เหล็กกล่อง 100x100x1.6 มม.4.90กก.(เสาโครงสร้างเบา / เพิงพัก)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 650.0,
         "laborPrice": 0.0
@@ -365,7 +365,7 @@ export const initialCategories = [
       {
         "id": "2.6",
         "name": "เหล็กกล่อง 100x100x2.3 มม.6.94กก.(เสาโครงสร้างมาตรฐาน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 880.0,
         "laborPrice": 0.0
@@ -373,7 +373,7 @@ export const initialCategories = [
       {
         "id": "2.7",
         "name": "เหล็กกล่อง 100x100x3.2 มม.9.53กก.เสาโครงสร้างหนัก / รับน้ำหนักมาก)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 1250.0,
         "laborPrice": 0.0
@@ -381,7 +381,7 @@ export const initialCategories = [
       {
         "id": "2.8",
         "name": "เหล็กกล่อง 100x50x1.6 มม.3.55กก.(เอ็นทับหลัง / โครงตกแต่ง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 490.0,
         "laborPrice": 0.0
@@ -389,7 +389,7 @@ export const initialCategories = [
       {
         "id": "2.9",
         "name": "เหล็กกล่อง 100x50x2.0มม.4.41กก.(คานรอง / โครงสร้างทั่วไป)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 590.0,
         "laborPrice": 0.0
@@ -397,7 +397,7 @@ export const initialCategories = [
       {
         "id": "2.10",
         "name": "เหล็กC 200x50x20x2.3 มม. (อเส, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 1200.0,
         "laborPrice": 0.0
@@ -405,7 +405,7 @@ export const initialCategories = [
       {
         "id": "2.11",
         "name": "เหล็กC 200x50x20x3.2 มม. (อเส, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 1500.0,
         "laborPrice": 0.0
@@ -413,7 +413,7 @@ export const initialCategories = [
       {
         "id": "2.12",
         "name": "เหล็กC 150x50x20x2.3 มม.4.96กก.(อเส, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 720.0,
         "laborPrice": 0.0
@@ -421,7 +421,7 @@ export const initialCategories = [
       {
         "id": "2.13",
         "name": "เหล็กC 150x50x20x3.2 มม.6.76กก.(อเส, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 980.0,
         "laborPrice": 0.0
@@ -429,7 +429,7 @@ export const initialCategories = [
       {
         "id": "2.14",
         "name": "เหล็กC 125x50x20x2.3 มม.4.51กก.(อเส, ดั้ง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 650.0,
         "laborPrice": 0.0
@@ -437,7 +437,7 @@ export const initialCategories = [
       {
         "id": "2.15",
         "name": "เหล็กC 125x50x20x3.2 มม.6.13กก.(อเส, ดั้ง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 890.0,
         "laborPrice": 0.0
@@ -445,7 +445,7 @@ export const initialCategories = [
       {
         "id": "2.16",
         "name": "เหล็กC 100x50x20x1.6มม.2.88กก.(จันทัน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 420.0,
         "laborPrice": 0.0
@@ -453,7 +453,7 @@ export const initialCategories = [
       {
         "id": "2.17",
         "name": "เหล็กC 100x50x20x2.3มม.4.06กก.(อเส, ดั้ง, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 590.0,
         "laborPrice": 0.0
@@ -461,7 +461,7 @@ export const initialCategories = [
       {
         "id": "2.18",
         "name": "เหล็กC 100x50x20x3.2มม.5.50กก.(อเส, ดั้ง, อกไก่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 790.0,
         "laborPrice": 0.0
@@ -469,7 +469,7 @@ export const initialCategories = [
       {
         "id": "2.19",
         "name": "เหล็กC 100x50x20x1.6มม.2.88กก.(แป)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 420.0,
         "laborPrice": 0.0
@@ -477,7 +477,7 @@ export const initialCategories = [
       {
         "id": "2.20",
         "name": "เหล็กC 100x50x20x2.3มม.4.06กก.(จันทัน, สะพานเหล็ก)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 590.0,
         "laborPrice": 0.0
@@ -485,7 +485,7 @@ export const initialCategories = [
       {
         "id": "2.21",
         "name": "เหล็กC 100x50x20x1.6มม.2.88กก.(จันทัน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 420.0,
         "laborPrice": 0.0
@@ -493,7 +493,7 @@ export const initialCategories = [
       {
         "id": "2.22",
         "name": "เหล็กC 100x50x20x2.3มม.4.06กก.(จันทัน, สะพานเหล็ก)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 590.0,
         "laborPrice": 0.0
@@ -501,7 +501,7 @@ export const initialCategories = [
       {
         "id": "2.23",
         "name": "เหล็กC 75x45x15x1.6มม.2.32กก.(จันทัน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 350.0,
         "laborPrice": 0.0
@@ -509,7 +509,7 @@ export const initialCategories = [
       {
         "id": "2.24",
         "name": "เหล็กC 75x45x15x2.3มม.3.25กก.(สะพานเหล็ก, จันทัน)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 480.0,
         "laborPrice": 0.0
@@ -517,7 +517,7 @@ export const initialCategories = [
       {
         "id": "2.25",
         "name": "แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 45.0,
         "laborPrice": 0.0
@@ -525,7 +525,7 @@ export const initialCategories = [
       {
         "id": "2.26",
         "name": "แปสำเร็จรูปสำหรับหลังคาเมทัลชีท",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 35.0,
         "laborPrice": 0.0
@@ -533,7 +533,7 @@ export const initialCategories = [
       {
         "id": "2.27",
         "name": "แป๊บโปร่งกัลวาไนซ์ 32 x32x1.2 มม. (1.1/4 x 1.1/4 นิ้ว)",
-        "qty": "-",
+        "qty": "",
         "unit": "ท่อน",
         "matPrice": 186.0,
         "laborPrice": 0.0
@@ -541,7 +541,7 @@ export const initialCategories = [
       {
         "id": "2.28",
         "name": "รางน้ำตะเข้ กัลวาไนซ์ (Galvanized Steel)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 110.0,
         "laborPrice": 80.0
@@ -549,7 +549,7 @@ export const initialCategories = [
       {
         "id": "2.29",
         "name": "รางน้ำตะเข้ สแตนเลส (Stainless Steel)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 325.0,
         "laborPrice": 105.0
@@ -557,7 +557,7 @@ export const initialCategories = [
       {
         "id": "2.30",
         "name": "วัสดุสิ้นเปลือง ลวดเชื่อม,ใบตัด โครงสร้างหลังคา",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 250.0
@@ -565,7 +565,7 @@ export const initialCategories = [
       {
         "id": "2.31",
         "name": "ทาสีเหล็กโครงสร้าง (เหล็กรูปพรรณ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 180.0
@@ -573,7 +573,7 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 3,
+    "id": "3",
     "name": "งานมุงหลังคา",
     "items": [
       {
@@ -827,13 +827,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 4,
+    "id": "4",
     "name": "งานก่อผนัง",
     "items": [
       {
         "id": "4.1",
         "name": "ผนังก่ออิฐมวลเบา(7.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 450.0,
         "laborPrice": 280.0
@@ -841,7 +841,7 @@ export const initialCategories = [
       {
         "id": "4.2",
         "name": "ผนังก่ออิฐมวลเบา(17.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 550.0,
         "laborPrice": 500.0
@@ -849,7 +849,7 @@ export const initialCategories = [
       {
         "id": "4.3",
         "name": "อิฐมวลเบา ขนาด 7.5 ซม.",
-        "qty": "-",
+        "qty": "",
         "unit": "ก้อน",
         "matPrice": 24.0,
         "laborPrice": 0.0
@@ -857,7 +857,7 @@ export const initialCategories = [
       {
         "id": "4.4",
         "name": "ผนังก่ออิฐมอญ(7.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 450.0,
         "laborPrice": 320.0
@@ -865,7 +865,7 @@ export const initialCategories = [
       {
         "id": "4.5",
         "name": "ผนังก่ออิฐมอญ(17.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 600.0,
         "laborPrice": 600.0
@@ -873,7 +873,7 @@ export const initialCategories = [
       {
         "id": "4.6",
         "name": "อิฐมอญ 2 รู (ขนาดทั่วไป 3x6x14 ซม.)",
-        "qty": "-",
+        "qty": "",
         "unit": "ก้อน",
         "matPrice": 2.0,
         "laborPrice": 0.0
@@ -881,7 +881,7 @@ export const initialCategories = [
       {
         "id": "4.7",
         "name": "ผนังก่ออิฐบล็อก(7.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 420.0,
         "laborPrice": 250.0
@@ -889,7 +889,7 @@ export const initialCategories = [
       {
         "id": "4.8",
         "name": "ผนังก่ออิฐบล็อก(17.5 ซม.)พร้อมเสาเอ็นทับหลัง+งานฉาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 500.0,
         "laborPrice": 450.0
@@ -897,7 +897,7 @@ export const initialCategories = [
       {
         "id": "4.9",
         "name": "อิฐบล็อก (TAN-BRICK) ขนาด 30 x 7 x 15 ซม.",
-        "qty": "-",
+        "qty": "",
         "unit": "ก้อน",
         "matPrice": 9.0,
         "laborPrice": 0.0
@@ -905,7 +905,7 @@ export const initialCategories = [
       {
         "id": "4.10",
         "name": "ปูนเสือ (SCG) ก่อ/ฉาบ ทั้วไป หนา 1.25 ซม.",
-        "qty": "-",
+        "qty": "",
         "unit": "ถุง",
         "matPrice": 165.0,
         "laborPrice": 0.0
@@ -913,7 +913,7 @@ export const initialCategories = [
       {
         "id": "4.11",
         "name": "งานติดตั้งบัวผนัง รอบบ้านปูนปั้น(ตามแบบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 185.0,
         "laborPrice": 80.0
@@ -921,7 +921,7 @@ export const initialCategories = [
       {
         "id": "4.12",
         "name": "ผนังปูกระเบื้อง 6\"x12\"สูงชนฝ้า(ห้องน้ำ) ผิวมัน",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 200.0,
         "laborPrice": 280.0
@@ -929,7 +929,7 @@ export const initialCategories = [
       {
         "id": "4.13",
         "name": "ผนังปูกระเบื้อง 6\"x12\"(ห้องครัว) ผิวมัน",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 200.0,
         "laborPrice": 280.0
@@ -937,7 +937,7 @@ export const initialCategories = [
       {
         "id": "4.14",
         "name": "ปูนกาวผนัง ( กระเบื้องขนาดเล็ก-กลาง) กระสอบ (20 กก.)",
-        "qty": "-",
+        "qty": "",
         "unit": "กระสอบ",
         "matPrice": 210.0,
         "laborPrice": 0.0
@@ -945,7 +945,7 @@ export const initialCategories = [
       {
         "id": "4.15",
         "name": "ค่าแรง งานตัดเข้ามุม (เจียร 45 องศา)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 0.0,
         "laborPrice": 100.0
@@ -953,7 +953,7 @@ export const initialCategories = [
       {
         "id": "4.16",
         "name": "ผนังปูหินติดผนัง หินเทียม",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 1200.0,
         "laborPrice": 180.0
@@ -961,7 +961,7 @@ export const initialCategories = [
       {
         "id": "4.17",
         "name": "ผนังกรุไม้ฝา 4\"พร้อมโครงคร่าว C-Line",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 180.0,
         "laborPrice": 80.0
@@ -969,7 +969,7 @@ export const initialCategories = [
       {
         "id": "4.18",
         "name": "ผนังไม้เทียม Wpc เหมือนไม้จริง",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 1500.0,
         "laborPrice": 180.0
@@ -977,7 +977,7 @@ export const initialCategories = [
       {
         "id": "4.19",
         "name": "กระจกเทมเปอร์ สีใส 7มม.",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ฟ",
         "matPrice": 200.0,
         "laborPrice": 3.0
@@ -985,13 +985,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 5,
+    "id": "5",
     "name": "งานพื้น",
     "items": [
       {
         "id": "5.1",
         "name": "กระเบื้องแกรนิตโต้ 24\"x24\"ผิวมัน ห้องโถง ห้องพระ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 650.0,
         "laborPrice": 220.0
@@ -999,7 +999,7 @@ export const initialCategories = [
       {
         "id": "5.2",
         "name": "กระเบื้องแกรนิตโต้ 24\"x24\"ผิวมัน ห้องนอน",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 650.0,
         "laborPrice": 220.0
@@ -1007,7 +1007,7 @@ export const initialCategories = [
       {
         "id": "5.3",
         "name": "พื้นไม้ลามิเนตพร้อมตัวจบ ห้องนอน",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 600.0,
         "laborPrice": 250.0
@@ -1015,7 +1015,7 @@ export const initialCategories = [
       {
         "id": "5.4",
         "name": "กระเบื้องเซรามิค12\"x12\"ผิวด้าน ห้องน้ำ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 185.0,
         "laborPrice": 250.0
@@ -1023,7 +1023,7 @@ export const initialCategories = [
       {
         "id": "5.5",
         "name": "กระเบื้องเซรามิค16\"x16\"ผิวด้าน ครัว ระเบียง ซักล้าง",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 195.0,
         "laborPrice": 250.0
@@ -1031,7 +1031,7 @@ export const initialCategories = [
       {
         "id": "5.6",
         "name": "ปูนกาวพื้น (กระเบื้องแกรนิตโต้ / งานภายนอก) กระสอบ (20 กก.)",
-        "qty": "-",
+        "qty": "",
         "unit": "กระสอบ",
         "matPrice": 195.0,
         "laborPrice": 160.0
@@ -1039,7 +1039,7 @@ export const initialCategories = [
       {
         "id": "5.7",
         "name": "บัวพื้น MDF/WPC",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 150.0,
         "laborPrice": 200.0
@@ -1047,7 +1047,7 @@ export const initialCategories = [
       {
         "id": "5.8",
         "name": "พื้นคอนกรีตขัดมันหรือขัดหยาบ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 150.0,
         "laborPrice": 75.0
@@ -1055,7 +1055,7 @@ export const initialCategories = [
       {
         "id": "5.9",
         "name": "ติดตั้งจมูกบันได อลูมิเนียม",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 100.0,
         "laborPrice": 15.0
@@ -1063,13 +1063,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 6,
+    "id": "6",
     "name": "งานฝ้าเพดาน",
     "items": [
       {
         "id": "6.1",
         "name": "งานฝ้าเพดานยิปซั่มบอร์ด หนา 9 มม. ฉาบเรียบ โครงคร่าว C-Line",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 220.0,
         "laborPrice": 150.0
@@ -1077,7 +1077,7 @@ export const initialCategories = [
       {
         "id": "6.2",
         "name": "งานฝ้าเพดานยิปซั่มบอร์ด ชนิดทนชื้น (ห้องน้ำ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 260.0,
         "laborPrice": 150.0
@@ -1085,7 +1085,7 @@ export const initialCategories = [
       {
         "id": "6.3",
         "name": "งานฝ้าชายคา สมาร์ทบอร์ด เซาะร่อง มีรูระบายอากาศ",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 180.0,
         "laborPrice": 120.0
@@ -1093,7 +1093,7 @@ export const initialCategories = [
       {
         "id": "6.4",
         "name": "งานฝ้าชายคา WPC (Wood Plastic Composite)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 1000.0,
         "laborPrice": 300.0
@@ -1101,13 +1101,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 7,
+    "id": "7",
     "name": "งานสี",
     "items": [
       {
         "id": "7.1",
         "name": "สีทาฝ้าสีภายใน TOA 4 Seasons (ทา 2 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 33.0,
         "laborPrice": 50.0
@@ -1115,7 +1115,7 @@ export const initialCategories = [
       {
         "id": "7.2",
         "name": "สีรองพื้นปูนใหม่ TOA 4 Seasons (ทา 1 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 17.0,
         "laborPrice": 65.0
@@ -1123,7 +1123,7 @@ export const initialCategories = [
       {
         "id": "7.3",
         "name": "สีรองพื้นปูนใหม่ TOA Shield-1 Nano (ทา 1 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 19.0,
         "laborPrice": 65.0
@@ -1131,7 +1131,7 @@ export const initialCategories = [
       {
         "id": "7.4",
         "name": "สีรองพื้นปูนใหม่ TOA SuperShield (ทา 1 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 24.0,
         "laborPrice": 65.0
@@ -1139,7 +1139,7 @@ export const initialCategories = [
       {
         "id": "7.5",
         "name": "สีทาภายนอก TOA 4 Seasons (ทา 2 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 46.0,
         "laborPrice": 90.0
@@ -1147,7 +1147,7 @@ export const initialCategories = [
       {
         "id": "7.6",
         "name": "สีทาภายนอก TOA SuperShield Duraclean (ทา 2 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 66.0,
         "laborPrice": 90.0
@@ -1155,7 +1155,7 @@ export const initialCategories = [
       {
         "id": "7.7",
         "name": "สีทาภายใน TOA 4 Seasons (ทา 2 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 33.0,
         "laborPrice": 70.0
@@ -1163,15 +1163,15 @@ export const initialCategories = [
       {
         "id": "7.8",
         "name": "สีทาภายใน TOA SuperShield Duraclean (ทา 2 รอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 57.0,
         "laborPrice": 70.0
       },
       {
         "id": "7.9",
-        "name": "ค่าแรงงานลอกสีเก่า + ทารองพื้นปูนเก่า:",
-        "qty": "-",
+        "name": "ค่าแรงงานลอกสีเก่า + ทารองพื้นปูนเก่า",
+        "qty": "",
         "unit": "ตร.ม.",
         "matPrice": 0.0,
         "laborPrice": 150.0
@@ -1179,7 +1179,7 @@ export const initialCategories = [
       {
         "id": "7.10",
         "name": "สีน้ำมันทาวงกบไม้ (รวมรองพื้นกันเชื้อรา)",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา/วงกบ",
         "matPrice": 1500.0,
         "laborPrice": 500.0
@@ -1187,117 +1187,141 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 8,
+    "id": "8",
     "name": "งานประตู",
     "items": [
       {
         "id": "8.1",
-        "name": "ประตูบาน เลื่อนสไลด์ อลูมิเนียม S4 (270x205 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "ประตูเลื่อนสไลด์ อลูมิเนียม S4 (360x205 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 0,
+        "laborPrice": 1000.0
+      },
+      {
+        "id": "8.2",
+        "name": "ประตูเลื่อนสไลด์ อลูมิเนียม S4 (270x205 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 21300.0,
         "laborPrice": 1000.0
       },
       {
-        "id": "8.2",
-        "name": "ประตูบาน เลื่อนสไลด์ อลูมิเนียม S3 (160x205 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.3",
+        "name": "ประตูเลื่อนสไลด์ อลูมิเนียม S3 (180x205 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
-        "matPrice": 10900.0,
+        "matPrice": 0,
         "laborPrice": 1000.0
       },
       {
-        "id": "8.3",
-        "name": "ประตูบาน เลื่อนสไลด์ อลูมิเนียม S2 (160x205 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.4",
+        "name": "ประตูเลื่อนสไลด์ อลูมิเนียม S2 (160x205 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 9200.0,
         "laborPrice": 1000.0
       },
       {
-        "id": "8.4",
-        "name": "ประตูภายนอก เลื่อนสไลด์ (บานเดี่ยว) (100x245 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.5",
+        "name": "ประตูเลื่อนสไลด์ อลูมิเนียม S2 (180x205 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 0,
+        "laborPrice": 1000.0
+      },
+      {
+        "id": "8.6",
+        "name": "ประตูเลื่อนสไลด์ (บานเดี่ยว) (100x245 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 25900.0,
         "laborPrice": 2000.0
       },
       {
-        "id": "8.5",
-        "name": "ประตูภายนอก เลื่อนสไลด์ (บานคู่) (240x245 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.7",
+        "name": "ประตูเลื่อนสไลด์ (บานคู่) (360x245 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 0,
+        "laborPrice": 2000.0
+      },
+      {
+        "id": "8.8",
+        "name": "ประตูเลื่อนสไลด์ (บานคู่) (240x245 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 48900.0,
         "laborPrice": 2000.0
       },
       {
-        "id": "8.6",
-        "name": "ประตูภายนอก ไม้เนื้อแข็ง (บานคู่) (180x205 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.9",
+        "name": "ประตูไม้เนื้อแข็ง (บานคู่) (180x205 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 25300.0,
         "laborPrice": 2000.0
       },
       {
-        "id": "8.7",
-        "name": "ประตูภายใน ไม้เนื้อแข็ง (บานเดี่ยว) (80x200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
-        "unit": "ชุด",
-        "matPrice": 4900.0,
-        "laborPrice": 500.0
-      },
-      {
-        "id": "8.8",
-        "name": "ประตูภายใน WPC (บานเดี่ยว) (80x200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
-        "unit": "ชุด",
-        "matPrice": 3700.0,
-        "laborPrice": 500.0
-      },
-      {
-        "id": "8.9",
-        "name": "ประตูภายใน PVC (บานเดี่ยว) (80x200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
-        "unit": "ชุด",
-        "matPrice": 3700.0,
-        "laborPrice": 500.0
-      },
-      {
         "id": "8.10",
-        "name": "ประตูภายนอก ไม้เนื้อแข็ง(90x200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "ประตูไม้เนื้อแข็ง(90x200 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6300.0,
         "laborPrice": 500.0
       },
       {
         "id": "8.11",
-        "name": "ประตูภายนอก PVC (90x200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "ประตูPVC (90x200 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6300.0,
         "laborPrice": 500.0
       },
       {
         "id": "8.12",
-        "name": "ประตูห้องน้ำเกร็ด ไม้เนื้อแข็ง(80X200 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "ประตูภายใน ไม้เนื้อแข็ง (บานเดี่ยว) (80x200 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 4900.0,
+        "laborPrice": 500.0
+      },
+      {
+        "id": "8.13",
+        "name": "ประตูภายใน WPC (บานเดี่ยว) (80x200 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 3700.0,
+        "laborPrice": 500.0
+      },
+      {
+        "id": "8.14",
+        "name": "ประตูภายใน PVC (บานเดี่ยว) (80x200 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 3700.0,
+        "laborPrice": 500.0
+      },
+      {
+        "id": "8.15",
+        "name": "ประตูห้องน้ำเกร็ด ไม้เนื้อแข็ง(80x200 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2500.0,
         "laborPrice": 500.0
       },
       {
-        "id": "8.13",
-        "name": "ประตูห้องน้ำ UPVC (บานทึบ/เกล็ด) (70X1.85 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.16",
+        "name": "ประตูห้องน้ำ UPVC (บานทึบ/เกล็ด) (70x185 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2100.0,
         "laborPrice": 500.0
       },
       {
-        "id": "8.14",
-        "name": "ประตูห้องน้ำ PVC (บานทึบ/เกล็ด) (70X1.85 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "8.17",
+        "name": "ประตูห้องน้ำ PVC (บานทึบ/เกล็ด) (70x185 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2100.0,
         "laborPrice": 500.0
@@ -1305,173 +1329,205 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 9,
+    "id": "9",
     "name": "งานหน้าต่าง",
     "items": [
       {
         "id": "9.1",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S4 (240x110 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S4 (240x110 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 9800.0,
         "laborPrice": 300.0
       },
       {
         "id": "9.2",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S4 (240x150 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S4 (240x150 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 10900.0,
         "laborPrice": 300.0
       },
       {
         "id": "9.3",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S4 (240x180 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S4 (240x180 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 14400.0,
         "laborPrice": 300.0
       },
       {
         "id": "9.4",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S3 (180x110 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S4 (240x205 ซม.)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 14400.0,
+        "laborPrice": 300.0
+      },
+      {
+        "id": "9.5",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S4 (240x180 ซม.+Fix)+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 14400.0,
+        "laborPrice": 300.0
+      },
+      {
+        "id": "9.6",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S3 (180x110 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 7500.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.5",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S3 (180x150 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.7",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S3 (180x150 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 8600.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.6",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S3 (180x180 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.8",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S3 (180x180 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 13200.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.7",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S2 (120x110 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.9",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S2 (120x110 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3700.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.8",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S2 (120x150 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.10",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S2 (120x150 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4300.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.9",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S2 (120x180 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.11",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S2 (120x180 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4900.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.10",
-        "name": "หน้าต่างบานเลื่อนอลูมิเนียม S2 (80x50 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.12",
+        "name": "หน้าต่างเลื่อนอลูมิเนียม S2 (80x50 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2900.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.11",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A1 (บานเดี่ยว) (W 0.35)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.13",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/เดี่ยว (W 35 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2600.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.12",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A1 (บานเดี่ยว) (W 0.45)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.14",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/เดี่ยว (W 45 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3000.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.13",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A1 (บานเดี่ยว) (W 0.60)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.15",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/เดี่ยว (W 60 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3200.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.14",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A1 (บานเดี่ยว) (W 0.80)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.16",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/เดี่ยว (W 80 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3700.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.15",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A2 (บานคู่) (W 1.20)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.17",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/คู่ (W 120 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4800.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.16",
-        "name": "หน้าต่างบานเปิดข้างอลูมิเนียม A2 (บานคู่) (W 1.80)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.18",
+        "name": "หน้าต่างเปิดข้างอลูมิเนียม/คู่ (W 180 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6600.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.17",
-        "name": "หน้าต่างบานติดตายอลูมิเนียม (Fixed) W0.35+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.19",
+        "name": "หน้าต่างติดตายอลูมิเนียม (Fixed) W 35 ซม.+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3200.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.18",
-        "name": "หน้าต่างบานติดตายอลูมิเนียม (Fixed) W0.45+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.20",
+        "name": "หน้าต่างติดตายอลูมิเนียม (Fixed) W 45 ซม.+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4000.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.19",
-        "name": "หน้าต่างบานติดตายอลูมิเนียม ตามแบบ+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.21",
+        "name": "หน้าต่างติดตายอลูมิเนียม (Fixed) W 55 ซม.+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 0,
+        "laborPrice": 300.0
+      },
+      {
+        "id": "9.22",
+        "name": "หน้าต่างติดตายอลูมิเนียม (Fixed) W 60 ซม.+อุปกรณ์",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 0,
+        "laborPrice": 300.0
+      },
+      {
+        "id": "9.23",
+        "name": "หน้าต่างติดตายอลูมิเนียม ตามแบบ+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3500.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.20",
-        "name": "หน้าต่างบานกระทุ้งอลูมิเนียม A1 (บานเดี่ยว)(80x50 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.24",
+        "name": "หน้าต่างกระทุ้งอลูมิเนียม/เดี่ยว(80x50 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1000.0,
         "laborPrice": 300.0
       },
       {
-        "id": "9.21",
-        "name": "หน้าต่างบานกระทุ้งอลูมิเนียม A2 (บานคู่) (120x50 ซม.)+พร้อมอุปกรณ์",
-        "qty": "-",
+        "id": "9.25",
+        "name": "หน้าต่างกระทุ้งอลูมิเนียม/คู่ (120x50 ซม.)+อุปกรณ์",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2000.0,
         "laborPrice": 300.0
@@ -1479,13 +1535,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 10,
+    "id": "10",
     "name": "งานไฟฟ้า",
     "items": [
       {
         "id": "10.1",
         "name": "บล็อกปลั๊ก (เต้ารับคู่มีกราวด์)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 600.0,
         "laborPrice": 150.0
@@ -1493,7 +1549,7 @@ export const initialCategories = [
       {
         "id": "10.2",
         "name": "บล็อกสวิทช์ (สวิทช์ทางเดียว)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 500.0,
         "laborPrice": 150.0
@@ -1501,7 +1557,7 @@ export const initialCategories = [
       {
         "id": "10.3",
         "name": "บล็อกสวิทช์ (สวิทช์สองทาง)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 850.0,
         "laborPrice": 150.0
@@ -1509,7 +1565,7 @@ export const initialCategories = [
       {
         "id": "10.4",
         "name": "บล็อกแอร์ (รวมเบรกเกอร์และสาย VAF/THW)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 1600.0,
         "laborPrice": 250.0
@@ -1517,7 +1573,7 @@ export const initialCategories = [
       {
         "id": "10.5",
         "name": "บล็อกเครื่องทำน้ำอุ่น (รวมเบรกเกอร์กันดูด/สายดิน)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 1950.0,
         "laborPrice": 350.0
@@ -1525,7 +1581,7 @@ export const initialCategories = [
       {
         "id": "10.6",
         "name": "ไฟระย้า (หรือ แชนเดอเลียร์ - Chandelier)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 18500.0,
         "laborPrice": 1000.0
@@ -1533,7 +1589,7 @@ export const initialCategories = [
       {
         "id": "10.7",
         "name": "ดาวไลท์ + หลอด LED 12W (ฝังฝ้า)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 450.0,
         "laborPrice": 200.0
@@ -1541,7 +1597,7 @@ export const initialCategories = [
       {
         "id": "10.8",
         "name": "โคมซาลาเปา + หลอด LED 24W",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 750.0,
         "laborPrice": 250.0
@@ -1549,7 +1605,7 @@ export const initialCategories = [
       {
         "id": "10.9",
         "name": "ไฟกิ่งหน้าบ้าน (Outdoor Wall Lamp)",
-        "qty": "-",
+        "qty": "",
         "unit": "จุด",
         "matPrice": 1850.0,
         "laborPrice": 450.0
@@ -1557,7 +1613,7 @@ export const initialCategories = [
       {
         "id": "10.10",
         "name": "ตู้โหลด (Consumer Unit) พร้อมลูกย่อยครบชุด",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 7500.0,
         "laborPrice": 1500.0
@@ -1565,7 +1621,7 @@ export const initialCategories = [
       {
         "id": "10.11",
         "name": "สายเมนเข้ามิเตอร์ (THW/NYY มิเตอร์ 15(45)A ) รวมไม่เกิน 25 เมตร",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 350.0,
         "laborPrice": 80.0
@@ -1573,7 +1629,7 @@ export const initialCategories = [
       {
         "id": "10.12",
         "name": "สายเมนเข้ามิเตอร์ (THW/NYY มิเตอร์ 30(100)A ) รวมไม่เกิน 25 เมตร",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 550.0,
         "laborPrice": 100.0
@@ -1581,13 +1637,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 11,
+    "id": "11",
     "name": "งานสุขภัณฑ์",
     "items": [
       {
         "id": "11.1",
         "name": "สุขภัณฑ์แบบนั่งยอง",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 750.0,
         "laborPrice": 300.0
@@ -1595,7 +1651,7 @@ export const initialCategories = [
       {
         "id": "11.2",
         "name": "สุขภัณฑ์แบบชิ้นเดียว (One Piece Toilet)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6500.0,
         "laborPrice": 500.0
@@ -1603,7 +1659,7 @@ export const initialCategories = [
       {
         "id": "11.3",
         "name": "สุขภัณฑ์แบบสองชิ้น (Two Piece Toilet / Close Coupled Toilet)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 8500.0,
         "laborPrice": 500.0
@@ -1611,7 +1667,7 @@ export const initialCategories = [
       {
         "id": "11.4",
         "name": "สุขภัณฑ์แบบแขวนผนัง (Wall Hung Toilet)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 45000.0,
         "laborPrice": 1500.0
@@ -1619,7 +1675,7 @@ export const initialCategories = [
       {
         "id": "11.5",
         "name": "สุขภัณฑ์แบบตั้งพื้น (Wall Faced Toilet)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 18500.0,
         "laborPrice": 1500.0
@@ -1627,7 +1683,7 @@ export const initialCategories = [
       {
         "id": "11.6",
         "name": "สุขภัณฑ์แบบอัตโนมัติ (Smart Toilet / Automatic Toilet)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 19500.0,
         "laborPrice": 1500.0
@@ -1635,7 +1691,7 @@ export const initialCategories = [
       {
         "id": "11.7",
         "name": "ฝักบัวสายอ่อน (Hand Shower)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2250.0,
         "laborPrice": 500.0
@@ -1643,7 +1699,7 @@ export const initialCategories = [
       {
         "id": "11.8",
         "name": "ฝักบัวสายอ่อน (Hand Shower)+ (Rain Shower)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 14500.0,
         "laborPrice": 1500.0
@@ -1651,7 +1707,7 @@ export const initialCategories = [
       {
         "id": "11.9",
         "name": "อ่างล้างหน้าแบบแขวนผนัง (Wall-Hung Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2500.0,
         "laborPrice": 500.0
@@ -1659,7 +1715,7 @@ export const initialCategories = [
       {
         "id": "11.10",
         "name": "อ่างล้างหน้าแบบตั้งบนเคาน์เตอร์ (Vessel / Countertop Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6000.0,
         "laborPrice": 500.0
@@ -1667,7 +1723,7 @@ export const initialCategories = [
       {
         "id": "11.11",
         "name": "อ่างล้างหน้าแบบฝังใต้เคาน์เตอร์ (Undermount Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4000.0,
         "laborPrice": 500.0
@@ -1675,7 +1731,7 @@ export const initialCategories = [
       {
         "id": "11.12",
         "name": "อ่างล้างหน้าแบบฝังบนเคาน์เตอร์ (Drop-in / Self-rimming Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 5000.0,
         "laborPrice": 2000.0
@@ -1683,7 +1739,7 @@ export const initialCategories = [
       {
         "id": "11.13",
         "name": "อ่างล้างหน้าแบบฝังครึ่งเคาน์เตอร์ (Semi-Recessed Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 6500.0,
         "laborPrice": 2000.0
@@ -1691,7 +1747,7 @@ export const initialCategories = [
       {
         "id": "11.14",
         "name": "อ่างล้างหน้าแบบมีขาตั้ง (Pedestal Basin)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 4500.0,
         "laborPrice": 500.0
@@ -1699,7 +1755,7 @@ export const initialCategories = [
       {
         "id": "11.15",
         "name": "อ่างล้างหน้าแบบตั้งพื้น (Floor-standing / Free-standing)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 18000.0,
         "laborPrice": 500.0
@@ -1707,7 +1763,7 @@ export const initialCategories = [
       {
         "id": "11.16",
         "name": "ที่วางสบู่ (เซรามิก/สแตนเลส)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 450.0,
         "laborPrice": 120.0
@@ -1715,7 +1771,7 @@ export const initialCategories = [
       {
         "id": "11.17",
         "name": "สายฉีดชำระ (ครบชุดพร้อมสาย)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 650.0,
         "laborPrice": 120.0
@@ -1723,7 +1779,7 @@ export const initialCategories = [
       {
         "id": "11.18",
         "name": "ที่ใส่กระดาษชำระ",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1550.0,
         "laborPrice": 120.0
@@ -1731,7 +1787,7 @@ export const initialCategories = [
       {
         "id": "11.19",
         "name": "ราวแขวนผ้า (สแตนเลส 304 ยาว 60 ซม.)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1250.0,
         "laborPrice": 120.0
@@ -1739,7 +1795,7 @@ export const initialCategories = [
       {
         "id": "11.20",
         "name": "ก๊อกน้ำติดอ่างล้างหน้า (ชุบโครเมียม)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1250.0,
         "laborPrice": 30.0
@@ -1747,7 +1803,7 @@ export const initialCategories = [
       {
         "id": "11.21",
         "name": "ก๊อกน้ำล้างพื้น COTTO (บอลวาล์ว/ก้านปัด)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 450.0,
         "laborPrice": 30.0
@@ -1755,7 +1811,7 @@ export const initialCategories = [
       {
         "id": "11.22",
         "name": "กระจกเงา หนา 6 มม. (เจียรปรี/เข้ากรอบ)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1850.0,
         "laborPrice": 200.0
@@ -1763,7 +1819,7 @@ export const initialCategories = [
       {
         "id": "11.23",
         "name": "FD.ตะแกรงดักกลิ่น (สแตนเลสกันแมลง) น้ำทิ้ง",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 450.0,
         "laborPrice": 120.0
@@ -1771,7 +1827,7 @@ export const initialCategories = [
       {
         "id": "11.24",
         "name": "Sub Drain ตะแกรงดักกลิ่น (สแตนเลสกันแมลง) น้ำทิ้ง",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 2550.0,
         "laborPrice": 1000.0
@@ -1779,13 +1835,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 12,
+    "id": "12",
     "name": "งานประปา",
     "items": [
       {
         "id": "12.1",
         "name": "ถังบำบัดน้ำเสีย (1,000 ลิตร)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 3800.0,
         "laborPrice": 3000.0
@@ -1793,7 +1849,7 @@ export const initialCategories = [
       {
         "id": "12.2",
         "name": "ถังบำบัดน้ำเสีย (1,600 ลิตร)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 5500.0,
         "laborPrice": 3000.0
@@ -1801,7 +1857,7 @@ export const initialCategories = [
       {
         "id": "12.3",
         "name": "ท่อ PVC 4 นิ้ว (ระบายส้วม/น้ำทิ้งหลัก) SCG Class 8.5",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 150.0,
         "laborPrice": 0.0
@@ -1809,7 +1865,7 @@ export const initialCategories = [
       {
         "id": "12.4",
         "name": "ท่อ PVC 3 นิ้ว (น้ำทิ้ง/รางน้ำ) SCG SCG Class 8.5",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 100.0,
         "laborPrice": 0.0
@@ -1817,7 +1873,7 @@ export const initialCategories = [
       {
         "id": "12.5",
         "name": "ท่อ PVC 2 นิ้ว (น้ำทิ้งอ่าง/พื้น) SCG SCG Class 8.5",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 65.0,
         "laborPrice": 0.0
@@ -1825,7 +1881,7 @@ export const initialCategories = [
       {
         "id": "12.6",
         "name": "ท่อ PVC 3/4 นิ้ว (6 หุน) (ท่อน้ำประปา) SCG SCG Class 13.5",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 25.0,
         "laborPrice": 0.0
@@ -1833,7 +1889,7 @@ export const initialCategories = [
       {
         "id": "12.7",
         "name": "แทงค์น้ำ 1,000 ลิตร + ปั๊มน้ำ 200W",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 9000.0,
         "laborPrice": 3500.0
@@ -1841,7 +1897,7 @@ export const initialCategories = [
       {
         "id": "12.8",
         "name": "แทงค์น้ำ 1,000 ลิตร + ปั๊มน้ำ 250W",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 10000.0,
         "laborPrice": 3500.0
@@ -1849,7 +1905,7 @@ export const initialCategories = [
       {
         "id": "12.9",
         "name": "แทงค์น้ำ 2,000 ลิตร + ปั๊มน้ำ 400W",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 14000.0,
         "laborPrice": 5500.0
@@ -1857,7 +1913,7 @@ export const initialCategories = [
       {
         "id": "12.10",
         "name": "อุปกรณ์ต่อท่ออื่นๆ (ข้อต่อ/กาว/น้ำยา)",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 0.0,
         "laborPrice": 3000.0
@@ -1865,7 +1921,7 @@ export const initialCategories = [
       {
         "id": "12.11",
         "name": "บ่อพักสำเร็จรูป (คอนกรีต)+วางท่อระบายน้ำรอบบ้าน (รวมขุด/ฝัง)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 1450.0,
         "laborPrice": 450.0
@@ -1873,13 +1929,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 13,
+    "id": "13",
     "name": "งานเบ็ดเตล็ด /อื่นๆ",
     "items": [
       {
         "id": "13.1",
         "name": "งานระบบกำจัดปลวก (อัดน้ำยาลงท่อ/ฉีดพ่น)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 145.0,
         "laborPrice": 35.0
@@ -1887,7 +1943,7 @@ export const initialCategories = [
       {
         "id": "13.2",
         "name": "งานตกแต่งบล็อกช่องลม (รวมก่อ/ฉาบ/ทาสี)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 950.0,
         "laborPrice": 550.0
@@ -1895,7 +1951,7 @@ export const initialCategories = [
       {
         "id": "13.3",
         "name": "ต่อเติมโรงรถ/หลังคาระเบียง (โครงเหล็ก+เมทัลชีท)",
-        "qty": "-",
+        "qty": "",
         "unit": "ตร.ม",
         "matPrice": 2500.0,
         "laborPrice": 1000.0
@@ -1903,7 +1959,7 @@ export const initialCategories = [
       {
         "id": "13.4",
         "name": "ตกแต่งหินหน้าเสาโชว์ (หินทราย/หินเทียม)",
-        "qty": "-",
+        "qty": "",
         "unit": "ต้น",
         "matPrice": 3500.0,
         "laborPrice": 1500.0
@@ -1911,7 +1967,7 @@ export const initialCategories = [
       {
         "id": "13.5",
         "name": "งานราวเหล็ก (Steel) แบบมาตรฐาน (ราวเหล็กทั่วไป)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 1800.0,
         "laborPrice": 750.0
@@ -1919,7 +1975,7 @@ export const initialCategories = [
       {
         "id": "13.6",
         "name": "งานราวสแตนเลส (Stainless Steel) แบบท่อกลม/เหลี่ยมมาตรฐาน",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 3500.0,
         "laborPrice": 1500.0
@@ -1927,7 +1983,7 @@ export const initialCategories = [
       {
         "id": "13.7",
         "name": "งานเคาน์เตอร์ครัว (ก่อปูน/กรุกระเบื้อง/ใส่บานซิงค์)",
-        "qty": "-",
+        "qty": "",
         "unit": "เมตร",
         "matPrice": 3500.0,
         "laborPrice": 1500.0
@@ -1935,13 +1991,13 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 14,
+    "id": "14",
     "name": "อุปกรณ์เพิ่มเติม/ค่าดำเนินการ",
     "items": [
       {
         "id": "14.1",
         "name": "เครื่องปรับอากาศ (แอร์ 9000 BTU)",
-        "qty": "-",
+        "qty": "",
         "unit": "เครื่อง",
         "matPrice": 9500.0,
         "laborPrice": 1500.0
@@ -1949,7 +2005,7 @@ export const initialCategories = [
       {
         "id": "14.2",
         "name": "เครื่องปรับอากาศ (แอร์ 12000 BTU)",
-        "qty": "-",
+        "qty": "",
         "unit": "เครื่อง",
         "matPrice": 12500.0,
         "laborPrice": 1500.0
@@ -1957,7 +2013,7 @@ export const initialCategories = [
       {
         "id": "14.3",
         "name": "เครื่องปรับอากาศ (แอร์ 18000 BTU)",
-        "qty": "-",
+        "qty": "",
         "unit": "เครื่อง",
         "matPrice": 16500.0,
         "laborPrice": 1500.0
@@ -1965,7 +2021,7 @@ export const initialCategories = [
       {
         "id": "14.4",
         "name": "พัดลมดูดอากาศ (ฝังฝ้า/ติดผนัง)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 800.0,
         "laborPrice": 300.0
@@ -1973,47 +2029,55 @@ export const initialCategories = [
       {
         "id": "14.5",
         "name": "อ่างล้างจาน (Sink สแตนเลส 1 หลุมพร้อมที่พัก)",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1800.0,
         "laborPrice": 500.0
       },
       {
         "id": "14.6",
+        "name": "อ่างล้างจาน (Sink สแตนเลส 2 หลุมพร้อมที่พัก)",
+        "qty": "",
+        "unit": "ชุด",
+        "matPrice": 3500.0,
+        "laborPrice": 500.0
+      },
+      {
+        "id": "14.7",
         "name": "ก๊อกน้ำซิงค์ล้างจาน",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 850.0,
         "laborPrice": 150.0
       },
       {
-        "id": "14.7",
+        "id": "14.8",
         "name": "ตู้จดหมายและกริ่งหน้าบ้าน",
-        "qty": "-",
+        "qty": "",
         "unit": "ชุด",
         "matPrice": 1200.0,
         "laborPrice": 300.0
       },
       {
-        "id": "14.8",
+        "id": "14.9",
         "name": "ค่าตั้งแคมป์คนงานและน้ำ-ไฟชั่วคราว",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 10000.0,
         "laborPrice": 0.0
       },
       {
-        "id": "14.9",
+        "id": "14.10",
         "name": "ค่าเก็บขยะและทำความสะอาดก่อนส่งมอบ",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 0.0,
         "laborPrice": 5000.0
       },
       {
-        "id": "14.10",
+        "id": "14.11",
         "name": "ค่าดำเนินการและกำไรผู้รับเหมา (Overhead & Profit 10%)",
-        "qty": "-",
+        "qty": "",
         "unit": "เหมา",
         "matPrice": 0.0,
         "laborPrice": 0.0
