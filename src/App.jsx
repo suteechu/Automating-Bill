@@ -240,7 +240,7 @@ export default function App() {
 
       return { ...cat, items: newItems };
     }));
-  }, [projectInfo.roofType]);
+  }, [projectInfo.roofType, projectInfo.wallType, projectInfo.psArea]);
 
   useEffect(() => {
     const timerId = setTimeout(() => {
