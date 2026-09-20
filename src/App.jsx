@@ -115,8 +115,27 @@ export default function App() {
   // Effect to filter Roof Category (Cat 3) based on projectInfo.roofType
   useEffect(() => {
     const roofType = projectInfo.roofType || 'cpac_lon';
+    const psArea = Number(projectInfo.psArea) || 0;
     
     setCategories(prev => prev.map(cat => {
+      // Filter Cat 1 (Structural Floor)
+      if (String(cat.id) === '1') {
+        const initialCat1 = initialCategories.find(c => String(c.id) === '1');
+        if (!initialCat1) return cat;
+
+        const filteredItems1 = initialCat1.items.filter(item => {
+          const name = item.name.trim();
+          if (name.includes('งานแผ่นพื้นสำเร็จรูป')) return psArea > 0;
+          return true;
+        });
+
+        const newItems1 = filteredItems1.map((item, index) => {
+          const existingItem = cat.items.find(e => e.name === item.name);
+          return existingItem ? { ...existingItem, id: '1.' + (index + 1) } : { ...item, id: '1.' + (index + 1) };
+        });
+        return { ...cat, items: newItems1 };
+      }
+
       // Filter Cat 2 (Structural Roof)
       if (String(cat.id) === '2') {
         const cat2_cpac = ['ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)', 'แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)'];

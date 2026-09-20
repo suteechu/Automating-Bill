@@ -136,8 +136,10 @@ export const getQtyRules = (projectInfo) => {
   const kitchenWallArea = getVal('kitchenWallArea');
   const plasterThickness = getVal('plasterThickness') || 0.0125; // ค่าเริ่มต้น 1.25 ซม.
   const wallVolume = getVal('totalWallVolume');
-  const slabOnGroundArea = getVal('slabOnGroundArea');
-  const slabOnGroundThickness = getVal('slabOnGroundThickness') || 0.10; // ค่าเริ่มต้น 0.10 ม. ถ้าไม่ได้กำหนด
+  const psArea = getVal('psArea');
+  const gsArea = getVal('gsArea');
+  const sArea = getVal('sArea');
+  const slabOnGroundThickness = getVal('slabOnGroundThickness') || 0.10; // ค่าเริ่มต้น 0.10 ม. ไว้สำหรับทวีคูณ
   const slabConcreteStrength = getVal('slabConcreteStrength') || 240;
   const _meterSize = projectInfo.meterSize || ''; // ขนาดมิเตอร์ไฟฟ้า เช่น '15(45)A'
   const mainCableLength = getVal('mainCableLength') || 25; // ความยาวสายเมน, ค่าเริ่มต้น 25 เมตร
@@ -188,14 +190,14 @@ export const getQtyRules = (projectInfo) => {
     { description: "พื้นที่ห้องน้ำรวม (ตร.ม.)", keywords: ['ทนชื้น'], calculation: () => Math.ceil(bathArea) },
 
     // --- พื้น (Slab) ---
-    { description: "เหล็กเสริมพื้น Wiremesh (ตร.ม.) เผื่อ 5%", keywords: ['wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก'], calculation: () => Math.ceil(slabOnGroundArea * 1.05), exclude: ['หลังคา'] },
+    { description: "เหล็กเสริมพื้น Wiremesh (ตร.ม.) เผื่อ 5%", keywords: ['wiremesh', 'ไวร์เมช', 'ตะแกรงเหล็ก'], calculation: () => Math.ceil((psArea + gsArea) * 1.05), exclude: ['หลังคา'] },
     ...(() => { // สร้างกฎสำหรับ RB9 บนพื้น
         const spec = rebarSpecs.find(s => s.keywords.includes('rb9'));
         return spec ? [{
             description: `เหล็กเสริมพื้น ${spec.name} (กก.)`,
             keywords: spec.keywords,
             unitKeywords: ['กก', 'kg', 'ตัน', 'ton'],
-            calculation: () => Math.ceil(slabOnGroundArea * 10 * spec.weight * 1.1),
+            calculation: () => Math.ceil((psArea + gsArea + sArea) * 10 * spec.weight * 1.1),
             exclude: ['ปลอก', 'คาน', 'เสา']
         }] : [];
     })(),
@@ -339,7 +341,7 @@ export const getQtyRules = (projectInfo) => {
     { description: "พท.ใช้สอย * 0.22 (กก.)", keywords: ['ลวดผูกเหล็ก'], calculation: () => Math.ceil(totalArea * 0.22) },
     { description: "พท.ใช้สอย * 0.15 (กก.)", keywords: ['ตะปู'], calculation: () => Math.ceil(totalArea * 0.15) },
     { description: "พื้นที่ใช้สอยรวม (ตร.ม.)", keywords: ['วัสดุสิ้นเปลือง (ลวดเชื่อม, ใบตัด)'], exclude: ['โครงสร้างหลังคา', 'โครงหลังคา'], calculation: () => Math.ceil(totalArea) },
-    { description: "พท.ใช้สอย - พท.ห้องน้ำ", keywords: ['งานแผ่นพื้นสำเร็จรูป (รวมค่าแรงวาง)'], calculation: () => Math.ceil(Math.max(0, totalArea - bathArea)) },
+    { description: "พท.ใช้สอย - พท.ห้องน้ำ", keywords: ['งานแผ่นพื้นสำเร็จรูป (รวมค่าแรงวาง)'], calculation: () => Math.ceil(psArea) },
 
     // Wall, Paint, Plaster
     { description: "พื้นที่ผนังห้องน้ำ (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6x12สูงชนฝ้า(ห้องน้ำ)'], calculation: () => Math.ceil(bathroomWallArea) },
