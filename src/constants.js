@@ -573,11 +573,16 @@ export const initialCategories = [
     ]
   },
   {
-    "id": 3.1,
-    "name": "งานมุงหลังคา (กระเบื้องซีแพคลอน)",
+    "id": 3,
+    "name": "งานมุงหลังคา",
+    "items": []
+  },
+  {
+    "id": 3,
+    "name": "งานมุงหลังคา",
     "items": [
       {
-        "id": "3.1.1",
+        "id": "3.1",
         "name": "แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)",
         "qty": "-",
         "unit": "แผ่น",
@@ -585,7 +590,7 @@ export const initialCategories = [
         "laborPrice": 3.0
       },
       {
-        "id": "3.1.2",
+        "id": "3.2",
         "name": "ครอบเส้นโค้ง (ครอบสันลอน)",
         "qty": "-",
         "unit": "แผ่น",
@@ -593,7 +598,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.3",
+        "id": "3.3",
         "name": "ครอบโค้งปิดจั่ว",
         "qty": "-",
         "unit": "แผ่น",
@@ -601,7 +606,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.4",
+        "id": "3.4",
         "name": "ครอบข้าง",
         "qty": "-",
         "unit": "แผ่น",
@@ -609,7 +614,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.5",
+        "id": "3.5",
         "name": "ครอบข้างปิดชาย",
         "qty": "-",
         "unit": "แผ่น",
@@ -617,7 +622,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.6",
+        "id": "3.6",
         "name": "ครอบโค้งหางมน (ปิดปลายสันตะเข้)",
         "qty": "-",
         "unit": "แผ่น",
@@ -625,7 +630,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.7",
+        "id": "3.7",
         "name": "ครอบโค้งสองทาง",
         "qty": "-",
         "unit": "แผ่น",
@@ -633,7 +638,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.8",
+        "id": "3.8",
         "name": "ครอบโค้งสามทาง",
         "qty": "-",
         "unit": "แผ่น",
@@ -641,21 +646,15 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.1.9",
+        "id": "3.9",
         "name": "ครอบโค้งสี่ทาง",
         "qty": "-",
         "unit": "แผ่น",
         "matPrice": 105.0,
         "laborPrice": 5.0
-      }
-    ]
-  },
-  {
-    "id": 3.2,
-    "name": "งานมุงหลังคา (กระเบื้องซีแพคเรียบ)",
-    "items": [
+      },
       {
-        "id": "3.2.1",
+        "id": "3.10",
         "name": "แผ่นกระเบื้องซีแพคแบบเรียบ (สีมาตรฐาน)",
         "qty": "-",
         "unit": "แผ่น",
@@ -663,7 +662,7 @@ export const initialCategories = [
         "laborPrice": 3.0
       },
       {
-        "id": "3.2.2",
+        "id": "3.11",
         "name": "ครอบสันหลังคา",
         "qty": "-",
         "unit": "แผ่น",
@@ -671,7 +670,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.3",
+        "id": "3.12",
         "name": "ครอบปิดจั่ว",
         "qty": "-",
         "unit": "แผ่น",
@@ -679,7 +678,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.4",
+        "id": "3.13",
         "name": "ครอบตะเข้สัน",
         "qty": "-",
         "unit": "แผ่น",
@@ -687,7 +686,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.5",
+        "id": "3.14",
         "name": "ครอบปิดปลายตะเข้สัน",
         "qty": "-",
         "unit": "แผ่น",
@@ -695,7 +694,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.6",
+        "id": "3.15",
         "name": "ครอบปั้นลม",
         "qty": "-",
         "unit": "แผ่น",
@@ -703,7 +702,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.7",
+        "id": "3.16",
         "name": "ครอบปิดปลายปั้นลม",
         "qty": "-",
         "unit": "แผ่น",
@@ -711,7 +710,7 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.8",
+        "id": "3.17",
         "name": "ครอบข้างติดผนัง",
         "qty": "-",
         "unit": "แผ่น",
@@ -719,21 +718,15 @@ export const initialCategories = [
         "laborPrice": 5.0
       },
       {
-        "id": "3.2.9",
+        "id": "3.18",
         "name": "ครอบหัวผนัง",
         "qty": "-",
         "unit": "แผ่น",
         "matPrice": 85.0,
         "laborPrice": 5.0
-      }
-    ]
-  },
-  {
-    "id": 3.3,
-    "name": "งานมุงหลังคา (เมทัลชีท)",
-    "items": [
+      },
       {
-        "id": "3.3.1",
+        "id": "3.19",
         "name": "แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE",
         "qty": "-",
         "unit": "ตร.ม",
@@ -741,7 +734,7 @@ export const initialCategories = [
         "laborPrice": 150.0
       },
       {
-        "id": "3.3.2",
+        "id": "3.20",
         "name": "สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)",
         "qty": "-",
         "unit": "กล่อง",
@@ -749,21 +742,15 @@ export const initialCategories = [
         "laborPrice": 0.0
       },
       {
-        "id": "3.3.3",
+        "id": "3.21",
         "name": "ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)",
         "qty": "-",
         "unit": "เมตร",
         "matPrice": 120.0,
         "laborPrice": 0.0
-      }
-    ]
-  },
-  {
-    "id": 3.4,
-    "name": "งานมุงหลังคา (อุปกรณ์เสริม/เชิงชาย)",
-    "items": [
+      },
       {
-        "id": "3.4.1",
+        "id": "3.22",
         "name": "แผ่นปิดรอยต่อ (กว้าง 30 ซม. x 3 ม.) (1 ม้วน = 0.9 ตร.ม.)",
         "qty": "-",
         "unit": "ม้วน",
@@ -771,7 +758,7 @@ export const initialCategories = [
         "laborPrice": 300.0
       },
       {
-        "id": "3.4.2",
+        "id": "3.23",
         "name": "แผ่นสะท้อนความร้อน (กว้าง 1.25 ม. x 60 ม.) (1 ม้วน = 75 ตร.ม.)",
         "qty": "-",
         "unit": "ม้วน",
@@ -779,7 +766,7 @@ export const initialCategories = [
         "laborPrice": 300.0
       },
       {
-        "id": "3.4.3",
+        "id": "3.24",
         "name": "สกรูเกลียวยึดแป (กล่อง 250 ตัว)",
         "qty": "-",
         "unit": "กล่อง",
@@ -787,7 +774,7 @@ export const initialCategories = [
         "laborPrice": 0.0
       },
       {
-        "id": "3.4.4",
+        "id": "3.25",
         "name": "สกรูยึดกระเบื้อง 2.5 นิ้ว (กล่อง 250 ตัว)",
         "qty": "-",
         "unit": "กล่อง",
@@ -795,7 +782,7 @@ export const initialCategories = [
         "laborPrice": 0.0
       },
       {
-        "id": "3.4.5",
+        "id": "3.26",
         "name": "แผ่นปิดกันนก (แพ็ก 10-20 แผ่น)",
         "qty": "-",
         "unit": "เมตร",
@@ -803,7 +790,7 @@ export const initialCategories = [
         "laborPrice": 85.0
       },
       {
-        "id": "3.4.6",
+        "id": "3.27",
         "name": "ไม้เชิงชาย 8 นิ้ว (หน้ากว้าง 20 ซม.)",
         "qty": "-",
         "unit": "เมตร",
@@ -811,7 +798,7 @@ export const initialCategories = [
         "laborPrice": 25.0
       },
       {
-        "id": "3.4.7",
+        "id": "3.28",
         "name": "ไม้เชิงชาย 6 นิ้ว (หน้ากว้าง 15 ซม.)",
         "qty": "-",
         "unit": "เมตร",
@@ -819,7 +806,7 @@ export const initialCategories = [
         "laborPrice": 25.0
       },
       {
-        "id": "3.4.8",
+        "id": "3.29",
         "name": "เชิงชาย SCG Fascia Board_One Piece",
         "qty": "-",
         "unit": "เมตร",
@@ -827,7 +814,7 @@ export const initialCategories = [
         "laborPrice": 65.0
       },
       {
-        "id": "3.4.9",
+        "id": "3.30",
         "name": "ไม้ตกแต่งซีเฟรม ขนาด 22.3 x 300 x 1.2 ซม. สีซีเมนต์",
         "qty": "-",
         "unit": "เมตร",
@@ -835,7 +822,7 @@ export const initialCategories = [
         "laborPrice": 35.0
       },
       {
-        "id": "3.4.10",
+        "id": "3.31",
         "name": "ไม้ตกแต่งซีเฟรม ขนาด 305 x 300 x 1.2 ซม. สีซีเมนต์",
         "qty": "-",
         "unit": "เมตร",
@@ -2059,8 +2046,13 @@ export const variableGroups = [
     {
         title: 'งานหลังคาและโครงสร้าง',
         fields: [
-            { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)', tooltip: 'พื้นที่หลังคาตามแนวลาดเอียง (Slope) ใช้คำนวณวัสดุมุงและโครงหลังคา' },
-            { key: 'ridgeLength', label: 'ความยาวสันหลังคา/สันตะเข้ (ม.)', tooltip: 'ความยาวแนวสันหลังคารวม ใช้คำนวณแผ่นปิดรอยต่อและครอบสันหลังคา' },
+            { key: 'roofType', label: 'ประเภทหลังคา', type: 'select', options: [
+                { value: 'cpac_lon', label: 'ซีแพคลอน' },
+                { value: 'cpac_flat', label: 'ซีแพคเรียบ' },
+                { value: 'metal_sheet', label: 'เมทัลชีท' }
+            ], tooltip: 'เลือกประเภทวัสดุมุงหลังคาหลัก เพื่อให้ระบบแสดงรายการเฉพาะวัสดุที่เลือก' },
+            { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)', tooltip: 'พื้นที่มุงหลังคาทั้งหมดรวมความลาดเอียง (Slope) เป็นพื้นที่ที่จะใช้คำนวณแผ่นหลังคา' },
+            { key: 'ridgeLength', label: 'ความยาวสันหลังคา/ตะเข้สัน (ม.)', tooltip: 'ความยาวรวมของสันหลังคาและตะเข้สัน ใช้สำหรับคำนวณครอบสันและตะเข้' },
             { key: 'fasciaLength', label: 'ความยาวเชิงชาย (ม.)', tooltip: 'ความยาวรวมของไม้เชิงชายรอบหลังคา' },
             { key: 'aseLength', label: 'ความยาวอะเส (ม.)', tooltip: 'ความยาวรวมของอะเส, อกไก่, และดั้ง' },
             { key: 'rafterLength', label: 'ความยาวจันทัน (ม.)', tooltip: 'ความยาวรวมของจันทันทั้งหมด' },

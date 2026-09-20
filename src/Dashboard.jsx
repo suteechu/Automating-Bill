@@ -66,18 +66,7 @@ export default function Dashboard({
               <option value="ต่อเติม">ต่อเติม</option>
             </select>
           </div>
-          <div>
-            <label className="block text-[11px] font-bold text-gray-500 mb-1">ประเภทหลังคา</label>
-            <select 
-              value={projectInfo.roofType || 'cpac_lon'} 
-              onChange={e => handleProjectInfoChange('roofType', e.target.value)} 
-              className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold transition-colors cursor-pointer"
-            >
-              <option value="cpac_lon">กระเบื้องซีแพคลอน</option>
-              <option value="cpac_flat">กระเบื้องซีแพคเรียบ</option>
-              <option value="metal_sheet">เมทัลชีท</option>
-            </select>
-          </div>
+
           <div>
             <label className="block text-[11px] font-bold text-gray-500 mb-1">เจ้าของโครงการ (Owner)</label>
             <input type="text" value={projectInfo.owner} onChange={e => handleProjectInfoChange('owner', e.target.value)} className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold transition-colors" />

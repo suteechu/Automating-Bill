@@ -779,12 +779,6 @@ export const calculateAutoFillQty = (itemName, itemUnit, catId, projectInfo) => 
     return { value: null, matchedRule: { description: "Manual input for เหล็กกล่อง" } };
   }
 
-  // --- Roof Type Filter Logic ---
-  const roofType = projectInfo.roofType || 'cpac_lon';
-  if (String(catId) === '3.1' && roofType !== 'cpac_lon') return { value: 0, matchedRule: { description: "Filtered out by Roof Type selection" } };
-  if (String(catId) === '3.2' && roofType !== 'cpac_flat') return { value: 0, matchedRule: { description: "Filtered out by Roof Type selection" } };
-  if (String(catId) === '3.3' && roofType !== 'metal_sheet') return { value: 0, matchedRule: { description: "Filtered out by Roof Type selection" } };
-
   const unitLower = (itemUnit || '').toString().toLowerCase().replace(/\s+/g, '');
   const rules = getQtyRules(projectInfo);
 

@@ -112,6 +112,49 @@ export default function App() {
   //    โดย state นี้จะอัปเดตหลังจากผู้ใช้หยุดพิมพ์ไปแล้ว 400ms
   const [debouncedProjectInfo, setDebouncedProjectInfo] = useState(projectInfo);
 
+  // Effect to filter Roof Category (Cat 3) based on projectInfo.roofType
+  useEffect(() => {
+    const roofType = projectInfo.roofType || 'cpac_lon';
+    
+    setCategories(prev => prev.map(cat => {
+      if (String(cat.id) !== '3') return cat;
+      
+      const group1 = ['แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)', 'ครอบเส้นโค้ง (ครอบสันลอน)', 'ครอบโค้งปิดจั่ว', 'ครอบข้าง', 'ครอบข้างปิดชาย', 'ครอบโค้งหางมน (ปิดปลายสันตะเข้)', 'ครอบโค้งสองทาง', 'ครอบโค้งสามทาง', 'ครอบโค้งสี่ทาง'];
+      const group2 = ['แผ่นกระเบื้องซีแพคแบบเรียบ (สีมาตรฐาน)', 'ครอบสันหลังคา', 'ครอบปิดจั่ว', 'ครอบตะเข้สัน', 'ครอบปิดปลายตะเข้สัน', 'ครอบปั้นลม', 'ครอบปิดปลายปั้นลม', 'ครอบข้างติดผนัง', 'ครอบหัวผนัง'];
+      const group3 = ['แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE', 'สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)', 'ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)'];
+      
+      // Get all items from initialCategories for Cat 3
+      const initialCat3 = initialCategories.find(c => String(c.id) === '3');
+      if (!initialCat3) return cat;
+
+      const filteredItems = initialCat3.items.filter(item => {
+        const name = item.name.trim();
+        const isG1 = group1.includes(name);
+        const isG2 = group2.includes(name);
+        const isG3 = group3.includes(name);
+        
+        // If it belongs to a group, only keep if it matches roofType
+        if (isG1) return roofType === 'cpac_lon';
+        if (isG2) return roofType === 'cpac_flat';
+        if (isG3) return roofType === 'metal_sheet';
+        
+        // Keep common accessories
+        return true;
+      });
+
+      // Preserve existing prices and qty if they were modified by the user
+      const newItems = filteredItems.map((item, index) => {
+        const existingItem = cat.items.find(e => e.name === item.name);
+        if (existingItem) {
+          return { ...existingItem, id: '3.' + (index + 1) };
+        }
+        return { ...item, id: '3.' + (index + 1) };
+      });
+
+      return { ...cat, items: newItems };
+    }));
+  }, [projectInfo.roofType]);
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedProjectInfo(projectInfo);
@@ -908,12 +951,26 @@ export default function App() {
                                     {field.label}
                                     {field.tooltip && <span className={`${isMissing ? 'text-red-400 border-red-400 group-hover:text-red-600' : 'text-gray-400 border-gray-400 group-hover:text-blue-500'} cursor-help text-[10px] border rounded-full min-w-[16px] w-4 h-4 flex items-center justify-center transition-colors shrink-0`}>?</span>}
                                   </span>
-                                  <input 
-                                    type="number" 
-                                    value={value || ''} 
-                                    onChange={e => handleProjectInfoChange(field.key, e.target.value === '' ? '' : Number(e.target.value))} 
-                                    className={`w-24 shrink-0 text-right border rounded-md px-2 py-1.5 outline-none focus:ring-1 font-bold text-sm transition-all ${isMissing ? 'border-red-400 bg-red-50 text-red-700 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-blue-500'}`} 
-                                  />
+                                  {field.type === 'select' ? (
+                                    <select
+                                      value={projectInfo[field.key] || ''}
+                                      onChange={e => handleProjectInfoChange(field.key, e.target.value)}
+                                      className={`border rounded-lg px-2 py-1.5 w-32 text-right outline-none transition-all text-sm font-bold shadow-inner ${isMissing ? 'border-red-400 bg-red-50 focus:border-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100'} cursor-pointer`}
+                                    >
+                                      {field.options && field.options.map(opt => (
+                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                      ))}
+                                    </select>
+                                  ) : (
+                                    <input 
+                                      type="number" 
+                                      value={projectInfo[field.key] || ''} 
+                                      onChange={e => handleProjectInfoChange(field.key, e.target.value)} 
+                                      className={`border rounded-lg px-2 py-1.5 w-24 text-right outline-none transition-all text-sm font-bold shadow-inner ${isMissing ? 'border-red-400 bg-red-50 focus:border-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100'}`}
+                                      placeholder="0"
+                                      onFocus={(e) => e.target.select()}
+                                    />
+                                  )}
                                 </div>
                               );
                             })}
