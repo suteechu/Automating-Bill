@@ -2,7 +2,7 @@
 export const initialCategories = [
   {
     "id": 1,
-    "name": "งานโครงสร้าง โครงหลังคา",
+    "name": "งานโครงสร้างคอนกรีตเสริมเหล็ก",
     "items": [
       {
         "id": "1.1",
@@ -320,7 +320,7 @@ export const initialCategories = [
   },
   {
     "id": 2,
-    "name": "งานโครงสร้าง งานสถาปัตย์",
+    "name": "งานโครงสร้าง โครงหลังคา",
     "items": [
       {
         "id": "2.1",

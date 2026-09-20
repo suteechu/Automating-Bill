@@ -58,12 +58,24 @@ export default function Dashboard({
               className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold transition-colors cursor-pointer"
             >
               <option value="บ้านพักอาศัยชั้นเดียว">บ้านพักอาศัยชั้นเดียว</option>
-              <option value="บ้านพักอาศัยชั้นครึ่ง">บ้านพักอาศัยชั้นครึ่ง</option>
               <option value="บ้านพักอาศัยสองชั้น">บ้านพักอาศัยสองชั้น</option>
+              <option value="บ้านพักอาศัยชั้นครึ่ง">บ้านพักอาศัยชั้นครึ่ง</option>
               <option value="บ้านน็อคดาวน์">บ้านน็อคดาวน์</option>
               <option value="อาคารหอพัก">อาคารหอพัก</option>
               <option value="อพาร์ทเม้นท์">อพาร์ทเม้นท์</option>
               <option value="ต่อเติม">ต่อเติม</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-[11px] font-bold text-gray-500 mb-1">ประเภทหลังคา</label>
+            <select 
+              value={projectInfo.roofType || 'cpac_lon'} 
+              onChange={e => handleProjectInfoChange('roofType', e.target.value)} 
+              className="w-full bg-white border border-gray-300 rounded px-2 py-1 outline-none focus:border-blue-500 text-sm font-bold transition-colors cursor-pointer"
+            >
+              <option value="cpac_lon">กระเบื้องซีแพคลอน</option>
+              <option value="cpac_flat">กระเบื้องซีแพคเรียบ</option>
+              <option value="metal_sheet">เมทัลชีท</option>
             </select>
           </div>
           <div>
