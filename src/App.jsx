@@ -162,6 +162,46 @@ export default function App() {
         return { ...cat, items: newItems2 };
       }
 
+      // Filter Cat 4 (Wall)
+      if (String(cat.id) === '4') {
+        const wallType = projectInfo.wallType || 'lightweight_7_5';
+        
+        const initialCat4 = initialCategories.find(c => String(c.id) === '4');
+        if (!initialCat4) return cat;
+
+        const filteredItems4 = initialCat4.items.filter(item => {
+          const name = item.name.trim();
+          
+          const isLightweight7 = name.includes('อิฐมวลเบา(7.5') || name.includes('มวลเบา ขนาด 7.5');
+          const isLightweight17 = name.includes('อิฐมวลเบา(17.5') || name.includes('มวลเบา ขนาด 7.5'); 
+          const isRedbrick7 = name.includes('มอญ(7.5') || name.includes('อิฐมอญ 2 รู');
+          const isRedbrick17 = name.includes('มอญ(17.5') || name.includes('อิฐมอญ 2 รู');
+          const isBlock7 = name.includes('บล็อก(7.5') || name.includes('บล็อก(TAN') || name.includes('TAN-BRICK');
+          const isBlock17 = name.includes('บล็อก(17.5');
+          const isTanbrick = name.includes('TAN-BRICK') || name.includes('บล็อก(7.5'); 
+          
+          if (name.includes('อิฐ') || name.includes('มวลเบา') || name.includes('มอญ') || name.includes('บล็อก')) {
+            if (name.includes('งานติดตั้ง') || name.includes('บัวผนัง')) return true;
+            
+            if (wallType === 'lightweight_7_5') return isLightweight7;
+            if (wallType === 'lightweight_17_5') return isLightweight17;
+            if (wallType === 'redbrick_7_5') return isRedbrick7;
+            if (wallType === 'redbrick_17_5') return isRedbrick17;
+            if (wallType === 'block_7_5') return isBlock7 && !name.includes('TAN-BRICK');
+            if (wallType === 'block_17_5') return isBlock17 && !name.includes('TAN-BRICK');
+            if (wallType === 'tanbrick') return isTanbrick;
+            return false;
+          }
+          return true; // Keep plasters, tiles, etc.
+        });
+
+        const newItems4 = filteredItems4.map((item, index) => {
+          const existingItem = cat.items.find(e => e.name === item.name);
+          return existingItem ? { ...existingItem, id: '4.' + (index + 1) } : { ...item, id: '4.' + (index + 1) };
+        });
+        return { ...cat, items: newItems4 };
+      }
+
       if (String(cat.id) !== '3') return cat;
       
       const group1 = ['แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)', 'ครอบเส้นโค้ง (ครอบสันลอน)', 'ครอบโค้งปิดจั่ว', 'ครอบข้าง', 'ครอบข้างปิดชาย', 'ครอบโค้งหางมน (ปิดปลายสันตะเข้)', 'ครอบโค้งสองทาง', 'ครอบโค้งสามทาง', 'ครอบโค้งสี่ทาง'];
