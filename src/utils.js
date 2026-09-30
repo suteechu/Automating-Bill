@@ -132,8 +132,19 @@ export const getQtyRules = (projectInfo) => {
   const fasciaLength = getVal('fasciaLength');
   const intWallArea = getVal('intWallArea');
   const extWallArea = getVal('extWallArea');
-  const bathroomWallArea = getVal('bathroomWallArea');
-  const kitchenWallArea = getVal('kitchenWallArea');
+  
+  // Calculate wall areas automatically from floor areas if not provided
+  let bathroomWallArea = getVal('bathroomWallArea');
+  if (!bathroomWallArea || bathroomWallArea === 0) {
+      // 4 * sqrt(area) * height(2.8) - door(1.6)
+      bathroomWallArea = bathArea > 0 ? Math.max(0, (4 * Math.sqrt(bathArea) * 2.8) - 1.6) : 0;
+  }
+  
+  let kitchenWallArea = getVal('kitchenWallArea');
+  if (!kitchenWallArea || kitchenWallArea === 0) {
+      kitchenWallArea = kitchenArea > 0 ? Math.max(0, (4 * Math.sqrt(kitchenArea) * 2.8) - 1.6) : 0;
+  }
+  
   const plasterThickness = getVal('plasterThickness') || 0.0125; // ค่าเริ่มต้น 1.25 ซม.
   const wallVolume = getVal('totalWallVolume');
   const wallType = projectInfo.wallType || 'lightweight_7_5';
@@ -181,6 +192,7 @@ export const getQtyRules = (projectInfo) => {
     { description: "ความยาวสันรวม / 3 (ม้วน)", keywords: ['แผ่นปิดรอยต่อ'], calculation: () => Math.ceil(ridgeLength / 3) },
 
     { description: "พท.หลังคา * 11 (แผ่น)", keywords: ['กระเบื้องซีแพค'], calculation: () => Math.ceil(roofArea * 11) },
+    { description: "พท.หลังคา * 2.2 (แผ่น)", keywords: ['กระเบื้องหลังคาลอนคู่', 'มุงกระเบื้องลอนคู่'], calculation: () => Math.ceil(roofArea * 2.2) },
     { description: "พท.หลังคา * 11 * 2.2 / 250 (กล่อง)", keywords: ['สกรูยึดกระเบื้อง'], calculation: () => Math.ceil((roofArea * 11 * 2.2) / 250) },
 
     // Sanitary (catId: 11)

@@ -142,16 +142,19 @@ export default function App() {
         const cat2_lon = ['ค่าแรงมุงกระเบื้องซีแพค (แบบลอน)'];
         const cat2_flat = ['ค่าแรงมุงกระเบื้องซีแพค (แบบเรียบ)'];
         const cat2_metal = ['ค่าแรงประกอบโครงเหล็ก + มุงเมทัลชีท (เบ็ดเสร็จ)', 'แปสำเร็จรูปสำหรับหลังคาเมทัลชีท'];
+        const cat2_lon_koo = ['ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)', 'แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)', 'ค่าแรงมุงกระเบื้องลอนคู่'];
         
         const initialCat2 = initialCategories.find(c => String(c.id) === '2');
         if (!initialCat2) return cat;
 
         const filteredItems2 = initialCat2.items.filter(item => {
           const name = item.name.trim();
-          if (cat2_cpac.includes(name)) return roofType === 'cpac_lon' || roofType === 'cpac_flat';
+          if (cat2_cpac.includes(name) && name === 'ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)') return roofType === 'cpac_lon' || roofType === 'cpac_flat' || roofType === 'lon_koo';
+          if (cat2_cpac.includes(name) && name === 'แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)') return roofType === 'cpac_lon' || roofType === 'cpac_flat' || roofType === 'lon_koo';
           if (cat2_lon.includes(name)) return roofType === 'cpac_lon';
           if (cat2_flat.includes(name)) return roofType === 'cpac_flat';
           if (cat2_metal.includes(name)) return roofType === 'metal_sheet';
+          if (name === 'ค่าแรงมุงกระเบื้องลอนคู่') return roofType === 'lon_koo';
           return true;
         });
 
@@ -207,6 +210,7 @@ export default function App() {
       const group1 = ['แผ่นกระเบื้องซีแพคแบบลอน (สีมาตรฐาน)', 'ครอบเส้นโค้ง (ครอบสันลอน)', 'ครอบโค้งปิดจั่ว', 'ครอบข้าง', 'ครอบข้างปิดชาย', 'ครอบโค้งหางมน (ปิดปลายสันตะเข้)', 'ครอบโค้งสองทาง', 'ครอบโค้งสามทาง', 'ครอบโค้งสี่ทาง'];
       const group2 = ['แผ่นกระเบื้องซีแพคแบบเรียบ (สีมาตรฐาน)', 'ครอบสันหลังคา', 'ครอบปิดจั่ว', 'ครอบตะเข้สัน', 'ครอบปิดปลายตะเข้สัน', 'ครอบปั้นลม', 'ครอบปิดปลายปั้นลม', 'ครอบข้างติดผนัง', 'ครอบหัวผนัง'];
       const group3 = ['แผ่นหลังคาเมทัสชีล(0.47)+ ฉนวน PE', 'สกรูยิงเมทัลชีท 2 นิ้ว (กล่อง 100 ตัว)', 'ครอบข้างเมทัลชีท (หน้ากว้างมาตรฐาน)', 'เชิงชาย SCG Fascia Board_One Piece', 'ไม้ตกแต่งซีเฟรม ขนาด 22.3 x 300 x 1.2 ซม. สีซีเมนต์', 'ไม้ตกแต่งซีเฟรม ขนาด 305 x 300 x 1.2 ซม. สีซีเมนต์'];
+      const group4 = ['แผ่นกระเบื้องหลังคาลอนคู่ (สีมาตรฐาน)', 'ครอบสันหลังคาลอนคู่', 'ครอบปิดจั่วลอนคู่'];
       const cpacCommon = ['แผ่นปิดรอยต่อ (กว้าง 30 ซม. x 3 ม.) (1 ม้วน = 0.9 ตร.ม.)', 'แผ่นสะท้อนความร้อน (กว้าง 1.25 ม. x 60 ม.) (1 ม้วน = 75 ตร.ม.)', 'สกรูเกลียวยึดแป (กล่อง 250 ตัว)', 'สกรูยึดกระเบื้อง 2.5 นิ้ว (กล่อง 250 ตัว)', 'แผ่นปิดกันนก (แพ็ก 10-20 แผ่น)', 'ไม้เชิงชาย 8 นิ้ว (หน้ากว้าง 20 ซม.)', 'ไม้เชิงชาย 6 นิ้ว (หน้ากว้าง 15 ซม.)'];
       
       const initialCat3 = initialCategories.find(c => String(c.id) === '3');
@@ -217,6 +221,7 @@ export default function App() {
         const isG1 = group1.includes(name);
         const isG2 = group2.includes(name);
         const isG3 = group3.includes(name);
+        const isG4 = group4.includes(name);
         const isCpacCommon = cpacCommon.includes(name);
         
         if (roofType === 'metal_sheet') {
@@ -225,6 +230,8 @@ export default function App() {
             return isG1 || isCpacCommon;
         } else if (roofType === 'cpac_flat') {
             return isG2 || isCpacCommon;
+        } else if (roofType === 'lon_koo') {
+            return isG4 || isCpacCommon;
         }
         return true;
       });

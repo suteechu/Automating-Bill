@@ -347,6 +347,14 @@ export const initialCategories = [
         "laborPrice": 185.0
       },
       {
+        "id": "2.3.1",
+        "name": "ค่าแรงมุงกระเบื้องลอนคู่",
+        "qty": "",
+        "unit": "ตร.ม",
+        "matPrice": 0.0,
+        "laborPrice": 120.0
+      },
+      {
         "id": "2.4",
         "name": "ค่าแรงประกอบโครงเหล็ก + มุงเมทัลชีท (เบ็ดเสร็จ)",
         "qty": "",
@@ -823,6 +831,30 @@ export const initialCategories = [
         "unit": "เมตร",
         "matPrice": 275.0,
         "laborPrice": 35.0
+      },
+      {
+        "id": "3.32",
+        "name": "แผ่นกระเบื้องหลังคาลอนคู่ (สีมาตรฐาน)",
+        "qty": "",
+        "unit": "แผ่น",
+        "matPrice": 65.0,
+        "laborPrice": 15.0
+      },
+      {
+        "id": "3.33",
+        "name": "ครอบสันหลังคาลอนคู่",
+        "qty": "",
+        "unit": "แผ่น",
+        "matPrice": 85.0,
+        "laborPrice": 15.0
+      },
+      {
+        "id": "3.34",
+        "name": "ครอบปิดจั่วลอนคู่",
+        "qty": "",
+        "unit": "แผ่น",
+        "matPrice": 95.0,
+        "laborPrice": 15.0
       }
     ]
   },
@@ -2110,6 +2142,7 @@ export const variableGroups = [
             { key: 'roofType', label: 'ประเภทหลังคา', type: 'select', options: [
                 { value: 'cpac_lon', label: 'ซีแพคลอน' },
                 { value: 'cpac_flat', label: 'ซีแพคเรียบ' },
+                { value: 'lon_koo', label: 'ลอนคู่' },
                 { value: 'metal_sheet', label: 'เมทัลชีท' }
             ], tooltip: 'เลือกประเภทวัสดุมุงหลังคาหลัก เพื่อให้ระบบแสดงรายการเฉพาะวัสดุที่เลือก' },
             { key: 'roofArea', label: 'พื้นที่หลังคา (ตร.ม.)', tooltip: 'พื้นที่มุงหลังคาทั้งหมดรวมความลาดเอียง (Slope) เป็นพื้นที่ที่จะใช้คำนวณแผ่นหลังคา' },
@@ -2134,8 +2167,6 @@ export const variableGroups = [
         fields: [
             { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)', tooltip: 'พื้นที่ผนังภายในทั้งหมด (ด้านเดียว) สำหรับคำนวณสีทาภายใน' },
             { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)', tooltip: 'พื้นที่ผนังภายนอกทั้งหมด (ด้านเดียว) สำหรับคำนวณสีทาภายนอก' },
-            { key: 'bathroomWallArea', label: 'พื้นที่ผนังห้องน้ำ (ตร.ม.)', tooltip: 'พื้นที่ผนังรวมสำหรับปูกระเบื้องในห้องน้ำ (ไม่ต้องหักลบประตูหน้าต่าง)' },
-            { key: 'kitchenWallArea', label: 'พื้นที่ผนังห้องครัว (ตร.ม.)', tooltip: 'พื้นที่ผนังสำหรับปูกระเบื้องในห้องครัว (ไม่ต้องหักลบประตูหน้าต่าง)' },
             { key: 'wallType', label: 'ประเภทผนังหลัก', type: 'select', options: [
                 { value: 'lightweight_7_5', label: 'อิฐมวลเบา (7.5 ซม.)' },
                 { value: 'lightweight_17_5', label: 'อิฐมวลเบา (17.5 ซม.)' },
@@ -2191,8 +2222,6 @@ export const emptyProjectInfo = {
   fasciaLength: '', 
   intWallArea: '', 
   extWallArea: '', 
-  bathroomWallArea: '',
-  kitchenWallArea: '',
   wallType: 'lightweight_7_5',
   plasterThickness: '0.0125',
   totalWallVolume: '',
