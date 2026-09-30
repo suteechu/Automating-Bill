@@ -395,7 +395,7 @@ export const getQtyRules = (projectInfo) => {
     },
     {
       description: 'ปริมาณปูนฉาบสำเร็จรูป (ถุง 50kg) เผื่อ 5%',
-      keywords: ['ปูนฉาบ', 'ปูนซีเมนต์สำเร็จรูป'], // ใช้ keyword ที่ทั่วไปมากขึ้น
+      keywords: ['ปูนฉาบ', 'ปูนซีเมนต์สำเร็จรูป', 'ก่อ/ฉาบ', 'ปูนเสือ'],
       calculation: () => {
         // 1. คำนวณพื้นที่ฉาบรวม โดยผนังภายในฉาบ 2 ด้าน, ผนังภายนอกฉาบ 1 ด้าน
         const totalPlasterArea = (intWallArea * 2) + extWallArea;
