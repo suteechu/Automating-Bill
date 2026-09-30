@@ -2167,6 +2167,8 @@ export const variableGroups = [
         fields: [
             { key: 'intWallArea', label: 'พื้นที่ผนังภายใน (ตร.ม.)', tooltip: 'พื้นที่ผนังภายในทั้งหมด (ด้านเดียว) สำหรับคำนวณสีทาภายใน' },
             { key: 'extWallArea', label: 'พื้นที่ผนังภายนอก (ตร.ม.)', tooltip: 'พื้นที่ผนังภายนอกทั้งหมด (ด้านเดียว) สำหรับคำนวณสีทาภายนอก' },
+            { key: 'bathroomWallArea', label: 'พื้นที่ผนังห้องน้ำ (ตร.ม.)', tooltip: 'พื้นที่ผนังกระเบื้องห้องน้ำ (ถ้าเว้นว่างไว้ ระบบจะคำนวณให้อัตโนมัติจากพื้นที่ห้องน้ำ)' },
+            { key: 'kitchenWallArea', label: 'พื้นที่ผนังห้องครัว (ตร.ม.)', tooltip: 'พื้นที่ผนังกระเบื้องห้องครัว (ถ้าเว้นว่างไว้ ระบบจะคำนวณให้อัตโนมัติจากพื้นที่ห้องครัว)' },
             { key: 'wallType', label: 'ประเภทผนังหลัก', type: 'select', options: [
                 { value: 'lightweight_7_5', label: 'อิฐมวลเบา (7.5 ซม.)' },
                 { value: 'lightweight_17_5', label: 'อิฐมวลเบา (17.5 ซม.)' },
@@ -2222,6 +2224,8 @@ export const emptyProjectInfo = {
   fasciaLength: '', 
   intWallArea: '', 
   extWallArea: '', 
+  bathroomWallArea: '',
+  kitchenWallArea: '',
   wallType: 'lightweight_7_5',
   plasterThickness: '0.0125',
   totalWallVolume: '',
