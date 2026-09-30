@@ -358,8 +358,8 @@ export const getQtyRules = (projectInfo) => {
     { description: "พท.ใช้สอย - พท.ห้องน้ำ", keywords: ['งานแผ่นพื้นสำเร็จรูป (รวมค่าแรงวาง)'], calculation: () => Math.ceil(psArea) },
 
     // Wall, Paint, Plaster
-    { description: "พื้นที่ผนังห้องน้ำ (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6x12สูงชนฝ้า(ห้องน้ำ)'], calculation: () => Math.ceil(bathroomWallArea) },
-    { description: "พื้นที่ผนังห้องครัว (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6x12(ห้องครัว)'], calculation: () => Math.ceil(kitchenWallArea) },
+    { description: "พื้นที่ผนังห้องน้ำ (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6"x12"สูงชนฝ้า(ห้องน้ำ)'], calculation: () => Math.ceil(bathroomWallArea) },
+    { description: "พื้นที่ผนังห้องครัว (ตร.ม.)", keywords: ['ผนังปูกระเบื้อง 6"x12"(ห้องครัว)'], calculation: () => Math.ceil(kitchenWallArea) },
     // Assembly logic (7.5 cm)
     { description: "พื้นที่ผนังรวม (ตร.ม.) [คำนวณจากปริมาตรหรือพื้นที่]", keywords: ['ผนังก่ออิฐมวลเบา'], calculation: () => wallVolume > 0 ? Math.ceil(wallVolume / 0.08) : Math.ceil(intWallArea + extWallArea), exclude: ['17.5'] }, // ค่าแรงก่ออิฐมวลเบา (8 ซม.)
     { description: "พื้นที่ผนังรวม (ตร.ม.) [คำนวณจากปริมาตรหรือพื้นที่]", keywords: ['ผนังก่ออิฐมอญ'], calculation: () => wallVolume > 0 ? Math.ceil(wallVolume / 0.08) : Math.ceil(intWallArea + extWallArea), exclude: ['17.5'] }, // ค่าแรงก่ออิฐมอญ (8 ซม.)
