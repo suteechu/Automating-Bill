@@ -751,6 +751,12 @@ export const getQtyRules = (projectInfo) => {
 
     // General Lump Sum / Job-based items
     {
+      description: "รายการหมวด 14 (ค่าเริ่มต้น 1)",
+      keywords: [],
+      catId: '14',
+      calculation: () => 1
+    },
+    {
       description: "รายการเหมา/งาน (ค่าดำเนินการ, ค่าขนส่ง, งานติดตั้ง, อื่นๆ)",
       // รวมคำสำคัญทั่วไปสำหรับงานเหมา และคำเฉพาะจากที่คุณยกตัวอย่างมา
       keywords: [
