@@ -1,4 +1,5 @@
 import React from 'react';
+import { projectPresets } from './presets';
 
 export default function Dashboard({
   projectInfo,
@@ -6,10 +7,13 @@ export default function Dashboard({
   resetProject,
   importProjectFromJSON,
   exportProjectToJSON,
+  handleExportExcel,
+  applyPreset,
   formatNum,
   grandTotal,
   costPerSqm,
   profitMargin,
+  setProfitMargin,
   overheadProfit,
   matPercent,
   laborPercent,
@@ -37,6 +41,47 @@ export default function Dashboard({
           <button onClick={exportProjectToJSON} className="text-[11px] font-bold bg-blue-600 text-white hover:bg-blue-700 px-3 py-1.5 rounded shadow-sm transition-colors">
             💾 บันทึกโปรเจกต์ (JSON)
           </button>
+          {handleExportExcel && (
+            <button onClick={handleExportExcel} className="text-[11px] font-bold bg-emerald-600 text-white hover:bg-emerald-700 px-3 py-1.5 rounded shadow-sm transition-colors flex items-center gap-1" title="ส่งออกตาราง BOQ เป็นไฟล์ Excel .xlsx">
+              📊 ส่งออก Excel
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* ส่วนเลือกเทมเพลตแบบบ้านสำเร็จรูป (Quick Presets) */}
+      <div className="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 rounded-lg p-3.5 border border-blue-200 mb-5 shadow-xs">
+        <div className="flex justify-between items-center mb-2.5">
+          <h3 className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+            ⚡ แบบบ้านและอาคารสำเร็จรูป (Quick Presets)
+            <span className="text-[10px] font-normal text-blue-600 bg-white px-2 py-0.5 rounded-full border border-blue-200 shadow-xs">
+              คลิกเพื่อใส่ตัวแปรและคำนวณราคาอัตโนมัติ
+            </span>
+          </h3>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+          {projectPresets.map(preset => (
+            <button
+              key={preset.id}
+              onClick={() => {
+                if (window.confirm(`ต้องการโหลดเทมเพลต "${preset.title}" หรือไม่?\nระบบจะกรอกตัวแปรขนาดพื้นที่ โครงสร้าง และคำนวณราคาให้อัตโนมัติ`)) {
+                  if (applyPreset) applyPreset(preset);
+                }
+              }}
+              className="text-left bg-white hover:bg-blue-50 border border-blue-200 hover:border-blue-400 p-2.5 rounded shadow-xs transition-all flex flex-col justify-between group hover:shadow"
+            >
+              <div>
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-xs font-bold text-gray-800 group-hover:text-blue-700">{preset.title}</span>
+                  <span className="text-[9px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">{preset.badge}</span>
+                </div>
+                <p className="text-[10px] text-gray-500 line-clamp-1">{preset.description}</p>
+              </div>
+              <div className="mt-2 text-[10px] text-blue-600 font-bold flex items-center gap-1">
+                คลิกใช้เทมเพลต ➔
+              </div>
+            </button>
+          ))}
         </div>
       </div>
 
@@ -116,8 +161,25 @@ export default function Dashboard({
           <p className="text-[11px] font-bold text-orange-700 mb-1">ราคาประเมินต่อ ตร.ม.</p>
           <h2 className="text-2xl font-extrabold text-orange-900">{formatNum(costPerSqm)} <span className="text-sm font-medium">/ ตร.ม.</span></h2>
         </div>
-        <div className="bg-green-50 rounded p-4 border border-green-200">
-          <p className="text-[11px] font-bold text-green-700 mb-1">กำไรดำเนินการ ({profitMargin * 100}%)</p>
+        <div className="bg-green-50 rounded p-4 border border-green-200 flex flex-col justify-between">
+          <div className="flex justify-between items-center mb-1">
+            <p className="text-[11px] font-bold text-green-700">กำไรดำเนินการ</p>
+            {setProfitMargin && (
+              <div className="flex items-center gap-1">
+                <input
+                  type="number"
+                  step="0.5"
+                  min="0"
+                  max="100"
+                  value={Math.round(profitMargin * 1000) / 10}
+                  onChange={e => setProfitMargin(Math.max(0, Number(e.target.value)) / 100)}
+                  className="w-12 bg-white border border-green-300 rounded px-1 py-0.5 text-right text-xs font-bold text-green-800 outline-none focus:border-green-500 shadow-inner"
+                  title="ปรับอัตรากำไรดำเนินการ (%)"
+                />
+                <span className="text-[11px] font-bold text-green-700">%</span>
+              </div>
+            )}
+          </div>
           <h2 className="text-2xl font-extrabold text-green-900">{formatNum(overheadProfit)} <span className="text-sm font-medium">THB</span></h2>
         </div>
       </div>

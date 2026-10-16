@@ -10,6 +10,7 @@ export default function Summary({
   grandTotalLabor,
   subTotal,
   profitMargin,
+  setProfitMargin,
   overheadProfit,
   discountRounding,
   setDiscountRounding,
@@ -59,7 +60,16 @@ export default function Summary({
               <td className="py-2.5 px-2 border border-blue-custom font-extrabold text-right text-black">{formatNum(subTotal)}</td>
             </tr>
             <tr>
-              <td colSpan="4" className="py-2.5 px-3 border border-blue-custom font-bold text-gray-800 text-right">Overheads & Profit ({profitMargin * 100}%)</td>
+              <td colSpan="4" className="py-2.5 px-3 border border-blue-custom font-bold text-gray-800 text-right">
+                <div className="flex justify-end items-center gap-3">
+                  {setProfitMargin && (
+                    <span className="text-[10px] text-gray-700 font-normal no-print flex items-center gap-1">
+                      กำไร (%): <input type="number" step="0.5" min="0" max="100" value={Math.round(profitMargin * 1000) / 10} onChange={e => setProfitMargin(Math.max(0, Number(e.target.value)) / 100)} className="w-14 border border-gray-400 rounded px-1 text-right bg-white outline-none" />
+                    </span>
+                  )}
+                  <span>Overheads & Profit ({Math.round(profitMargin * 1000) / 10}%)</span>
+                </div>
+              </td>
               <td className="py-2.5 px-2 border border-blue-custom font-extrabold text-right text-black">{formatNum(overheadProfit)}</td>
             </tr>
             <tr className="bg-blue-light border-2 border-blue-custom">

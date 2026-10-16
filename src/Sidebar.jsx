@@ -16,7 +16,8 @@ export default function Sidebar({
   formatNum,
   sheetUrl,
   handleBulkPriceAdjust,
-  saveAsDefaultTemplate
+  saveAsDefaultTemplate,
+  handleExportExcel
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState(false);
@@ -160,14 +161,21 @@ export default function Sidebar({
                   {isSyncing ? <svg className="w-3.5 h-3.5 animate-spin shrink-0" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> : <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>}
                   ซิงค์ BOM
                 </button>
-                <a href="file:///E:/00_PowerBI/Web/Automating-Bill/public/BOQ_Fixed_Original_Format.csv" target="_blank" rel="noopener noreferrer" className="flex-shrink-0 bg-green-100 text-green-800 hover:bg-green-200 border border-green-200 py-1.5 px-3 rounded flex justify-center items-center transition-all shadow-sm" title="เปิดไฟล์ CSV จาก Drive E:" onClick={() => alert('⚠️ อย่าลืมเสียบ External Drive (Drive E:) ก่อนเปิดไฟล์นะครับ!\n\nและอย่าลืมก็อปไปวางทับใน Google Drive ด้วยล่ะ!\n\n(หากเบราว์เซอร์ไม่ยอมเปิดไฟล์ ให้กดเปิดจากโฟลเดอร์ในเครื่องแทนครับ)')}>
+                <a href={sheetUrl || "https://docs.google.com/spreadsheets/d/1qpAFF43n4ywYdVBpeR7eeO4wk7VY60amPxJptO-piyo/edit"} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 bg-green-100 text-green-800 hover:bg-green-200 border border-green-200 py-1.5 px-3 rounded flex justify-center items-center transition-all shadow-sm" title="เปิด Google Sheets ต้นฉบับ">
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                 </a>
               </div>
             </div>
-            <button onClick={handlePrint} className="w-full bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded shadow flex justify-center items-center gap-2 transition-all text-sm whitespace-nowrap">
-              🖨️ พิมพ์ / ดาวน์โหลด PDF
-            </button>
+            <div className="flex flex-col gap-1.5 w-full">
+              {handleExportExcel && (
+                <button onClick={handleExportExcel} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded shadow flex justify-center items-center gap-1.5 transition-all text-xs whitespace-nowrap" title="ส่งออกเป็นไฟล์ Excel (.xlsx) พร้อมสูตรคำนวณ">
+                  📊 ดาวน์โหลด Excel
+                </button>
+              )}
+              <button onClick={handlePrint} className="w-full bg-gray-800 hover:bg-black text-white font-bold py-1.5 px-3 rounded shadow flex justify-center items-center gap-1.5 transition-all text-xs whitespace-nowrap">
+                🖨️ พิมพ์ / ดาวน์โหลด PDF
+              </button>
+            </div>
           </>
         ) : (
           <>
@@ -177,6 +185,11 @@ export default function Sidebar({
                 { grandTotal > 0 ? (grandTotal / 1000000).toFixed(1) + 'M' : '0M' }
               </div>
             </div>
+            {handleExportExcel && (
+              <button onClick={handleExportExcel} className="w-10 h-10 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded shadow flex justify-center items-center transition-all text-sm shrink-0" title="ดาวน์โหลด Excel (.xlsx)">
+                📊
+              </button>
+            )}
             <button onClick={handlePrint} className="w-10 h-10 bg-gray-800 hover:bg-black text-white font-bold rounded shadow flex justify-center items-center transition-all text-sm shrink-0" title="พิมพ์ / ดาวน์โหลด PDF">
               🖨️
             </button>

@@ -9,6 +9,7 @@ import AiMode from './AiMode';
 import { initialCategories, emptyProjectInfo, variableGroups } from './constants';
 import { THBText, sanitizeCategories, calculateAutoFillQty, getQtyRules, applyBulkPriceAdjustment } from './utils';
 import defaultData from './default_data.json';
+import { exportBoqToExcel } from './exportExcel';
 
 // ฟังก์ชันสำหรับแปลง ID เก่าที่ค้างในระบบ (item_...) ให้กลายเป็นเลขลำดับ (เช่น 1.1, 1.2) อัตโนมัติ
 const fixOldIds = (cats) => {
@@ -59,7 +60,17 @@ export default function App() {
   });
 
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [profitMargin, setProfitMargin] = useState(0.05); // 5%
+  const [profitMargin, setProfitMargin] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('kid_bom_profit_margin');
+        if (saved !== null) return JSON.parse(saved);
+      } catch (e) {
+        console.error("Error parsing profit margin from localStorage", e);
+      }
+    }
+    return defaultData.profitMargin !== undefined ? defaultData.profitMargin : 0.05; // 5%
+  });
   
   const [discountRounding, setDiscountRounding] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -142,7 +153,6 @@ export default function App() {
         const cat2_lon = ['ค่าแรงมุงกระเบื้องซีแพค (แบบลอน)'];
         const cat2_flat = ['ค่าแรงมุงกระเบื้องซีแพค (แบบเรียบ)'];
         const cat2_metal = ['ค่าแรงประกอบโครงเหล็ก + มุงเมทัลชีท (เบ็ดเสร็จ)', 'แปสำเร็จรูปสำหรับหลังคาเมทัลชีท'];
-        const cat2_lon_koo = ['ค่าแรงประกอบโครงหลังคาเหล็ก (สำหรับซีแพค)', 'แปสำเร็จรูปสำหรับหลังคากระเบื้อง (ซีแพค / ลอนคู่)', 'ค่าแรงมุงกระเบื้องลอนคู่'];
         
         const initialCat2 = initialCategories.find(c => String(c.id) === '2');
         if (!initialCat2) return cat;
@@ -290,8 +300,9 @@ export default function App() {
       localStorage.setItem('kid_bom_project_info', JSON.stringify(projectInfo));
       localStorage.setItem('kid_bom_discount', JSON.stringify(discountRounding));
       localStorage.setItem('kid_bom_master', JSON.stringify(masterBom));
+      localStorage.setItem('kid_bom_profit_margin', JSON.stringify(profitMargin));
     }
-  }, [categories, projectInfo, discountRounding, masterBom]);
+  }, [categories, projectInfo, discountRounding, masterBom, profitMargin]);
 
   const handleProjectInfoChange = (field, value) => {
     setProjectInfo(prev => ({ ...prev, [field]: value }));
@@ -302,6 +313,7 @@ export default function App() {
       version: '1.0',
       projectInfo,
       categories,
+      profitMargin,
       discountRounding,
       masterBom,
       lastModified: new Date().toISOString()
@@ -348,6 +360,7 @@ export default function App() {
         const data = JSON.parse(evt.target.result);
         if (data.projectInfo) setProjectInfo({ ...emptyProjectInfo, ...data.projectInfo });
         if (data.categories) setCategories(fixOldIds(sanitizeCategories(data.categories)));
+        if (data.profitMargin !== undefined) setProfitMargin(Number(data.profitMargin) || 0.05);
         if (data.discountRounding !== undefined) setDiscountRounding(data.discountRounding);
         if (data.masterBom) setMasterBom(data.masterBom);
         alert('โหลดโปรเจกต์สำเร็จ!');
@@ -359,11 +372,34 @@ export default function App() {
     reader.readAsText(file);
   };
 
+  const handleExportExcel = () => {
+    exportBoqToExcel({
+      projectInfo,
+      categories,
+      profitMargin,
+      discountRounding,
+      grandTotal,
+      subTotal,
+      overheadProfit,
+      grandTotalMaterial,
+      grandTotalLabor
+    });
+  };
+
+  const applyPreset = (preset) => {
+    if (!preset || !preset.values) return;
+    setProjectInfo(prev => ({
+      ...prev,
+      ...preset.values
+    }));
+  };
+
   const saveAsDefaultTemplate = () => {
     if (window.confirm('คุณต้องการบันทึกสถานะโปรเจกต์ปัจจุบันเป็นเทมเพลตเริ่มต้นหรือไม่? (เทมเพลตเดิมจะถูกเขียนทับ)')) {
         const templateData = {
             projectInfo,
             categories,
+            profitMargin,
             discountRounding,
         };
         localStorage.setItem('kid_bom_user_template', JSON.stringify(templateData));
@@ -377,12 +413,14 @@ export default function App() {
         const userTemplateJson = localStorage.getItem('kid_bom_user_template');
         let infoToUse = { ...emptyProjectInfo };
         let discountToUse = 0;
+        let profitMarginToUse = 0.05;
 
         if (userTemplateJson) {
             try {
                 const data = JSON.parse(userTemplateJson);
                 infoToUse = { ...emptyProjectInfo, ...(data.projectInfo || {}) };
                 discountToUse = data.discountRounding !== undefined ? data.discountRounding : 0;
+                profitMarginToUse = data.profitMargin !== undefined ? Number(data.profitMargin) : 0.05;
             } catch (e) {
                 console.error("Failed to load user template for project info.", e);
             }
@@ -390,7 +428,7 @@ export default function App() {
         
         setProjectInfo(infoToUse);
         setDiscountRounding(discountToUse);
-        setProfitMargin(0.05); // Always reset profit margin
+        setProfitMargin(profitMarginToUse);
 
         // 2. Build categories from Master BOM
         if (masterBom.length === 0) {
@@ -966,6 +1004,7 @@ export default function App() {
         sheetUrl={sheetUrl}
         handleBulkPriceAdjust={handleBulkPriceAdjust}
         saveAsDefaultTemplate={saveAsDefaultTemplate}
+        handleExportExcel={handleExportExcel}
       />
 
       {/* พื้นที่เนื้อหาหลัก (Main Content) */}
@@ -991,11 +1030,14 @@ export default function App() {
                   resetProject={resetProject}
                   importProjectFromJSON={importProjectFromJSON}
                   exportProjectToJSON={exportProjectToJSON}
+                  handleExportExcel={handleExportExcel}
+                  applyPreset={applyPreset}
                   saveAsDefaultTemplate={saveAsDefaultTemplate}
                   formatNum={formatNum}
                   grandTotal={grandTotal}
                   costPerSqm={costPerSqm}
                   profitMargin={profitMargin}
+                  setProfitMargin={setProfitMargin}
                   overheadProfit={overheadProfit}
                   matPercent={matPercent}
                   laborPercent={laborPercent}
@@ -1214,6 +1256,7 @@ export default function App() {
             grandTotalLabor={grandTotalLabor}
             subTotal={subTotal}
             profitMargin={profitMargin}
+            setProfitMargin={setProfitMargin}
             overheadProfit={overheadProfit}
             discountRounding={discountRounding}
             setDiscountRounding={setDiscountRounding}
